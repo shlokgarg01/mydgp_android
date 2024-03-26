@@ -1,5 +1,5 @@
 import { View, Image } from 'react-native';
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native';
@@ -19,7 +19,7 @@ export default function Home() {
   const [onDuty, setOnDuty] = useState(
     user?.status === Enums.SERVICE_PROVIDER_STATUS.ACTIVE ? true : false,
   );
-  const [isProfileCompleted, setProfileCompleted] = useState(false);
+  const [isProfilePending, setProfilePending] = useState(true);
 
   const updateDutyStatus = () => {
     setOnDuty(!onDuty);
@@ -53,7 +53,9 @@ export default function Home() {
   }, [navigation, onDuty]);
 
   return onDuty ? (
-    <BookingRequests />
+    <>
+      <BookingRequests />
+    </>
   ) : (
     <View
       style={{
@@ -84,7 +86,8 @@ export default function Home() {
           Thanks for joining. Go on-duty and get started on your journey.
         </Text>
       </>
-      {isProfileCompleted && <CompleteProfileModal />}
+      {isProfilePending && <CompleteProfileModal />}
     </View >
+
   );
 }

@@ -24,6 +24,7 @@ import CurrentBookings from '../screens/Home';
 import TodayBookings from '../screens/TodayBookings';
 import { View } from 'react-native';
 import TotalEarnings from '../screens/TotalEarnings';
+import ProfileForm from '../screens/ProfileForm/ProfileForm';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -148,6 +149,7 @@ export default function Routes() {
           component={SignupOtpVerify}
         />
         <Stack.Screen name={RouteNames.AUTH.SIGNUP} component={Signup} />
+        <Stack.Screen name={RouteNames.PROFILE_FORM} component={ProfileForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );
