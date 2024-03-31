@@ -43,35 +43,37 @@ const CategoriesAccordion: React.FC<Props> = ({ services, onServicesSelect }) =>
 
     return (
         <View style={styles.parentContainer}>
-            <Text style={styles.heading}>Select services:</Text>
-            <FlatList
-                data={services}
-                renderItem={({ item }) => (
-                    <View key={item.id}>
-                        <CheckBox
-                            title={item.name}
-                            checked={selectedServices.includes(item.name)}
-                            onPress={() => toggleServiceSelection(item.name)}
-                        />
-                        {selectedServices.includes(item.name) &&
-                            <FlatList
-                                data={item?.subServices}
-                                renderItem={({ item: subService }) => (
-                                    <CheckBox
-                                        key={subService}
-                                        title={subService}
-                                        checked={selectedSubServices.includes(subService)}
-                                        onPress={() => toggleSubServiceSelection(subService)}
-                                        containerStyle={styles.subCategoryCheckboxContainer}
-                                    />
-                                )}
-                                keyExtractor={(subService) => subService}
+            <View style={styles.contentSection}>
+                <Text style={styles.heading}>Select services you offer:</Text>
+                <FlatList
+                    data={services}
+                    renderItem={({ item }) => (
+                        <View key={item.id}>
+                            <CheckBox
+                                title={item.name}
+                                checked={selectedServices.includes(item.name)}
+                                onPress={() => toggleServiceSelection(item.name)}
                             />
-                        }
-                    </View>
-                )}
-                keyExtractor={(item) => item.id.toString()}
-            />
+                            {selectedServices.includes(item.name) &&
+                                <FlatList
+                                    data={item?.subServices}
+                                    renderItem={({ item: subService }) => (
+                                        <CheckBox
+                                            key={subService}
+                                            title={subService}
+                                            checked={selectedSubServices.includes(subService)}
+                                            onPress={() => toggleSubServiceSelection(subService)}
+                                            containerStyle={styles.subCategoryCheckboxContainer}
+                                        />
+                                    )}
+                                    keyExtractor={(subService) => subService}
+                                />
+                            }
+                        </View>
+                    )}
+                    keyExtractor={(item) => item.id.toString()}
+                />
+            </View>
             <TouchableOpacity
                 onPress={() => onServicesSelect(selectedServices, selectedSubServices)}
                 style={styles.submitButton} >

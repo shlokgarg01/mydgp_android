@@ -3,8 +3,11 @@ import Colors from "../../helpers/Colors";
 
 export const styles = StyleSheet.create({
     parentContainer: {
-        height: '90%',
+        height: '100%',
         padding: 10,
+    },
+    contentSection:{
+        height:'77%'
     },
     subCategoryCheckboxContainer: {
         marginLeft: 30,
@@ -17,10 +20,6 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 5,
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 0,
-        left: 10,
-        right: 10,
     },
     submitButtonText: {
         color: '#fff',

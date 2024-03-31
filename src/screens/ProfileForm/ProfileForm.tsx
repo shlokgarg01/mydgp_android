@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from './ProfileForm.styles';
 import { useNavigation } from '@react-navigation/native';
 import CategoriesAccordion from '../../components/CategoriesAccordion/CategoriesAccordion';
@@ -12,12 +11,12 @@ const ProfileForm = () => {
         {
             id: 1,
             name: 'Photography',
-            subServices: ['Street Photography', 'Nature/Landscape', 'Wedding photography'],
+            subServices: ['Nature, Landscape', 'Night Scape, Star', 'Pet', 'Wildlife,Animal & Birds', 'Selfie', 'Portrait', 'Models(at photo shooting event)', 'Street Photography', 'Travel', 'Music Recitals/school plays', 'Sports', 'Wedding', 'Event - Parties,religious, conferences,awards,groups and team photos', 'Fashion/Beauty', 'Food', 'Macro shooting', 'Still Life', 'Transportation', 'Aerial', 'Architecture', 'Underwater', 'Others'],
         },
         {
             id: 2,
             name: 'Videography',
-            subServices: ['Underwater', 'Aerial', 'Vlog'],
+            subServices: ['Nature, Landscape', 'Night Scape, Star', 'Pet', 'Wildlife,Animal & Birds', 'Selfie', 'Portrait', 'Models(at photo shooting event)', 'Street Photography', 'Travel', 'Music Recitals/school plays', 'Sports', 'Wedding', 'Event - Parties,religious, conferences,awards,groups and team photos', 'Fashion/Beauty', 'Food', 'Macro shooting', 'Still Life', 'Transportation', 'Aerial', 'Architecture', 'Underwater', 'Others'],
         },
     ];
 
@@ -31,13 +30,13 @@ const ProfileForm = () => {
     return (
         <View>
             <View style={styles.topBar}>
-                <Icon
+                {/* <Icon
                     name="chevron-left"
                     size={30}
                     color={'white'}
                     style={{}}
                     onPress={() => { navigation.pop() }}
-                />
+                /> */}
                 <Text style={styles.heading}>Complete your profile</Text>
             </View>
             <CategoriesAccordion services={data} onServicesSelect={handleServicesSelect} />
