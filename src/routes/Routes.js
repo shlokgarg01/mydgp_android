@@ -123,11 +123,11 @@ function DrawerRoutes() {
         component={TotalEarnings}
         options={() => drawerOptions('Total Earnings', 'account-cash')}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={RouteNames.LEAVES}
         component={Leaves}
         options={() => drawerOptions('Leaves', 'home-city-outline')}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }

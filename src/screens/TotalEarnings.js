@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from '../helpers/Colors';
-import {deviceWidth} from '../helpers/Dimensions';
-import {useDispatch, useSelector} from 'react-redux';
-import {getRedeemDetails, requestRedeemCoins} from '../actions/RedeemActions';
+import { deviceWidth } from '../helpers/Dimensions';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRedeemDetails, requestRedeemCoins } from '../actions/RedeemActions';
 import Btn from '../components/Btn';
-import {showToast} from '../helpers/ShowToast';
-import {CLEAR_ERRORS} from '../constants/RedeemConstants';
+import { showToast } from '../helpers/ShowToast';
+import { CLEAR_ERRORS } from '../constants/RedeemConstants';
 
 const TotalEarnings = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
-  const {redeem, error, isSuccess} = useSelector(state => state.redeem);
+  const { redeem, error, isSuccess } = useSelector(state => state.redeem);
 
   const redeemCoins = () => {
     if (redeem.amountToBeRedeemed <= 0) {
@@ -25,8 +25,8 @@ const TotalEarnings = () => {
     dispatch(getRedeemDetails());
 
     if (error) {
-      showToast('error', error);
-      dispatch({type: CLEAR_ERRORS});
+      // showToast('error', error);
+      dispatch({ type: CLEAR_ERRORS });
     }
 
     if (isSuccess) {
@@ -44,10 +44,10 @@ const TotalEarnings = () => {
 
   const RedeemTab = () => (
     <View>
-      <Text style={[styles.earnings, {color: Colors.RED}]}>
+      <Text style={[styles.earnings, { color: Colors.RED }]}>
         Amount - ₹ {redeem?.amountToBeRedeemed || 0}
       </Text>
-      <View style={{marginHorizontal: 25}}>
+      <View style={{ marginHorizontal: 25 }}>
         <Btn
           label="Redeem"
           onClick={redeemCoins}
