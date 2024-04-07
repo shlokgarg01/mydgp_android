@@ -16,7 +16,7 @@ export const bookingRequestsReducer = (
     case GET_ALL_BOOKING_REQUESTS_REQUEST:
       return {
         loading: true,
-        bookingRequests: [],
+        bookingRequests: state.bookingRequests,
       };
     case GET_ALL_BOOKING_REQUESTS_SUCCESS:
       return {

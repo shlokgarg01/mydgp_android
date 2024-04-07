@@ -21,7 +21,16 @@ const BookingRequests = () => {
   const {error, isUpdated} = useSelector(state => state.bookingRequest);
 
   useEffect(() => {
-    dispatch(getAllBookingRequests());
+    const getBookings = () => {
+      dispatch(getAllBookingRequests());
+    }
+
+    getBookings()
+    const interval = setInterval(() => getBookings(), 1500)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
 
     if (isAuthenticated === false) {
       navigation.reset({index: 1, routes: [{name: RouteNames.AUTH.LOGINOTP}]});
@@ -33,10 +42,10 @@ const BookingRequests = () => {
     }
   }, [isAuthenticated, error, isUpdated]);
 
-  return loading ? (
-    <Loader />
-  ) : (
-    <View>
+  // return loading ? (
+  //   <Loader />
+  // ) : (
+    return <View>
       <FlatList
         ListEmptyComponent={() => (
           <Text style={styles.emptylistText}>No booking requests yet</Text>
@@ -47,7 +56,7 @@ const BookingRequests = () => {
         showsVerticalScrollIndicator={false}
       />
     </View>
-  );
+  // );
 };
 
 const styles = StyleSheet.create({

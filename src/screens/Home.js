@@ -1,5 +1,5 @@
-import {View, Image} from 'react-native';
-import React, {useLayoutEffect} from 'react';
+import {View} from 'react-native';
+import React, {useEffect, useLayoutEffect} from 'react';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Text} from 'react-native';
@@ -7,7 +7,7 @@ import {deviceHeight, deviceWidth} from '../helpers/Dimensions';
 import ToggleSwitch from '../components/ToggleSwitch';
 import {useDispatch, useSelector} from 'react-redux';
 import Enums from '../helpers/Enums';
-import {toggleDutyStatus} from '../actions/UserActions';
+import {toggleDutyStatus, updateFCM} from '../actions/UserActions';
 import BookingRequests from './BookingRequests';
 import Video from 'react-native-video';
 

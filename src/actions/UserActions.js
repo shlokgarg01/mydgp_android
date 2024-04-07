@@ -20,6 +20,9 @@ import {
   REGISTER_VERIFY_FAIL,
   REGISTER_VERIFY_REQUEST,
   REGISTER_VERIFY_SUCCESS,
+  UPDATE_FCM_FAIL,
+  UPDATE_FCM_REQUEST,
+  UPDATE_FCM_SUCCESS,
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
@@ -92,26 +95,27 @@ export const sendOTPRegistration = contactNumber => async dispatch => {
 };
 
 // Enter details for registration via OTP
-export const EnterDetailsOPTPRegistration = registrationData => async dispatch => {
-  try {
-    dispatch({type: REGISTER_VERIFY_REQUEST});
+export const EnterDetailsOPTPRegistration =
+  registrationData => async dispatch => {
+    try {
+      dispatch({type: REGISTER_VERIFY_REQUEST});
 
-    const config = {headers: {'Content-Type': 'application/json'}};
-    const {data} = await axiosInstance.post(
-      `${BASE_URL}/api/v1/register/otp`,
-      registrationData,
-      config,
-    );
-    await AsyncStorage.setItem('token', JSON.stringify(data.token));
+      const config = {headers: {'Content-Type': 'application/json'}};
+      const {data} = await axiosInstance.post(
+        `${BASE_URL}/api/v1/register/otp`,
+        registrationData,
+        config,
+      );
+      await AsyncStorage.setItem('token', JSON.stringify(data.token));
 
-    dispatch({type: REGISTER_VERIFY_SUCCESS, payload: data.user});
-  } catch (error) {
-    dispatch({
-      type: REGISTER_VERIFY_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({type: REGISTER_VERIFY_SUCCESS, payload: data.user});
+    } catch (error) {
+      dispatch({
+        type: REGISTER_VERIFY_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // load existing user
 export const loadUser = () => async dispatch => {
@@ -174,11 +178,31 @@ export const toggleDutyStatus = status => async dispatch => {
       {status},
       config,
     );
-    
+
     dispatch({type: ON_DUTY_TOGGLE_SUCCESS, payload: data.success});
   } catch (error) {
     dispatch({
       type: ON_DUTY_TOGGLE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// update FCM Token
+export const updateFCM = fcm_token => async dispatch => {
+  try {
+    dispatch({type: UPDATE_FCM_REQUEST});
+    const config = {'Content-Type': 'application/json'};
+    const {data} = await axiosInstance.put(
+      `${BASE_URL}/api/v1/me/update_fcm`,
+      {fcm_token},
+      config,
+    );
+
+    dispatch({type: UPDATE_FCM_SUCCESS, payload: data});
+  } catch (error) {
+    dispatch({
+      type: UPDATE_FCM_FAIL,
       payload: error.response.data.message,
     });
   }
