@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
         height: '100%',
         padding: 10,
     },
-    contentSection:{
-        height:'77%'
+    contentSection: {
+        height: '40%'
     },
     subCategoryCheckboxContainer: {
         marginLeft: 30,

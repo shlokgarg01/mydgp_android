@@ -1,11 +1,14 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Image, Text, View } from 'react-native'
 import { styles } from './ProfileForm.styles';
 import { useNavigation } from '@react-navigation/native';
 import CategoriesAccordion from '../../components/CategoriesAccordion/CategoriesAccordion';
+import DocUploader from '../../components/DocUploader';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const ProfileForm = () => {
     const navigation: any = useNavigation();
+    const [idProofImage, setIdProofImage] = useState();
 
     const data: any = [
         {
@@ -38,6 +41,21 @@ const ProfileForm = () => {
                     onPress={() => { navigation.pop() }}
                 /> */}
                 <Text style={styles.heading}>Complete your profile</Text>
+            </View>
+            <View style={styles.profileImageEdit}>
+                <Icon
+                    name="user-edit"
+                    size={50}
+                    color={'white'}
+                    style={{}}
+                />
+            </View>
+            <Text style={{ alignSelf: 'center', fontWeight: '700' }}>Upload Profile Image</Text>
+            <View style={styles.uploadContainer}>
+                <DocUploader
+                    setDocument={setIdProofImage}
+                    title="Upload ID Proof"
+                />
             </View>
             <CategoriesAccordion services={data} onServicesSelect={handleServicesSelect} />
         </View>

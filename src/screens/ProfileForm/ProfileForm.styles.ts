@@ -14,12 +14,24 @@ export const styles = StyleSheet.create({
         color: Colors.WHITE,
         marginStart: 20
     },
-
+    profileImageEdit: {
+        backgroundColor: Colors.LIGHT_PRIMARY,
+        width: 100,
+        height: 100,
+        alignItems: 'center',
+        alignSelf: 'center',
+        padding: 20,
+        borderRadius: 100,
+        marginTop: 20
+    },
     categoryContainer: {
         marginBottom: 10,
         backgroundColor: '#f9f9f9',
         borderRadius: 5,
         overflow: 'hidden',
+    },
+    uploadContainer: {
+        padding: 20,
     },
     categoryHeader: {
         padding: 10,
