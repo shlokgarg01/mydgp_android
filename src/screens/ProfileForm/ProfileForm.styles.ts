@@ -14,6 +14,21 @@ export const styles = StyleSheet.create({
         color: Colors.WHITE,
         marginStart: 20
     },
+    contentSection: {
+        paddingHorizontal: 10,
+    },
+    subHeading: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        marginTop: 25,
+    },
+    inputText: {
+        backgroundColor: 'white',
+        margin: 5,
+        paddingHorizontal: 15,
+        borderBottomWidth: 0.5
+    },
     profileImageEdit: {
         backgroundColor: Colors.LIGHT_PRIMARY,
         width: 100,
@@ -47,5 +62,17 @@ export const styles = StyleSheet.create({
     },
     subcategoryText: {
         marginLeft: 10,
+    },
+    submitButton: {
+        backgroundColor: Colors.PRIMARY,
+        padding: 15,
+        marginTop: 20,
+        marginBottom: 100,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    submitButtonText: {
+        color: '#fff',
+        fontSize: 16
     },
 })

@@ -18,14 +18,14 @@ const CategoriesAccordion: React.FC<Props> = ({ services, onServicesSelect }) =>
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedSubServices, setSelectedSubServices] = useState<string[]>([]);
 
-    useEffect(() => {
-        // When selectedServices change, automatically select sub-services of the selected services
-        const subServices: string[] = services
-            .filter((service) => selectedServices.includes(service.name))
-            .flatMap((service) => service.subServices);
+    // When selectedServices change, automatically select sub-services of the selected services
+    // useEffect(() => {
+    //     const subServices: string[] = services
+    //         .filter((service) => selectedServices.includes(service.name))
+    //         .flatMap((service) => service.subServices);
 
-        setSelectedSubServices(subServices);
-    }, [selectedServices]);
+    //     setSelectedSubServices(subServices);
+    // }, [selectedServices]);
 
     const toggleServiceSelection = (service: string) => {
         const updatedSelection = selectedServices.includes(service)
@@ -42,43 +42,42 @@ const CategoriesAccordion: React.FC<Props> = ({ services, onServicesSelect }) =>
     };
 
     return (
-        <View style={styles.parentContainer}>
-            <View style={styles.contentSection}>
-                <Text style={styles.heading}>Select services you offer:</Text>
-                <FlatList
-                    data={services}
-                    renderItem={({ item }) => (
-                        <View key={item.id}>
-                            <CheckBox
-                                title={item.name}
-                                checked={selectedServices.includes(item.name)}
-                                onPress={() => toggleServiceSelection(item.name)}
+        <View >
+            <Text style={styles.heading}>What do you do?</Text>
+            <FlatList
+                data={services}
+                renderItem={({ item }) => (
+                    <View key={item.id}>
+                        {/* <CheckBox
+                            title={item.name}
+                            checked={selectedServices.includes(item.name)}
+                            onPress={() => toggleServiceSelection(item.name)}
+                        /> */}
+                        <Text style={styles.categoryContainer} onPress={() => toggleServiceSelection(item.name)}>{item?.name}</Text>
+                        {selectedServices.includes(item.name) &&
+                            <FlatList
+                                data={item?.subServices}
+                                renderItem={({ item: subService }) => (
+                                    <CheckBox
+                                        key={subService}
+                                        title={subService}
+                                        checked={selectedSubServices.includes(subService)}
+                                        onPress={() => toggleSubServiceSelection(subService)}
+                                        containerStyle={styles.subCategoryCheckboxContainer}
+                                    />
+                                )}
+                                keyExtractor={(subService) => subService}
                             />
-                            {selectedServices.includes(item.name) &&
-                                <FlatList
-                                    data={item?.subServices}
-                                    renderItem={({ item: subService }) => (
-                                        <CheckBox
-                                            key={subService}
-                                            title={subService}
-                                            checked={selectedSubServices.includes(subService)}
-                                            onPress={() => toggleSubServiceSelection(subService)}
-                                            containerStyle={styles.subCategoryCheckboxContainer}
-                                        />
-                                    )}
-                                    keyExtractor={(subService) => subService}
-                                />
-                            }
-                        </View>
-                    )}
-                    keyExtractor={(item) => item.id.toString()}
-                />
-            </View>
-            <TouchableOpacity
+                        }
+                    </View>
+                )}
+                keyExtractor={(item) => item.id.toString()}
+            />
+            {/* <TouchableOpacity
                 onPress={() => onServicesSelect(selectedServices, selectedSubServices)}
                 style={styles.submitButton} >
                 <Text style={styles.submitButtonText}>Submit</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 };

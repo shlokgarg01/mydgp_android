@@ -2,17 +2,16 @@ import { StyleSheet } from "react-native";
 import Colors from "../../helpers/Colors";
 
 export const styles = StyleSheet.create({
-    parentContainer: {
-        height: '100%',
-        padding: 10,
-    },
-    contentSection: {
-        height: '40%'
-    },
     subCategoryCheckboxContainer: {
         marginLeft: 30,
         backgroundColor: 'transparent',
         borderWidth: 0
+    },
+    categoryContainer: {
+        backgroundColor: 'white',
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
     },
     submitButton: {
         backgroundColor: Colors.PRIMARY,
