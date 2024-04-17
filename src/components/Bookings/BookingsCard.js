@@ -1,25 +1,25 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React, { useState } from 'react';
+import { View, Linking } from 'react-native';
 import ShowInfo from '../ShowInfo';
 import ComponentStyles from '../../styles/ComponentStyles';
-import {getDate} from '../../utils/DateTime';
+import { getDate } from '../../utils/DateTime';
 import SubHeading from '../BookingRequests/SubHeading';
 import Colors from '../../helpers/Colors';
 import Badge from '../Badge';
 import DropDown from '../../components/Dropdown';
 import Btn from '../Btn';
 import Enums from '../../helpers/Enums';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Loader';
-import {updateBookingStatus} from '../../actions/BookingsActions';
-import {useEffect} from 'react';
-import {showToast} from '../../helpers/ShowToast';
-import {CLEAR_ERRORS} from '../../constants/BookingsConstants';
+import { updateBookingStatus } from '../../actions/BookingsActions';
+import { useEffect } from 'react';
+import { showToast } from '../../helpers/ShowToast';
+import { CLEAR_ERRORS } from '../../constants/BookingsConstants';
 import InputGroup from '../InputGroup';
 
-const BookingsCard = ({booking, showUpdateStatus}) => {
+const BookingsCard = ({ booking, showUpdateStatus }) => {
   const dispatch = useDispatch();
-  const {error, loading, isUpdated} = useSelector(
+  const { error, loading, isUpdated } = useSelector(
     state => state.updateBookingStatus,
   );
 
@@ -30,17 +30,17 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
       ? [
-          {
-            label: Enums.BOOKING_STATUS.ONGOING,
-            value: Enums.BOOKING_STATUS.ONGOING,
-          },
-        ]
+        {
+          label: Enums.BOOKING_STATUS.ONGOING,
+          value: Enums.BOOKING_STATUS.ONGOING,
+        },
+      ]
       : [
-          {
-            label: Enums.BOOKING_STATUS.CLOSED,
-            value: Enums.BOOKING_STATUS.CLOSED,
-          },
-        ];
+        {
+          label: Enums.BOOKING_STATUS.CLOSED,
+          value: Enums.BOOKING_STATUS.CLOSED,
+        },
+      ];
 
   const updateStatusHandler = () => {
     if (booking.status === Enums.BOOKING_STATUS.ACCEPTED && !otp) {
@@ -50,12 +50,17 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
     dispatch(updateBookingStatus(booking._id, status, parseInt(otp)));
   };
 
+  const openMap = (lat, long) => {
+    var mapUrl = `https://www.google.com/maps?q=${lat},${long}`;
+    Linking.openURL(mapUrl);
+  }
+
   useEffect(() => {
     if (error) {
       showToast('error', error);
-      dispatch({type: CLEAR_ERRORS});
+      dispatch({ type: CLEAR_ERRORS });
     } else if (isUpdated) {
-      dispatch({type: CLEAR_ERRORS})
+      dispatch({ type: CLEAR_ERRORS })
       showToast('success', 'Booking Status Updated');
     }
   }, [error, isUpdated]);
@@ -67,23 +72,22 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
       <View
         style={[
           ComponentStyles.horizontalBetweenAlgin,
-          {alignItems: 'flex-start', paddingRight: 10},
+          { alignItems: 'flex-start', paddingRight: 10 },
         ]}>
         <View>
           <ShowInfo title="Id" info={booking?._id} boldInfo={true} />
           <ShowInfo title="Date" info={getDate(booking?.date)} />
           <ShowInfo
             title="Time"
-            info={`${booking?.hours} ${
-              booking?.hours === 1 ? 'hour' : 'hours'
-            }`}
+            info={`${booking?.hours} ${booking?.hours === 1 ? 'hour' : 'hours'
+              }`}
           />
 
           <SubHeading
-            styles={{paddingHorizontal: 10}}
+            styles={{ paddingHorizontal: 10 }}
             heading="Customer Info"
           />
-          <View style={{paddingHorizontal: 10}}>
+          <View style={{ paddingHorizontal: 10 }}>
             <ShowInfo title="Name" info={booking.customer.name} />
             <ShowInfo
               title="Contact Number"
@@ -91,8 +95,8 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
             />
           </View>
 
-          <SubHeading styles={{paddingHorizontal: 10}} heading="Address" />
-          <View style={{paddingHorizontal: 10}}>
+          <SubHeading styles={{ paddingHorizontal: 10 }} heading="Address" />
+          <View style={{ paddingHorizontal: 10 }}>
             <ShowInfo title="Address" info={`${booking.address.address}`} />
             <ShowInfo
               title="City"
@@ -113,7 +117,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
         <>
           {booking.status === Enums.BOOKING_STATUS.ACCEPTED && (
             <View
-              style={{paddingHorizontal: 10, marginTop: 7, marginBottom: -10}}>
+              style={{ paddingHorizontal: 10, marginTop: 7, marginBottom: -10 }}>
               <InputGroup
                 label="OTP"
                 placeholder="Enter the Order OTP"
@@ -123,7 +127,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
               />
             </View>
           )}
-          <View style={{paddingHorizontal: 10, marginTop: 10}}>
+          <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
             <DropDown
               label="Update Status"
               value={status}
@@ -135,6 +139,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
               zIndex={2}
             />
             <Btn label="Submit" onClick={updateStatusHandler} />
+            <Btn label="Navigate" onClick={() => openMap(booking.address.coordinates.lat, booking.address.coordinates.lng)} />
           </View>
         </>
       ) : null}
