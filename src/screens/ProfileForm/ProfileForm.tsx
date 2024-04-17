@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { styles } from './ProfileForm.styles';
 import { useNavigation } from '@react-navigation/native';
 import CategoriesAccordion from '../../components/CategoriesAccordion/CategoriesAccordion';
@@ -42,22 +42,74 @@ const ProfileForm = () => {
                 /> */}
                 <Text style={styles.heading}>Complete your profile</Text>
             </View>
-            <View style={styles.profileImageEdit}>
-                <Icon
-                    name="user-edit"
-                    size={50}
-                    color={'white'}
-                    style={{}}
+            <ScrollView style={styles.contentSection}>
+                <View style={styles.profileImageEdit}>
+                    <Icon
+                        name="user-edit"
+                        size={50}
+                        color={'white'}
+                        style={{}}
+                    />
+                </View>
+                <Text style={{ alignSelf: 'center', fontWeight: '700' }}>Upload Profile Image</Text>
+                <View style={styles.uploadContainer}>
+                    <DocUploader
+                        setDocument={setIdProofImage}
+                        title="Upload ID Proof"
+                    />
+                </View>
+                <CategoriesAccordion services={data} onServicesSelect={handleServicesSelect} />
+                <Text style={styles.subHeading}>What do you have?</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Your camera brand'}
                 />
-            </View>
-            <Text style={{ alignSelf: 'center', fontWeight: '700' }}>Upload Profile Image</Text>
-            <View style={styles.uploadContainer}>
-                <DocUploader
-                    setDocument={setIdProofImage}
-                    title="Upload ID Proof"
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Shutter count'}
                 />
-            </View>
-            <CategoriesAccordion services={data} onServicesSelect={handleServicesSelect} />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Body'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Lens'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Monopod'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Tripod'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Gimbal'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Slider'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Flash'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'Mic'}
+                />
+                <TextInput
+                    style={styles.inputText}
+                    placeholder={'RGB light'}
+                />
+                <TouchableOpacity
+                    onPress={() => { }}
+                    style={styles.submitButton} >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+            </ScrollView>
         </View>
     )
 }
