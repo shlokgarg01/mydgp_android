@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity} from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import ComponentStyles from '../styles/ComponentStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,7 @@ export default function CTABtn({
   color,
   icon,
   iconColor,
+  width,
 }) {
   return (
     <TouchableOpacity
@@ -21,7 +22,7 @@ export default function CTABtn({
         ComponentStyles.horizontalAlign,
         {
           backgroundColor: bgColor,
-          width: '46%',
+          width: width ?? '46%',
           marginBottom: 10,
           justifyContent: 'center',
         },
@@ -31,10 +32,10 @@ export default function CTABtn({
           name={icon}
           size={25}
           color={iconColor}
-          style={{marginRight: 10}}
+          style={{ marginRight: 10 }}
         />
       ) : null}
-      <Text style={[ComponentStyles.btnLabel, {color: color}]}>{label}</Text>
+      <Text style={[ComponentStyles.btnLabel, { color: color }]}>{label}</Text>
     </TouchableOpacity>
   );
 }

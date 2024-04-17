@@ -1,15 +1,16 @@
-import {View, Text, Image} from 'react-native';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {deviceHeight, deviceWidth} from '../helpers/Dimensions';
+import { View, Text, Image } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { deviceHeight, deviceWidth } from '../helpers/Dimensions';
 import ToggleSwitch from '../components/ToggleSwitch';
 import { useDispatch, useSelector } from 'react-redux';
 import Enums from '../helpers/Enums';
-import {toggleDutyStatus, updateFCM} from '../actions/UserActions';
+import { toggleDutyStatus, updateFCM } from '../actions/UserActions';
 import BookingRequests from './BookingRequests';
 import CompleteProfileModal from '../components/CompleteProfileModal/CompleteProfileModal';
 import Logo from '../images/logo_blue.png';
 import getNewFCMToken from '../../getFCMTToken';
+import ImageCarousel from '../components/ImageCarousel';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -19,6 +20,12 @@ export default function Home() {
     user?.status === Enums.SERVICE_PROVIDER_STATUS.ACTIVE ? true : false,
   );
   const [isProfilePending, setProfilePending] = useState(false);
+
+  const images = [
+    'https://picsum.photos/200/300',
+    'https://picsum.photos/200/301',
+    'https://picsum.photos/200/302',
+  ];
 
   const updateDutyStatus = () => {
     setOnDuty(!onDuty);
@@ -63,6 +70,7 @@ export default function Home() {
   return onDuty ? (
     <>
       {isProfilePending && <CompleteProfileModal />}
+      <ImageCarousel images={images} />
       <BookingRequests />
     </>
   ) : (

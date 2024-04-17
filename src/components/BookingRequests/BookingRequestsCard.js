@@ -9,9 +9,12 @@ import Colors from '../../helpers/Colors';
 import CTABtn from '../CTABtn';
 import { useDispatch } from 'react-redux';
 import { updateBookingRequestStatus } from '../../actions/BookingRequestsAction';
+import { useNavigation } from '@react-navigation/native';
+import RouteNames from '../../routes/RouteNames';
 
 const BookingRequestsCard = ({ bookingRequest }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const updateBookingRequest = status => {
     dispatch(
@@ -88,20 +91,24 @@ const BookingRequestsCard = ({ bookingRequest }) => {
 
       <View style={ComponentStyles.horizontalEvenlyAlgin}>
         <CTABtn
-          onClick={() =>
+          onClick={() => {
             updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.ACCEPTED)
+            navigation.navigate(RouteNames.TODAY_BOOKINGS)
+          }
           }
           label="ACCEPT"
           bgColor={Colors.DARK_GREEN}
           color={Colors.WHITE}
+          width={'70%'}
         />
         <CTABtn
           onClick={() =>
             updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.REJECTED)
           }
-          label="REJECT"
+          label="SKIP"
           bgColor={Colors.GRAY_BG}
           color={Colors.BLACK}
+          width={'20%'}
         />
       </View>
     </View>
