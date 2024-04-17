@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import Colors from '../helpers/Colors';
 import { deviceHeight } from '../helpers/Dimensions';
 

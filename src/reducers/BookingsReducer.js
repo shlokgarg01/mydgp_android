@@ -14,7 +14,7 @@ import {
   UPDATE_BOOKING_STATUS_FAIL,
 } from '../constants/BookingsConstants';
 
-// get completed bookings of a usere
+// get completed bookings of a user
 export const completedBookingsReducer = (
   state = {completedBookings: []},
   action,
@@ -50,7 +50,7 @@ export const completedBookingsReducer = (
   }
 };
 
-// get future bookings of a usere
+// get future bookings of a user
 export const futureBookingsReducer = (
   state = {futureBookings: []},
   action,
@@ -86,7 +86,7 @@ export const futureBookingsReducer = (
   }
 };
 
-// get current bookings of a usere
+// get current bookings of a user
 export const currentBookingsReducer = (
   state = {currentBookings: []},
   action,
@@ -149,6 +149,7 @@ export const updateBookingStatusReducer = (
     case CLEAR_ERRORS:
       return {
         ...state,
+        isUpdated: false,
         error: null,
       };
     default:

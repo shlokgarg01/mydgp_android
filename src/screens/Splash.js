@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import store from '../../store';
-import {useSelector} from 'react-redux';
-import {Image, View} from 'react-native';
+import { useSelector } from 'react-redux';
+import { Image, View } from 'react-native';
 import RouteNames from '../routes/RouteNames';
 import { loadUser } from '../actions/UserActions';
 
-const Splash = ({navigation}) => {
-  const {isAuthenticated} = useSelector(state => state.user);
+const Splash = ({ navigation }) => {
+  const { isAuthenticated } = useSelector(state => state.user);
 
   useEffect(() => {
     store.dispatch(loadUser());
@@ -31,7 +31,7 @@ const Splash = ({navigation}) => {
         alignItems: 'center',
       }}>
       <Image
-        source={require('../images/dummy_logo.png')}
+        source={require('../images/logo_blue.png')}
         style={{
           height: 130,
           width: 130,

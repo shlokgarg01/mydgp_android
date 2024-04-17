@@ -71,6 +71,7 @@ export const updateBookingRequestStatusReducer = (
     case CLEAR_ERRORS:
       return {
         ...state,
+        isUpdated: false,
         error: null,
       };
     default:

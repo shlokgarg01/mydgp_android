@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import ShowInfo from '../ShowInfo';
 import ComponentStyles from '../../styles/ComponentStyles';
 import {getDate} from '../../utils/DateTime';
@@ -15,6 +15,7 @@ import {updateBookingStatus} from '../../actions/BookingsActions';
 import {useEffect} from 'react';
 import {showToast} from '../../helpers/ShowToast';
 import {CLEAR_ERRORS} from '../../constants/BookingsConstants';
+import InputGroup from '../InputGroup';
 
 const BookingsCard = ({booking, showUpdateStatus}) => {
   const dispatch = useDispatch();
@@ -24,6 +25,8 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
 
   const [isStatusUpdateOpen, setIsStatusUpdateOpen] = useState(false);
   const [status, setStatus] = useState('');
+  const [otp, setOtp] = useState(null);
+
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
       ? [
@@ -40,7 +43,11 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
         ];
 
   const updateStatusHandler = () => {
-    dispatch(updateBookingStatus(booking._id, status));
+    if (booking.status === Enums.BOOKING_STATUS.ACCEPTED && !otp) {
+      showToast('error', 'OTP is required');
+      return;
+    }
+    dispatch(updateBookingStatus(booking._id, status, parseInt(otp)));
   };
 
   useEffect(() => {
@@ -48,6 +55,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
       showToast('error', error);
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
+      dispatch({type: CLEAR_ERRORS})
       showToast('success', 'Booking Status Updated');
     }
   }, [error, isUpdated]);
@@ -96,25 +104,39 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
 
         <View>
           {showUpdateStatus ? (
-            <Badge title={`₹ ${booking.status}`} bgColor={Colors.YELLOW} />
+            <Badge title={`${booking.status}`} bgColor={Colors.YELLOW} />
           ) : null}
           {/* <Badge title={`₹ ${booking.totalPrice}`} bgColor={Colors.GREEN} /> */}
         </View>
       </View>
       {showUpdateStatus ? (
-        <View style={{paddingHorizontal: 10, marginTop: 10}}>
-          <DropDown
-            label="Update Status"
-            value={status}
-            setValue={val => setStatus(val)}
-            items={statuses}
-            open={isStatusUpdateOpen}
-            setIsOpen={() => setIsStatusUpdateOpen(!isStatusUpdateOpen)}
-            placeholder="------- Update Status -------"
-            zIndex={2}
-          />
-          <Btn label="Submit" onClick={updateStatusHandler} />
-        </View>
+        <>
+          {booking.status === Enums.BOOKING_STATUS.ACCEPTED && (
+            <View
+              style={{paddingHorizontal: 10, marginTop: 7, marginBottom: -10}}>
+              <InputGroup
+                label="OTP"
+                placeholder="Enter the Order OTP"
+                value={otp}
+                onChange={val => setOtp(val)}
+                keyboardType="number-pad"
+              />
+            </View>
+          )}
+          <View style={{paddingHorizontal: 10, marginTop: 10}}>
+            <DropDown
+              label="Update Status"
+              value={status}
+              setValue={val => setStatus(val)}
+              items={statuses}
+              open={isStatusUpdateOpen}
+              setIsOpen={() => setIsStatusUpdateOpen(!isStatusUpdateOpen)}
+              placeholder="------- Update Status -------"
+              zIndex={2}
+            />
+            <Btn label="Submit" onClick={updateStatusHandler} />
+          </View>
+        </>
       ) : null}
     </View>
   );

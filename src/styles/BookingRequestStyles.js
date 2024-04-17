@@ -3,12 +3,13 @@ import Colors from "../helpers/Colors";
 
 const BookingRequestStyles = StyleSheet.create({
   requestCardContainer: {
-    marginTop: 10,
-    marginHorizontal: 5,
+    marginTop: 15,
+    marginHorizontal: 10,
     elevation: 10,
     borderRadius: 10,
     backgroundColor: Colors.WHITE,
-    padding: 5
+    padding: 10,
+    paddingTop: 15,
   }
 })
 

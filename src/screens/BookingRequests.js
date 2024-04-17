@@ -38,6 +38,7 @@ const BookingRequests = () => {
       showToast('error', error);
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
+      dispatch({type: CLEAR_ERRORS})
       showToast('success', 'Booking Updated!');
     }
   }, [isAuthenticated, error, isUpdated]);
