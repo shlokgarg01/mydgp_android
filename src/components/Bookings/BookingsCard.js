@@ -78,7 +78,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
           <ShowInfo title="Id" info={booking?._id} boldInfo={true} />
           <ShowInfo title="Date" info={getDate(booking?.date)} />
           <ShowInfo
-            title="Time"
+            title="Duration"
             info={`${booking?.hours} ${booking?.hours === 1 ? 'hour' : 'hours'
               }`}
           />
@@ -138,7 +138,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
               placeholder="------- Update Status -------"
               zIndex={2}
             />
-            <Btn label="Submit" onClick={updateStatusHandler} />
+            <Btn label="Start" onClick={updateStatusHandler} />
             <Btn label="Navigate" onClick={() => openMap(booking.address.coordinates.lat, booking.address.coordinates.lng)} />
           </View>
         </>
