@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Colors from '../helpers/Colors';
-import { deviceWidth } from '../helpers/Dimensions';
-import { useDispatch, useSelector } from 'react-redux';
-import { getRedeemDetails, requestRedeemCoins } from '../actions/RedeemActions';
+import {deviceWidth} from '../helpers/Dimensions';
+import {useDispatch, useSelector} from 'react-redux';
+import {getRedeemDetails, requestRedeemCoins} from '../actions/RedeemActions';
 import Btn from '../components/Btn';
-import { showToast } from '../helpers/ShowToast';
-import { CLEAR_ERRORS } from '../constants/RedeemConstants';
+import {showToast} from '../helpers/ShowToast';
+import {CLEAR_ERRORS} from '../constants/RedeemConstants';
 
 const TotalEarnings = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
-  const { redeem, error, isSuccess } = useSelector(state => state.redeem);
+  const {redeem, error, isSuccess} = useSelector(state => state.redeem);
 
   const redeemCoins = () => {
     if (redeem.amountToBeRedeemed <= 0) {
-      showToast("info", "No amount to redeem")
-      return
+      showToast('info', 'No amount to redeem');
+      return;
     }
-    dispatch(requestRedeemCoins(redeem.amountToBeRedeemed))
+    dispatch(requestRedeemCoins(redeem.amountToBeRedeemed));
   };
 
   useEffect(() => {
@@ -26,28 +26,48 @@ const TotalEarnings = () => {
 
     if (error) {
       // showToast('error', error);
-      dispatch({ type: CLEAR_ERRORS });
+      dispatch({type: CLEAR_ERRORS});
     }
 
     if (isSuccess) {
-      showToast("success", 'Request Sent!')
+      showToast('success', 'Request Sent!');
     }
   }, [dispatch, error, isSuccess]);
 
+  const ValueContainer = props => (
+    <View style={styles.valueContainer}>
+      <Text style={styles.valueHeading}>{props?.heading}</Text>
+      <Text style={[styles.earnings]}>{props?.value}</Text>
+    </View>
+  );
+
   const TotalEarningsTab = () => (
     <View>
-      <Text style={styles.earnings}>
-        Total Earnings - ₹ {redeem?.amountRedeemed || 0}
-      </Text>
+      <View style={{flexDirection: 'row'}}>
+        <ValueContainer
+          heading={"Today's Earnings"}
+          value={redeem?.amountRedeemed || 0}
+        />
+        <ValueContainer
+          heading={'Total Earnings'}
+          value={redeem?.amountRedeemed || 0}
+        />
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <ValueContainer
+          heading={'Total Hours'}
+          value={redeem?.amountRedeemed || 0}
+        />
+      </View>
     </View>
   );
 
   const RedeemTab = () => (
     <View>
-      <Text style={[styles.earnings, { color: Colors.RED }]}>
+      <Text style={[styles.earnings, {color: Colors.RED}]}>
         Amount - ₹ {redeem?.amountToBeRedeemed || 0}
       </Text>
-      <View style={{ marginHorizontal: 25 }}>
+      <View style={{marginHorizontal: 25}}>
         <Btn
           label="Redeem"
           onClick={redeemCoins}
@@ -111,8 +131,17 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: Colors.DARK_GREEN,
-    marginHorizontal: 5,
-    marginVertical: 22,
+    marginTop: 20,
+  },
+  valueContainer: {
+    backgroundColor: Colors.LIGHT_GRAY,
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: '45%',
+    borderWidth: 2,
+    borderColor: Colors.GRAY_BG,
   },
 });
 

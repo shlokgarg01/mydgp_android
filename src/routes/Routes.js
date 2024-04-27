@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect} from 'react';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -13,7 +13,7 @@ import LoginOtp from '../screens/Auth/LoginOtp';
 import SignupOtp from '../screens/Auth/SignupOtp';
 import SignupOtpVerify from '../screens/Auth/SignupOtpVerify';
 import Signup from '../screens/Auth/Signup';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Colors from '../helpers/Colors';
 import Leaves from '../screens/Leaves';
 import Profile from '../screens/Profile';
@@ -22,7 +22,7 @@ import Bookings from '../screens/Bookings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CurrentBookings from '../screens/Home';
 import TodayBookings from '../screens/TodayBookings';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import TotalEarnings from '../screens/TotalEarnings';
 import ProfileForm from '../screens/ProfileForm/ProfileForm';
 
@@ -32,11 +32,11 @@ const Drawer = createDrawerNavigator();
 function AppDrawerContent(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { isAuthenticated } = useSelector(state => state.user);
+  const {isAuthenticated} = useSelector(state => state.user);
 
   useEffect(() => {
     if (isAuthenticated === false) {
-      navigation.reset({ index: 1, routes: [{ name: RouteNames.AUTH.LOGINOTP }] });
+      navigation.reset({index: 1, routes: [{name: RouteNames.AUTH.LOGINOTP}]});
     }
   }, [isAuthenticated]);
 
@@ -81,15 +81,15 @@ function DrawerRoutes() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.LIGHT_GRAY, elevation: 10 },
-        headerTitleStyle: { color: Colors.BLACK },
+        headerStyle: {backgroundColor: Colors.LIGHT_GRAY, elevation: 10},
+        headerTitleStyle: {color: Colors.BLACK},
         headerTitleAlign: 'center',
         headerTintColor: Colors.BLACK,
         drawerActiveTintColor: Colors.PRIMARY,
         drawerInactiveTintColor: Colors.BLACK,
         drawerLabelStyle: {
-          fontSize: 16
-        }
+          fontSize: 16,
+        },
       }}
       initialRouteName={RouteNames.CURRENT_BOOKINGS}
       drawerContent={props => <AppDrawerContent {...props} />}>
@@ -106,22 +106,24 @@ function DrawerRoutes() {
       <Drawer.Screen
         name={RouteNames.TODAY_BOOKINGS}
         component={TodayBookings}
-        options={() => drawerOptions("Today's Bookings", 'book-edit-outline')}
+        options={() => drawerOptions('My Bookings', 'book-edit-outline')}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={RouteNames.BOOKINGS}
         component={Bookings}
-        options={() => drawerOptions('Future Bookings', 'email-multiple-outline')}
+        options={() =>
+          drawerOptions('Future Bookings', 'email-multiple-outline')
+        }
       />
       <Drawer.Screen
         name={RouteNames.ALL_BOOKINGS}
         component={AllBookings}
         options={() => drawerOptions('All Bookings', 'email-open-outline')}
-      />
+      /> */}
       <Drawer.Screen
         name={RouteNames.TOTAL_EARNINGS}
         component={TotalEarnings}
-        options={() => drawerOptions('Total Earnings', 'account-cash')}
+        options={() => drawerOptions('Earnings', 'account-cash')}
       />
       {/* <Drawer.Screen
         name={RouteNames.LEAVES}
@@ -136,11 +138,10 @@ export default function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{ headerShown: false }}
+        screenOptions={{headerShown: false}}
         initialRouteName={RouteNames.SPLASH}>
         <Stack.Screen name={RouteNames.SPLASH} component={Splash} />
         <Stack.Screen name={RouteNames.DRAWERS.HOME} component={DrawerRoutes} />
-
         <Stack.Screen name={RouteNames.AUTH.LOGINOTP} component={LoginOtp} />
         <Stack.Screen name={RouteNames.AUTH.LOGIN} component={Login} />
         <Stack.Screen name={RouteNames.AUTH.SIGNUPOTP} component={SignupOtp} />
