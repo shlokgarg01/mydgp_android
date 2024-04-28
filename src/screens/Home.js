@@ -19,7 +19,7 @@ export default function Home() {
   const [onDuty, setOnDuty] = useState(
     user?.status === Enums.SERVICE_PROVIDER_STATUS.ACTIVE ? true : false,
   );
-  const [isProfilePending, setProfilePending] = useState(false);
+  // const [isProfilePending, setProfilePending] = useState(user.isProfileUpdated);
 
   const images = [
     'https://picsum.photos/200/300',
@@ -69,7 +69,7 @@ export default function Home() {
 
   return onDuty ? (
     <>
-      {isProfilePending && <CompleteProfileModal />}
+      {!user.isProfileUpdated && <CompleteProfileModal />}
       <ImageCarousel images={images} />
       <BookingRequests />
     </>
@@ -98,7 +98,7 @@ export default function Home() {
           Thanks for joining! Go on-duty and get started on your journey!
         </Text>
       </>
-      {isProfilePending && <CompleteProfileModal />}
+      {!user.isProfileUpdated && <CompleteProfileModal />}
     </View>
   );
 }

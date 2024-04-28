@@ -5,7 +5,7 @@ import {
   REDEEM_DETAILS_SUCCESS,
   REDEEM_FAIL,
   REDEEM_REQUEST,
-  REEDEEM_SUCCESS,
+  REDEEM_SUCCESS,
 } from '../constants/RedeemConstants';
 
 export const redeemReducer = (state = {redeem: {}}, action) => {
@@ -32,7 +32,7 @@ export const redeemReducer = (state = {redeem: {}}, action) => {
       return {
         loading: true
       };
-    case REEDEEM_SUCCESS:
+    case REDEEM_SUCCESS:
       return {
         ...state,
         loading: false,

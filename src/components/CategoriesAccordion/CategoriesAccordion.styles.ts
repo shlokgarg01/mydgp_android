@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import Colors from "../../helpers/Colors";
 
-export const styles = StyleSheet.create({
+export const AccordianStyles = StyleSheet.create({
     subCategoryCheckboxContainer: {
         marginLeft: 30,
         backgroundColor: 'transparent',

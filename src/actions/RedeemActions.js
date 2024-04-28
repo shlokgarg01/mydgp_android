@@ -6,7 +6,7 @@ import {
   REDEEM_DETAILS_SUCCESS,
   REDEEM_FAIL,
   REDEEM_REQUEST,
-  REEDEEM_SUCCESS,
+  REDEEM_SUCCESS,
 } from '../constants/RedeemConstants';
 
 // get all redeem details
@@ -36,7 +36,7 @@ export const requestRedeemCoins = amount => async dispatch => {
       config,
     );
 
-    dispatch({type: REEDEEM_SUCCESS, payload: data.redeemRequest});
+    dispatch({type: REDEEM_SUCCESS, payload: data.redeemRequest});
   } catch (error) {
     dispatch({
       type: REDEEM_FAIL,
