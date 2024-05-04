@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, PermissionsAndroid } from 'react-native';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { deviceHeight, deviceWidth } from '../helpers/Dimensions';
@@ -38,6 +38,25 @@ export default function Home() {
     );
   };
 
+  async function requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'MYDGP',
+          'message': 'MYDGP access to your location '
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location")
+      } else {
+        console.log("location permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -63,8 +82,16 @@ export default function Home() {
       let token = await getNewFCMToken()
       dispatch(updateFCM(token))
     }
-
     update_fcm()
+  }, [])
+
+  useEffect(() => {
+    const reqLoc = async () => {
+      await requestLocationPermission()
+    }
+    setTimeout(() => {
+      reqLoc()
+    }, 100);
   }, [])
 
   return onDuty ? (

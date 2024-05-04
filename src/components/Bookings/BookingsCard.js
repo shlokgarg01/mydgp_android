@@ -16,13 +16,19 @@ import { useEffect } from 'react';
 import { showToast } from '../../helpers/ShowToast';
 import { CLEAR_ERRORS } from '../../constants/BookingsConstants';
 import InputGroup from '../InputGroup';
+import GetLocation, {
+  Location,
+  LocationErrorCode,
+  isLocationError,
+} from 'react-native-get-location';
+
 
 const BookingsCard = ({ booking, showUpdateStatus }) => {
   const dispatch = useDispatch();
   const { error, loading, isUpdated } = useSelector(
     state => state.updateBookingStatus,
   );
-
+  const [location, setLocation] = useState(null);
   const [isStatusUpdateOpen, setIsStatusUpdateOpen] = useState(false);
   const [status, setStatus] = useState('');
   const [otp, setOtp] = useState(null);
@@ -54,6 +60,32 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
     var mapUrl = `https://www.google.com/maps?q=${lat},${long}`;
     Linking.openURL(mapUrl);
   }
+
+  const requestLocation = () => {
+    setLocation(null);
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 30000,
+      rationale: {
+        title: 'Location permission',
+        message: 'The app needs the permission to request your location.',
+        buttonPositive: 'Ok',
+      },
+    })
+      .then(newLocation => {
+        setLocation(newLocation);
+        console.warn(location.longitude)
+      })
+      .catch(ex => {
+        if (isLocationError(ex)) {
+          const { code, message } = ex;
+          console.warn(code, message);
+        } else {
+          console.warn(ex);
+        }
+        setLocation(null);
+      });
+  };
 
   useEffect(() => {
     if (error) {
@@ -138,6 +170,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
               placeholder="------- Update Status -------"
               zIndex={2}
             />
+            <Btn label="get loc" onClick={requestLocation} />
             <Btn label="Start" onClick={updateStatusHandler} />
             <Btn label="Navigate" onClick={() => openMap(booking.address.coordinates.lat, booking.address.coordinates.lng)} />
           </View>
