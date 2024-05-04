@@ -21,6 +21,7 @@ import GetLocation, {
   LocationErrorCode,
   isLocationError,
 } from 'react-native-get-location';
+import OtpModal from '../OtpModal/OtpModal';
 
 
 const BookingsCard = ({ booking, showUpdateStatus }) => {
@@ -32,6 +33,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
   const [isStatusUpdateOpen, setIsStatusUpdateOpen] = useState(false);
   const [status, setStatus] = useState('');
   const [otp, setOtp] = useState(null);
+  const [isOtpModalVisible, setOtpModalVisible] = useState(false);
 
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
@@ -74,7 +76,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
     })
       .then(newLocation => {
         setLocation(newLocation);
-        console.warn(location.longitude)
+        console.warn(newLocation.longitude)
       })
       .catch(ex => {
         if (isLocationError(ex)) {
@@ -147,7 +149,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
       </View>
       {showUpdateStatus ? (
         <>
-          {booking.status === Enums.BOOKING_STATUS.ACCEPTED && (
+          {/* {booking.status === Enums.BOOKING_STATUS.ACCEPTED && (
             <View
               style={{ paddingHorizontal: 10, marginTop: 7, marginBottom: -10 }}>
               <InputGroup
@@ -158,7 +160,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
                 keyboardType="number-pad"
               />
             </View>
-          )}
+          )} */}
           <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
             <DropDown
               label="Update Status"
@@ -170,12 +172,18 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
               placeholder="------- Update Status -------"
               zIndex={2}
             />
-            <Btn label="get loc" onClick={requestLocation} />
-            <Btn label="Start" onClick={updateStatusHandler} />
-            <Btn label="Navigate" onClick={() => openMap(booking.address.coordinates.lat, booking.address.coordinates.lng)} />
+            {/* <Btn label="get loc" onClick={requestLocation} /> */}
+            <Btn bgColor={Colors.BLUE} label="Arrived" onClick={() => setOtpModalVisible(true)} />
+            <Btn bgColor={Colors.BLUE} label="Go to booking location" onClick={() => openMap(booking.address.coordinates.lat, booking.address.coordinates.lng)} />
           </View>
         </>
       ) : null}
+      <OtpModal
+        isOtpModalVisible={isOtpModalVisible}
+        setOtpModalVisible={setOtpModalVisible}
+        submitAction={updateStatusHandler}
+        setOtp={setOtp}
+      />
     </View>
   );
 };

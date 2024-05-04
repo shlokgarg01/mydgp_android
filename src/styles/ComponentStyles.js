@@ -48,10 +48,13 @@ const ComponentStyles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     elevation: 2,
+    height: 50,
+    justifyContent: 'center'
   },
   btnLabel: {
     color: Colors.WHITE,
-    fontSize: 16,
+    fontSize: 17,
+    fontWeight: '400',
     textAlign: 'center',
     paddingVertical: 7,
   },
