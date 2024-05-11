@@ -2,8 +2,8 @@ import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import RouteNames from '../../routes/RouteNames';
-import { showToast } from '../../helpers/ShowToast';
-import { clearErrors, sendOTPRegistration } from '../../actions/UserActions';
+import {showToast} from '../../helpers/ShowToast';
+import {clearErrors, sendOTPRegistration} from '../../actions/UserActions';
 import Loader from '../../components/Loader';
 import AuthHeader from '../../components/Auth/AuthHeader';
 import AuthStyles from '../../styles/AuthStyles';
@@ -28,7 +28,10 @@ export default function SignupOtp({navigation}) {
     );
     setOtpLoading(false);
     showToast('success', 'OTP Sent');
-    navigation.navigate(RouteNames.AUTH.SIGNUPOTPVERIFY, {contactNumber, confirmation});
+    navigation.navigate(RouteNames.AUTH.SIGNUPOTPVERIFY, {
+      contactNumber,
+      confirmation,
+    });
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function SignupOtp({navigation}) {
   }, [dispatch, error, isAuthenticated, canSendOtp, contactNumber]);
 
   const formSubmitHandler = () => {
-    dispatch(sendOTPRegistration(contactNumber))
+    dispatch(sendOTPRegistration(contactNumber));
   };
 
   return (
@@ -63,6 +66,7 @@ export default function SignupOtp({navigation}) {
               label="Contact Number"
               placeholder="9999999999"
               value={contactNumber}
+              style={AuthStyles.inputField}
               onChange={number => setContactNumber(number)}
               type="number-pad"
             />
@@ -70,7 +74,9 @@ export default function SignupOtp({navigation}) {
             <ButtonSubText
               title="Already have an account?"
               subTitle="Login"
-              subTitleOnClick={() => navigation.replace(RouteNames.AUTH.LOGINOTP)}
+              subTitleOnClick={() =>
+                navigation.replace(RouteNames.AUTH.LOGINOTP)
+              }
             />
           </View>
         </View>

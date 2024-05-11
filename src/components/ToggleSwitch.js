@@ -26,7 +26,7 @@ const ToggleSwitch = ({title, value, onValueChange}) => {
         renderActiveText={false}
         renderInActiveText={false}
         onValueChange={onValueChange}
-        backgroundActive={Colors.BLUE}
+        backgroundActive={Colors.THEME_COLOR}
       />
     </View>
   );

@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native";
-import { deviceHeight, deviceWidth } from "../helpers/Dimensions";
-import Colors from "../helpers/Colors";
+import {StyleSheet} from 'react-native';
+import {deviceHeight, deviceWidth} from '../helpers/Dimensions';
+import Colors from '../helpers/Colors';
 
 const AuthStyles = StyleSheet.create({
   formContainer: {
@@ -12,14 +12,20 @@ const AuthStyles = StyleSheet.create({
     paddingBottom: 34,
     paddingHorizontal: 19,
     marginTop: -(deviceHeight * 0.08),
-    marginBottom: 25
+    marginBottom: 25,
   },
   heading: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 25,
-  }
-})
+  },
+  inputField: {
+    backgroundColor: Colors.LIGHT_GRAY,
+    borderRadius: 10,
+    padding: 10,
+    color: 'black',
+  },
+});
 
-export default AuthStyles
+export default AuthStyles;

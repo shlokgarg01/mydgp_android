@@ -12,7 +12,11 @@ import {useDispatch} from 'react-redux';
 import {updateBookingRequestStatus} from '../../actions/BookingRequestsAction';
 import {useNavigation} from '@react-navigation/native';
 
-const BookingRequestModal = ({bookingRequest}) => {
+const BookingRequestModal = ({
+  bookingRequest,
+  setBookingModalVisible,
+  isBookingModalVisible,
+}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -26,11 +30,11 @@ const BookingRequestModal = ({bookingRequest}) => {
   };
 
   return (
-    <Modal isVisible={true} backdropOpacity={0.8}>
+    <Modal isVisible={isBookingModalVisible} backdropOpacity={0.8}>
       <View style={styles.container}>
         <View
           style={{
-            backgroundColor: Colors.BLUE,
+            backgroundColor: Colors.LIGHT_GRAY,
             alignItems: 'center',
             paddingTop: 30,
           }}>
@@ -39,10 +43,11 @@ const BookingRequestModal = ({bookingRequest}) => {
             duration={30}
             size={80}
             strokeWidth={6}
-            colors={['#000475', '#F7B801', '#A30000', '#A30000']}
+            trailColor="white"
+            colors={['#cd9a00', '#F7B801', '#A30000', '#A30000']}
             colorsTime={[7, 5, 2, 0]}>
             {({remainingTime}) => (
-              <Text style={{color: 'white', fontSize: 15}}>
+              <Text style={{color: '#cd9a00', fontSize: 20}}>
                 {remainingTime}
               </Text>
             )}
@@ -92,11 +97,12 @@ const BookingRequestModal = ({bookingRequest}) => {
         <View style={[ComponentStyles.horizontalEvenlyAlgin]}>
           <CTABtn
             onClick={() => {
+              setBookingModalVisible(false);
               updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.ACCEPTED);
               navigation.navigate(RouteNames.TODAY_BOOKINGS);
             }}
             label="ACCEPT"
-            bgColor={Colors.BLUE}
+            bgColor={Colors.THEME_COLOR}
             color={Colors.WHITE}
             width={'80%'}
           />
@@ -124,10 +130,11 @@ const styles = StyleSheet.create({
     right: -20,
   },
   cardHeading: {
-    color: 'white',
+    color: '#cd9a00',
     fontSize: 25,
     alignSelf: 'center',
     marginVertical: 20,
+    fontWeight: '500',
   },
   bookingDetailText: {
     fontSize: 18,

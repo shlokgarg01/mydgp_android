@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { View, Linking } from 'react-native';
+import React, {useState} from 'react';
+import {View, Linking} from 'react-native';
 import ShowInfo from '../ShowInfo';
 import ComponentStyles from '../../styles/ComponentStyles';
-import { getDate } from '../../utils/DateTime';
+import {getDate} from '../../utils/DateTime';
 import SubHeading from '../BookingRequests/SubHeading';
 import Colors from '../../helpers/Colors';
 import Badge from '../Badge';
 import DropDown from '../../components/Dropdown';
 import Btn from '../Btn';
 import Enums from '../../helpers/Enums';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../Loader';
-import { updateBookingStatus } from '../../actions/BookingsActions';
-import { useEffect } from 'react';
-import { showToast } from '../../helpers/ShowToast';
-import { CLEAR_ERRORS } from '../../constants/BookingsConstants';
+import {updateBookingStatus} from '../../actions/BookingsActions';
+import {useEffect} from 'react';
+import {showToast} from '../../helpers/ShowToast';
+import {CLEAR_ERRORS} from '../../constants/BookingsConstants';
 import InputGroup from '../InputGroup';
 import GetLocation, {
   Location,
@@ -23,10 +23,9 @@ import GetLocation, {
 } from 'react-native-get-location';
 import OtpModal from '../OtpModal/OtpModal';
 
-
-const BookingsCard = ({ booking, showUpdateStatus }) => {
+const BookingsCard = ({booking, showUpdateStatus}) => {
   const dispatch = useDispatch();
-  const { error, loading, isUpdated } = useSelector(
+  const {error, loading, isUpdated} = useSelector(
     state => state.updateBookingStatus,
   );
   const [location, setLocation] = useState(null);
@@ -38,17 +37,21 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
       ? [
-        {
-          label: Enums.BOOKING_STATUS.ONGOING,
-          value: Enums.BOOKING_STATUS.ONGOING,
-        },
-      ]
+          {
+            label: Enums.BOOKING_STATUS.ONGOING,
+            value: Enums.BOOKING_STATUS.ONGOING,
+          },
+        ]
       : [
-        {
-          label: Enums.BOOKING_STATUS.CLOSED,
-          value: Enums.BOOKING_STATUS.CLOSED,
-        },
-      ];
+          {
+            label: Enums.BOOKING_STATUS.CLOSED,
+            value: Enums.BOOKING_STATUS.CLOSED,
+          },
+        ];
+
+  useEffect(() => {
+    setStatus(statuses?.[0]?.value);
+  }, [booking.status]);
 
   const updateStatusHandler = () => {
     if (booking.status === Enums.BOOKING_STATUS.ACCEPTED && !otp) {
@@ -61,7 +64,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
   const openMap = (lat, long) => {
     var mapUrl = `https://www.google.com/maps?q=${lat},${long}`;
     Linking.openURL(mapUrl);
-  }
+  };
 
   const requestLocation = () => {
     setLocation(null);
@@ -76,11 +79,10 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
     })
       .then(newLocation => {
         setLocation(newLocation);
-        console.warn(newLocation.longitude)
       })
       .catch(ex => {
         if (isLocationError(ex)) {
-          const { code, message } = ex;
+          const {code, message} = ex;
           console.warn(code, message);
         } else {
           console.warn(ex);
@@ -89,13 +91,53 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
       });
   };
 
+  //calculate distance between rider and booking location in kms.
+  const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+    const deg2rad = deg => deg * (Math.PI / 180);
+
+    const R = 6371; // Radius of the earth in km
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    // if (distance >= 1) {
+    //   return distance.toFixed(2) + ' km';
+    // } else {
+    //   return (distance * 1000).toFixed(2) + ' meters';
+    // }
+    return distance;
+  };
+
+  //checks if rider is within 500 meters to booking location.
+  const isArrived = () => {
+    if (
+      getDistanceFromLatLonInKm(
+        booking.address.coordinates.lat,
+        booking.address.coordinates.lng,
+        location?.latitude,
+        location?.longitude,
+      ) > 0.05
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   useEffect(() => {
+    requestLocation();
     if (error) {
       showToast('error', error);
-      dispatch({ type: CLEAR_ERRORS });
+      dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
-      dispatch({ type: CLEAR_ERRORS })
-      showToast('success', 'Booking Status Updated');
+      dispatch({type: CLEAR_ERRORS});
+      // showToast('success', 'Booking Status Updated');
     }
   }, [error, isUpdated]);
 
@@ -106,22 +148,23 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
       <View
         style={[
           ComponentStyles.horizontalBetweenAlgin,
-          { alignItems: 'flex-start', paddingRight: 10 },
+          {alignItems: 'flex-start', paddingRight: 10},
         ]}>
         <View>
           <ShowInfo title="Id" info={booking?._id} boldInfo={true} />
           <ShowInfo title="Date" info={getDate(booking?.date)} />
           <ShowInfo
             title="Duration"
-            info={`${booking?.hours} ${booking?.hours === 1 ? 'hour' : 'hours'
-              }`}
+            info={`${booking?.hours} ${
+              booking?.hours === 1 ? 'hour' : 'hours'
+            }`}
           />
 
           <SubHeading
-            styles={{ paddingHorizontal: 10 }}
+            styles={{paddingHorizontal: 10}}
             heading="Customer Info"
           />
-          <View style={{ paddingHorizontal: 10 }}>
+          <View style={{paddingHorizontal: 10}}>
             <ShowInfo title="Name" info={booking.customer.name} />
             <ShowInfo
               title="Contact Number"
@@ -129,20 +172,24 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
             />
           </View>
 
-          <SubHeading styles={{ paddingHorizontal: 10 }} heading="Address" />
-          <View style={{ paddingHorizontal: 10 }}>
+          {/* <SubHeading styles={{paddingHorizontal: 10}} heading="Address" /> */}
+          <View style={{paddingHorizontal: 10}}>
             <ShowInfo title="Address" info={`${booking.address.address}`} />
-            <ShowInfo
+            {/* <ShowInfo
               title="City"
               info={`${booking.address.city}, ${booking.address.state}`}
             />
-            <ShowInfo title="Pincode" info={booking.address.pincode} />
+            <ShowInfo title="Pincode" info={booking.address.pincode} /> */}
           </View>
         </View>
 
         <View>
           {showUpdateStatus ? (
-            <Badge title={`${booking.status}`} bgColor={Colors.YELLOW} />
+            <Badge
+              title={`${booking.status}`}
+              bgColor={Colors.DARK_GREEN}
+              color={'white'}
+            />
           ) : null}
           {/* <Badge title={`₹ ${booking.totalPrice}`} bgColor={Colors.GREEN} /> */}
         </View>
@@ -161,8 +208,8 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
               />
             </View>
           )} */}
-          <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
-            <DropDown
+          <View style={{paddingHorizontal: 10, marginTop: 10}}>
+            {/* <DropDown
               label="Update Status"
               value={status}
               setValue={val => setStatus(val)}
@@ -171,10 +218,31 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
               setIsOpen={() => setIsStatusUpdateOpen(!isStatusUpdateOpen)}
               placeholder="------- Update Status -------"
               zIndex={2}
-            />
+            /> */}
             {/* <Btn label="get loc" onClick={requestLocation} /> */}
-            <Btn bgColor={Colors.BLUE} label="Arrived" onClick={() => setOtpModalVisible(true)} />
-            <Btn bgColor={Colors.BLUE} label="Go to booking location" onClick={() => openMap(booking.address.coordinates.lat, booking.address.coordinates.lng)} />
+            <Btn
+              bgColor={Colors.THEME_COLOR}
+              label={status == 'ONGOING' ? 'Arrived' : 'End Booking'}
+              onClick={() => {
+                if (isArrived()) {
+                  setOtpModalVisible(true);
+                } else {
+                  showToast(error, 'You are away from location');
+                }
+              }}
+            />
+            {status == 'ONGOING' && (
+              <Btn
+                bgColor={Colors.THEME_COLOR}
+                label="Go To Booking Location"
+                onClick={() =>
+                  openMap(
+                    booking.address.coordinates.lat,
+                    booking.address.coordinates.lng,
+                  )
+                }
+              />
+            )}
           </View>
         </>
       ) : null}
@@ -183,6 +251,7 @@ const BookingsCard = ({ booking, showUpdateStatus }) => {
         setOtpModalVisible={setOtpModalVisible}
         submitAction={updateStatusHandler}
         setOtp={setOtp}
+        isOtpVisible={status == 'ONGOING'}
       />
     </View>
   );

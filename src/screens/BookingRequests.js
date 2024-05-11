@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {showToast} from '../helpers/ShowToast';
@@ -16,6 +16,7 @@ import {
 } from '../constants/BookingsConstants';
 import axiosInstance, {BASE_URL} from '../Axios';
 import BookingRequestModal from '../components/BookingRequests/BookingRequestModal';
+import Btn from '../components/Btn';
 
 const BookingRequests = () => {
   const dispatch = useDispatch();
@@ -26,8 +27,10 @@ const BookingRequests = () => {
   );
   const {currentBookings} = useSelector(state => state.currentBookings);
   const {error, isUpdated} = useSelector(state => state.bookingRequest);
+  const [isBookingModalVisible, setBookingModalVisible] = useState(true);
 
   useEffect(() => {
+    setBookingModalVisible(true);
     dispatch(getCurrentBookings());
 
     const getBookings = () => {
@@ -80,7 +83,13 @@ const BookingRequests = () => {
           )}
           data={bookingRequests}
           renderItem={({item, index}) =>
-            index == 0 && <BookingRequestModal bookingRequest={item} />
+            index == 0 && (
+              <BookingRequestModal
+                bookingRequest={item}
+                setBookingModalVisible={setBookingModalVisible}
+                isBookingModalVisible={isBookingModalVisible}
+              />
+            )
           }
           // renderItem={({ item, index }) => index == 0 && <BookingRequestsCard bookingRequest={item} />}
           contentContainerStyle={{paddingBottom: 13}}
@@ -91,11 +100,12 @@ const BookingRequests = () => {
           <Text style={styles.emptylistText}>
             Booking Already in queue. Complete that to get new bookings
           </Text>
-          <Button
-            title="Show my booking"
-            onPress={() => {
+          <Btn
+            label={'Show my booking'}
+            onClick={() => {
               navigation.navigate(RouteNames.TODAY_BOOKINGS);
             }}
+            bgColor={Colors.THEME_COLOR}
           />
         </View>
       )}

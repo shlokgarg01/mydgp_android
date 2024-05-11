@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
-import { deviceHeight, deviceWidth } from '../helpers/Dimensions'
-import Colors from '../helpers/Colors'
+import {StyleSheet} from 'react-native';
+import {deviceHeight, deviceWidth} from '../helpers/Dimensions';
+import Colors from '../helpers/Colors';
 
 const AuthComponentStyles = StyleSheet.create({
   bgContainer: {
     height: deviceHeight * 0.45,
-    backgroundColor: Colors.PRIMARY,
+    backgroundColor: Colors.THEME_COLOR,
     width: deviceWidth,
     borderBottomLeftRadius: 80,
     borderBottomRightRadius: 80,
@@ -33,8 +33,8 @@ const AuthComponentStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 7,
   },
-  btnSubTextTitle: { fontSize: 15 },
-  btnSubTextSubTitle: { color: Colors.PRIMARY, fontWeight: 'bold', fontSize: 15 },
-})
+  btnSubTextTitle: {fontSize: 15},
+  btnSubTextSubTitle: {color: Colors.PRIMARY, fontWeight: 'bold', fontSize: 15},
+});
 
-export default AuthComponentStyles
+export default AuthComponentStyles;

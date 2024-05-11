@@ -11,6 +11,7 @@ interface IOtpModal {
     setOtp: (arg0: string) => void;
     setOtpModalVisible: (arg0: boolean) => void
     submitAction: () => void
+    isOtpVisible: boolean
 }
 const OtpModal = (props: IOtpModal) => {
     let otpInput: any = useRef(null);
@@ -21,16 +22,19 @@ const OtpModal = (props: IOtpModal) => {
         <Modal isVisible={props.isOtpModalVisible}>
             <View style={styles.modalContainer}>
                 <Text style={styles.close} onPress={() => props.setOtpModalVisible(false)} >x</Text>
-                <Text style={styles.heading}>Enter OTP</Text>
-                <OTPTextInput
-                    tintColor={Colors.BLUE}
-                    ref={e => (otpInput = e)}
-                    handleTextChange={(value) => props.setOtp(value)}
-                />
-                <Text style={styles.askOtpText}>Please ask OTP from customer</Text>
+                {props?.isOtpVisible && <>
+                    <Text style={styles.heading}>Enter OTP</Text>
+                    <OTPTextInput
+                        tintColor={Colors.THEME_COLOR}
+                        ref={e => (otpInput = e)}
+                        handleTextChange={(value) => props.setOtp(value)}
+                    />
+                    <Text style={styles.askOtpText}>Please ask OTP from customer</Text>
+                </>
+                }
                 <Text style={styles.heading}>Enter Last Photograph No.</Text>
                 <OTPTextInput
-                    tintColor={Colors.BLUE}
+                    tintColor={Colors.THEME_COLOR}
                     ref={e => (photoNumberInput = e)}
                     handleTextChange={(value) => setPhotoNumber(value)}
                 />
@@ -42,7 +46,7 @@ const OtpModal = (props: IOtpModal) => {
                             props.setOtpModalVisible(false)
                         }}
                         disabled={undefined}
-                        bgColor={Colors.BLUE}
+                        bgColor={Colors.THEME_COLOR}
                         color={undefined}
                     />
                 </View>

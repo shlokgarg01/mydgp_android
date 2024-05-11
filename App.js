@@ -18,19 +18,24 @@ const toastConfig = {
     />
   ),
   error: props => (
-    <ErrorToast {...props} text1NumberOfLines={4} text2NumberOfLines={4} text1Style={{
-      fontSize: 15,
-    }} />
+    <ErrorToast
+      {...props}
+      text1NumberOfLines={4}
+      text2NumberOfLines={4}
+      text1Style={{
+        fontSize: 15,
+      }}
+    />
   ),
 };
 
 const App = () => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert(
-        'Booking Alert !',
-        JSON.stringify(remoteMessage.notification.title),
-      );
+      // Alert.alert(
+      //   'Booking Alert !',
+      //   JSON.stringify(remoteMessage.notification.title),
+      // );
     });
     return unsubscribe;
   }, []);

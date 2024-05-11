@@ -63,6 +63,7 @@ export default function LoginOtp({navigation}) {
               label="Contact Number"
               placeholder="9999999999"
               value={contactNumber}
+              style={AuthStyles.inputField}
               onChange={number => setContactNumber(number)}
               type="number-pad"
             />

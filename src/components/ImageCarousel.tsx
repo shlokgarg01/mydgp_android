@@ -24,7 +24,7 @@ const ImageCarousel = (props: IImageCarousel) => {
                         key={index}
                         source={{ uri: imageUrl }}
                         style={[styles.image, { display: index === currentIndex ? 'flex' : 'none' }]}
-                        resizeMode="cover"
+                        resizeMode="contain"
                     />
                 ))}
             </View>
