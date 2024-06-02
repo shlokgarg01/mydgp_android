@@ -11,7 +11,10 @@ import Btn from '../Btn';
 import Enums from '../../helpers/Enums';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../Loader';
-import {updateBookingStatus} from '../../actions/BookingsActions';
+import {
+  getPendingAmountOfBooking,
+  updateBookingStatus,
+} from '../../actions/BookingsActions';
 import {useEffect} from 'react';
 import {showToast} from '../../helpers/ShowToast';
 import {CLEAR_ERRORS} from '../../constants/BookingsConstants';
@@ -22,17 +25,20 @@ import GetLocation, {
   isLocationError,
 } from 'react-native-get-location';
 import OtpModal from '../OtpModal/OtpModal';
+import PendingPayment from '../PendingPayment';
 
 const BookingsCard = ({booking, showUpdateStatus}) => {
   const dispatch = useDispatch();
   const {error, loading, isUpdated} = useSelector(
     state => state.updateBookingStatus,
   );
+  const {charges} = useSelector(state => state.getPendingAmt);
   const [location, setLocation] = useState(null);
   const [isStatusUpdateOpen, setIsStatusUpdateOpen] = useState(false);
   const [status, setStatus] = useState('');
   const [otp, setOtp] = useState(null);
   const [isOtpModalVisible, setOtpModalVisible] = useState(false);
+  const [isPendingAmtVisible, setPendingAmtVisible] = useState(false);
 
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
@@ -42,10 +48,17 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
             value: Enums.BOOKING_STATUS.ONGOING,
           },
         ]
-      : [
+      : booking.status === Enums.BOOKING_STATUS.ONGOING
+      ? [
           {
             label: Enums.BOOKING_STATUS.CLOSED,
             value: Enums.BOOKING_STATUS.CLOSED,
+          },
+        ]
+      : [
+          {
+            label: Enums.BOOKING_STATUS.COMPLETED,
+            value: Enums.BOOKING_STATUS.COMPLETED,
           },
         ];
 
@@ -60,6 +73,20 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
     }
     dispatch(updateBookingStatus(booking._id, status, parseInt(otp)));
   };
+
+  //checks pending amount of closed booking.
+  useEffect(() => {
+    if (booking.status === 'CLOSED') {
+      getPendingAmount();
+      if (charges > 0) {
+        //show pending amount
+        setPendingAmtVisible(true);
+      } else {
+        //mark booking completed
+        dispatch(updateBookingStatus(booking._id, status));
+      }
+    }
+  }, [booking.status]);
 
   const openMap = (lat, long) => {
     var mapUrl = `https://www.google.com/maps?q=${lat},${long}`;
@@ -130,10 +157,14 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
     }
   };
 
+  const getPendingAmount = () => {
+    dispatch(getPendingAmountOfBooking(booking._id));
+  };
+
   useEffect(() => {
     requestLocation();
     if (error) {
-      showToast('error', error);
+      // showToast('error', error);
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
       dispatch({type: CLEAR_ERRORS});
@@ -157,7 +188,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
             title="Duration"
             info={`${booking?.hours} ${
               booking?.hours === 1 ? 'hour' : 'hours'
-            }`}
+            } ${booking.minutes} ${booking?.hours === 1 ? 'min' : 'mins'}`}
           />
 
           <SubHeading
@@ -224,6 +255,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
               bgColor={Colors.THEME_COLOR}
               label={status == 'ONGOING' ? 'Arrived' : 'End Booking'}
               onClick={() => {
+                requestLocation();
                 if (isArrived()) {
                   setOtpModalVisible(true);
                 } else {
@@ -253,6 +285,15 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
         setOtp={setOtp}
         isOtpVisible={status == 'ONGOING'}
       />
+      {isPendingAmtVisible && (
+        <PendingPayment
+          amount={charges}
+          onBtnPress={() => {
+            dispatch(updateBookingStatus(booking._id, status));
+            setPendingAmtVisible(false);
+          }}
+        />
+      )}
     </View>
   );
 };

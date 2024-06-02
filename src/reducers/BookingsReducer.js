@@ -12,6 +12,9 @@ import {
   UPDATE_BOOKING_STATUS_REQUEST,
   UPDATE_BOOKING_STATUS_SUCCESS,
   UPDATE_BOOKING_STATUS_FAIL,
+  GET_PENDING_AMOUNT_REQUEST,
+  GET_PENDING_AMOUNT_SUCCESS,
+  GET_PENDING_AMOUNT_FAIL,
 } from '../constants/BookingsConstants';
 
 // get completed bookings of a user
@@ -51,10 +54,7 @@ export const completedBookingsReducer = (
 };
 
 // get future bookings of a user
-export const futureBookingsReducer = (
-  state = {futureBookings: []},
-  action,
-) => {
+export const futureBookingsReducer = (state = {futureBookings: []}, action) => {
   switch (action.type) {
     case GET_FUTURE_BOOKINGS_REQUEST:
       return {
@@ -123,33 +123,61 @@ export const currentBookingsReducer = (
 };
 
 // update booking status
-export const updateBookingStatusReducer = (
-  state = {},
-  action,
-) => {
+export const updateBookingStatusReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_BOOKING_STATUS_REQUEST:
       return {
-        loading: true
+        loading: true,
       };
     case UPDATE_BOOKING_STATUS_SUCCESS:
       return {
         ...state,
         loading: false,
         message: action.payload,
-        isUpdated: true
+        isUpdated: true,
       };
     case UPDATE_BOOKING_STATUS_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
-        isUpdated: false
+        isUpdated: false,
       };
     case CLEAR_ERRORS:
       return {
         ...state,
         isUpdated: false,
+        error: null,
+      };
+    default:
+      return {
+        ...state,
+      };
+  }
+};
+
+// update booking status
+export const getBookingPendingAmtReducer = (state = {charges: 0}, action) => {
+  switch (action.type) {
+    case GET_PENDING_AMOUNT_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_PENDING_AMOUNT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        charges: action.payload.charges,
+      };
+    case GET_PENDING_AMOUNT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.message,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
         error: null,
       };
     default:

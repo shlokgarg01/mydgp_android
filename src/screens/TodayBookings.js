@@ -18,9 +18,9 @@ export default function TodayBookings() {
   const {isUpdated} = useSelector(state => state.updateBookingStatus);
 
   const updateDutyStatus = () => {
-    setOnDuty(!onDuty)
+    setOnDuty(!onDuty);
     // TODO - make the call to the action to update the status on the backend
-  }
+  };
 
   useEffect(() => {
     dispatch(getCurrentBookings());
@@ -59,9 +59,9 @@ const styles = StyleSheet.create({
   emptybookingsText: {
     textAlign: 'center',
     fontSize: 25,
-    color: Colors.RED,
-    fontWeight: 'bold',
-    marginVertical: 16,
+    color: Colors.GRAY,
+    fontWeight: '500',
+    marginTop: '80%',
   },
   flatlist: {
     paddingTop: 10,

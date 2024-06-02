@@ -11,6 +11,7 @@ const InputGroup = ({type, placeholder, value, onChange, label, ...rest}) => {
         style={ComponentStyles.inputField}
         placeholder={placeholder}
         value={value}
+        placeholderTextColor={'#757575'}
         onChangeText={onChange}
         {...rest}
       />

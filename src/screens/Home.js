@@ -8,7 +8,7 @@ import Enums from '../helpers/Enums';
 import {toggleDutyStatus, updateFCM} from '../actions/UserActions';
 import BookingRequests from './BookingRequests';
 import CompleteProfileModal from '../components/CompleteProfileModal/CompleteProfileModal';
-import Logo from '../images/logo_captain.png';
+import Logo from '../images/logo_capt.png';
 import getNewFCMToken from '../../getFCMTToken';
 import ImageCarousel from '../components/ImageCarousel';
 
@@ -21,7 +21,10 @@ export default function Home() {
   );
   // const [isProfilePending, setProfilePending] = useState(user.isProfileUpdated);
 
-  const images = ['https://i.ibb.co/rxVQc9D/MYDGP-captain-01-benner-image.jpg'];
+  const images = [
+    'https://i.ibb.co/S7N2dgd/captain-benner.png',
+    'https://i.ibb.co/yNsY9dd/Grand-opportunity.jpg',
+  ];
 
   const updateDutyStatus = () => {
     setOnDuty(!onDuty);
@@ -39,8 +42,8 @@ export default function Home() {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'MYDGP',
-          message: 'MYDGP access to your location ',
+          title: 'MYDGP Captain',
+          message: 'MYDGP Captain access to your location ',
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -123,7 +126,7 @@ export default function Home() {
             textAlign: 'center',
             marginTop: 10,
           }}>
-          Thanks for joining! Go on-duty and get started on your journey!
+          Thanks for joining! Go on-duty and get start earning!
         </Text>
       </>
       {!user.isProfileUpdated && <CompleteProfileModal />}

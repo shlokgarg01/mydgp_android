@@ -10,6 +10,9 @@ import {
   GET_FUTURE_BOOKINGS_FAIL,
   GET_FUTURE_BOOKINGS_REQUEST,
   GET_FUTURE_BOOKINGS_SUCCESS,
+  GET_PENDING_AMOUNT_FAIL,
+  GET_PENDING_AMOUNT_REQUEST,
+  GET_PENDING_AMOUNT_SUCCESS,
   UPDATE_BOOKING_STATUS_FAIL,
   UPDATE_BOOKING_STATUS_REQUEST,
   UPDATE_BOOKING_STATUS_SUCCESS,
@@ -68,21 +71,44 @@ export const getCurrentBookings = () => async dispatch => {
 };
 
 // get all current bookings
-export const updateBookingStatus = (bookingId, status, otp) => async dispatch => {
+export const updateBookingStatus =
+  (bookingId, status, otp) => async dispatch => {
+    try {
+      dispatch({type: UPDATE_BOOKING_STATUS_REQUEST});
+
+      const config = {'Content-Type': 'application/json'};
+      const {data} = await axiosInstance.put(
+        `${BASE_URL}/api/v1/bookings/updateStatus/${bookingId}`,
+        {status, otp},
+        config,
+      );
+
+      dispatch({type: UPDATE_BOOKING_STATUS_SUCCESS, payload: data.message});
+    } catch (error) {
+      dispatch({
+        type: UPDATE_BOOKING_STATUS_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+// get pending amount of booking
+export const getPendingAmountOfBooking = bookingId => async dispatch => {
   try {
-    dispatch({type: UPDATE_BOOKING_STATUS_REQUEST});
+    dispatch({type: GET_PENDING_AMOUNT_REQUEST});
 
     const config = {'Content-Type': 'application/json'};
-    const {data} = await axiosInstance.put(
-      `${BASE_URL}/api/v1/bookings/updateStatus/${bookingId}`,
-      {status, otp},
+    const {data} = await axiosInstance.get(
+      `${BASE_URL}/api/v1/bookings/pendingAmount/${bookingId}`,
       config,
     );
 
-    dispatch({type: UPDATE_BOOKING_STATUS_SUCCESS, payload: data.message});
+    console.log(data, '123');
+
+    dispatch({type: GET_PENDING_AMOUNT_SUCCESS, payload: data});
   } catch (error) {
     dispatch({
-      type: UPDATE_BOOKING_STATUS_FAIL,
+      type: GET_PENDING_AMOUNT_FAIL,
       payload: error.response.data.message,
     });
   }

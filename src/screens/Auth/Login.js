@@ -43,12 +43,12 @@ export default function Login({navigation, route}) {
   };
 
   const resendOTP = async () => {
-    setOtpLoading(true)
+    setOtpLoading(true);
     const confirmation = await auth().signInWithPhoneNumber(
       `+91${contactNumber}`,
     );
     setConfirmation(confirmation);
-    setOtpLoading(false)
+    setOtpLoading(false);
     showToast('success', 'OTP Sent');
   };
 
@@ -63,6 +63,7 @@ export default function Login({navigation, route}) {
           label="Enter OTP"
           placeholder="xxxxxx"
           value={otp}
+          style={AuthStyles.inputField}
           onChange={otpEntered => setOtp(otpEntered)}
           type="number-pad"
         />

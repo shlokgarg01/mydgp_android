@@ -11,7 +11,7 @@ const AuthStyles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 34,
     paddingHorizontal: 19,
-    marginTop: -(deviceHeight * 0.08),
+    marginTop: -(deviceHeight * 0.12),
     marginBottom: 25,
   },
   heading: {

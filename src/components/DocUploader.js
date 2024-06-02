@@ -16,7 +16,7 @@ const DocUploader = ({setDocument, title}) => {
   return (
     <TouchableOpacity
       style={{
-        backgroundColor: Colors.LIGHT_PRIMARY,
+        backgroundColor: Colors.GRAY,
         borderRadius: 7,
         marginTop: 10,
       }}

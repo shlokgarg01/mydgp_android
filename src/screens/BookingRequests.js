@@ -50,7 +50,7 @@ const BookingRequests = () => {
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
       dispatch({type: CLEAR_ERRORS});
-      showToast('success', 'Booking Updated!');
+      // showToast('success', 'Booking Updated!');
     }
   }, [isAuthenticated, error, isUpdated]);
 

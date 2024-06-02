@@ -37,8 +37,8 @@ export default function SignupOtpVerify({navigation, route}) {
     try {
       await confirmation.confirm(otp);
       navigation.replace(RouteNames.AUTH.SIGNUP, {contactNumber});
-    } catch(error) {
-      showToast('error', 'Invalid OTP.')
+    } catch (error) {
+      showToast('error', 'Invalid OTP.');
     }
   };
 
@@ -62,6 +62,7 @@ export default function SignupOtpVerify({navigation, route}) {
         <InputGroup
           label="Enter OTP"
           placeholder="xxxxxx"
+          style={AuthStyles.inputField}
           value={otp}
           onChange={otpEntered => setOtp(otpEntered)}
           type="number-pad"

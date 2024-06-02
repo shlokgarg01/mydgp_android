@@ -27,6 +27,9 @@ export default function Signup({navigation, route}) {
   const dispatch = useDispatch();
   const {error, isAuthenticated, loading} = useSelector(state => state.user);
   const {services} = useSelector(state => state.services);
+  const [profession, setProfession] = useState();
+  const professions = [{label: 'Photographer', value: 'Photographer'}];
+  const [isProfessionOpen, setProfessionOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getAllServices());
@@ -66,34 +69,51 @@ export default function Signup({navigation, route}) {
       <View style={AuthStyles.formContainer}>
         <Text style={AuthStyles.heading}>ENTER DETAILS</Text>
         <InputGroup
-          label="Enter Name"
-          placeholder="Your Name"
+          label="Name"
+          placeholder="Enter Your Name"
           value={name}
+          style={AuthStyles.inputField}
           onChange={val => setName(val)}
         />
         <InputGroup
-          label="Enter Your Email"
-          placeholder="yourmail@gmail.com"
+          label="Email"
+          placeholder="Enter Your Email"
           value={email}
           onChange={val => setEmail(val)}
           type="email-address"
+          style={AuthStyles.inputField}
         />
         <InputGroup
           label="Contact Number"
           value={contactNumber}
           editable={false}
+          style={AuthStyles.inputField}
         />
+
         <DropDown
-          label="Services"
-          value={service}
-          setValue={val => setService(val)}
-          items={services}
-          open={isServiceOpen}
-          // onChangeValue={upadteCitiesGroup}
-          setIsOpen={() => setServiceOpen(!isServiceOpen)}
-          placeholder="Select Your Service"
+          label="Who Are You ?"
+          value={profession}
+          setValue={val => setProfession(val)}
+          items={professions}
+          open={isProfessionOpen}
+          setIsOpen={() => setProfessionOpen(!isProfessionOpen)}
+          placeholder="Who Are you ?"
           zIndex={2}
         />
+
+        {profession && (
+          <DropDown
+            label="Your Services ?"
+            value={service}
+            setValue={val => setService(val)}
+            items={services}
+            open={isServiceOpen}
+            // onChangeValue={upadteCitiesGroup}
+            setIsOpen={() => setServiceOpen(!isServiceOpen)}
+            placeholder="Select Your Service"
+            zIndex={2}
+          />
+        )}
         <DocUploader
           document={image}
           setDocument={setImage}

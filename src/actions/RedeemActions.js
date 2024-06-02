@@ -15,7 +15,7 @@ export const getRedeemDetails = () => async dispatch => {
     dispatch({type: REDEEM_DETAILS_REQUEST});
     const {data} = await axiosInstance.get(`${BASE_URL}/api/v1/redeem`);
 
-    dispatch({type: REDEEM_DETAILS_SUCCESS, payload: data.redeem});
+    dispatch({type: REDEEM_DETAILS_SUCCESS, payload: data});
   } catch (error) {
     dispatch({
       type: REDEEM_DETAILS_FAIL,

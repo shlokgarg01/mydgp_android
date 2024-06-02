@@ -31,7 +31,7 @@ const Splash = ({navigation}) => {
         alignItems: 'center',
       }}>
       <Image
-        source={require('../images/logo_captain.png')}
+        source={require('../images/logo_capt.png')}
         style={{
           height: 130,
           width: 130,

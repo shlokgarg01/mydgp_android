@@ -7,11 +7,14 @@ import {getRedeemDetails, requestRedeemCoins} from '../actions/RedeemActions';
 import Btn from '../components/Btn';
 import {showToast} from '../helpers/ShowToast';
 import {CLEAR_ERRORS} from '../constants/RedeemConstants';
+import Loader from '../components/Loader';
 
 const TotalEarnings = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
-  const {redeem, error, isSuccess} = useSelector(state => state.redeem);
+  const {redeem, error, isSuccess, loading} = useSelector(
+    state => state.redeem,
+  );
 
   const redeemCoins = () => {
     if (redeem.amountToBeRedeemed <= 0) {
@@ -20,6 +23,15 @@ const TotalEarnings = () => {
     }
     dispatch(requestRedeemCoins(redeem.amountToBeRedeemed));
   };
+
+  function timeConvert(n) {
+    var num = n;
+    var hours = num / 60;
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+    return `${rhours + ' hr.'} ${rminutes + ' min.'}`;
+  }
 
   useEffect(() => {
     dispatch(getRedeemDetails());
@@ -41,26 +53,46 @@ const TotalEarnings = () => {
     </View>
   );
 
-  const TotalEarningsTab = () => (
-    <View>
-      <View style={{flexDirection: 'row'}}>
-        <ValueContainer
-          heading={"Today's Earnings"}
-          value={redeem?.amountRedeemed || 0}
-        />
-        <ValueContainer
-          heading={'Total Earnings'}
-          value={redeem?.amountRedeemed || 0}
-        />
+  const TotalEarningsTab = () =>
+    loading ? (
+      <Loader />
+    ) : (
+      <View>
+        <Text style={styles.heading}>Today's</Text>
+        <View style={{flexDirection: 'row'}}>
+          <ValueContainer
+            heading={'Earnings'}
+            value={'₹' + redeem?.earnings?.today || 0}
+          />
+          <ValueContainer
+            heading={'Time'}
+            value={timeConvert(redeem?.minutesServiced?.today) || 0}
+          />
+        </View>
+        <Text style={styles.heading}>Last 30 Days</Text>
+        <View style={{flexDirection: 'row'}}>
+          <ValueContainer
+            heading={'Earnings'}
+            value={'₹' + redeem?.earnings?.lastMonth || 0}
+          />
+          <ValueContainer
+            heading={'Time'}
+            value={timeConvert(redeem?.minutesServiced?.lastMonth) || 0}
+          />
+        </View>
+        <Text style={styles.heading}>Total</Text>
+        <View style={{flexDirection: 'row'}}>
+          <ValueContainer
+            heading={'Earnings'}
+            value={'₹' + redeem?.earnings?.total || 0}
+          />
+          <ValueContainer
+            heading={'Time'}
+            value={timeConvert(redeem?.minutesServiced?.total) || 0}
+          />
+        </View>
       </View>
-      <View style={{flexDirection: 'row'}}>
-        <ValueContainer
-          heading={'Total Hours'}
-          value={redeem?.amountRedeemed || 0}
-        />
-      </View>
-    </View>
-  );
+    );
 
   const RedeemTab = () => (
     <View>
@@ -128,10 +160,10 @@ const styles = StyleSheet.create({
   },
   earnings: {
     paddingHorizontal: 16,
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: Colors.DARK_GREEN,
-    marginTop: 20,
+    fontSize: 20,
+    fontWeight: '800',
+    color: Colors.THEME_COLOR,
+    marginTop: 18,
   },
   valueContainer: {
     backgroundColor: Colors.LIGHT_GRAY,
@@ -142,6 +174,13 @@ const styles = StyleSheet.create({
     width: '45%',
     borderWidth: 2,
     borderColor: Colors.GRAY_BG,
+  },
+  heading: {
+    fontSize: 16,
+    marginStart: 10,
+    marginTop: 10,
+    color: Colors.BLACK,
+    fontWeight: '500',
   },
 });
 

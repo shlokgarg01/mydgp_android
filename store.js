@@ -11,9 +11,10 @@ import {
   completedBookingsReducer,
   currentBookingsReducer,
   futureBookingsReducer,
+  getBookingPendingAmtReducer,
   updateBookingStatusReducer,
 } from './src/reducers/BookingsReducer';
-import { redeemReducer } from './src/reducers/RedeemReducer';
+import {redeemReducer} from './src/reducers/RedeemReducer';
 
 const reducer = combineReducers({
   user: UserReducer,
@@ -31,8 +32,8 @@ const reducer = combineReducers({
   completedBookings: completedBookingsReducer,
   currentBookings: currentBookingsReducer,
   futureBookings: futureBookingsReducer,
-
-  redeem: redeemReducer
+  getPendingAmt: getBookingPendingAmtReducer,
+  redeem: redeemReducer,
 });
 
 const initialState = {};
