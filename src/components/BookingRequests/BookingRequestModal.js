@@ -29,6 +29,13 @@ const BookingRequestModal = ({
     );
   };
 
+  const calculateTimeLeftInSeconds = (bookedTime, totalTime) => {
+    const bookedTimestamp = new Date(bookedTime).getTime();
+    const currentTime = new Date().getTime();
+    const elapsedTime = currentTime - bookedTimestamp;
+    return Math.max(0, totalTime - Math.floor(elapsedTime / 1000));
+  };
+
   return (
     <Modal isVisible={isBookingModalVisible} backdropOpacity={0.8}>
       <View style={styles.container}>
@@ -40,7 +47,11 @@ const BookingRequestModal = ({
           }}>
           <CountdownCircleTimer
             isPlaying
-            duration={30}
+            // duration={calculateTimeLeftInSeconds(
+            //   bookingRequest?.booking?.createdAt,
+            //   60,
+            // )}
+            duration={60}
             size={80}
             strokeWidth={6}
             trailColor="white"

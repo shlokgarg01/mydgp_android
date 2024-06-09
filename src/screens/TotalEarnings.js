@@ -30,7 +30,7 @@ const TotalEarnings = () => {
     var rhours = Math.floor(hours);
     var minutes = (hours - rhours) * 60;
     var rminutes = Math.round(minutes);
-    return `${rhours + ' hr.'} ${rminutes + ' min.'}`;
+    return `${rhours}:${rminutes}`;
   }
 
   useEffect(() => {
@@ -53,20 +53,41 @@ const TotalEarnings = () => {
     </View>
   );
 
+  console.log(redeem);
+
   const TotalEarningsTab = () =>
     loading ? (
       <Loader />
     ) : (
       <View>
         <Text style={styles.heading}>Today's</Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + redeem?.earnings?.today || 0}
           />
           <ValueContainer
-            heading={'Time'}
+            heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.today) || 0}
+          />
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.today || 0}
+          />
+        </View>
+        <Text style={styles.heading}>Last 7 Days</Text>
+        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+          <ValueContainer
+            heading={'Earnings'}
+            value={'₹' + redeem?.earnings?.lastWeek || 0}
+          />
+          <ValueContainer
+            heading={'Time (HH:MM)'}
+            value={timeConvert(redeem?.minutesServiced?.lastWeek) || 0}
+          />
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.lastWeek || 0}
           />
         </View>
         <Text style={styles.heading}>Last 30 Days</Text>
@@ -76,8 +97,12 @@ const TotalEarnings = () => {
             value={'₹' + redeem?.earnings?.lastMonth || 0}
           />
           <ValueContainer
-            heading={'Time'}
+            heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.lastMonth) || 0}
+          />
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.lastMonth || 0}
           />
         </View>
         <Text style={styles.heading}>Total</Text>
@@ -87,8 +112,12 @@ const TotalEarnings = () => {
             value={'₹' + redeem?.earnings?.total || 0}
           />
           <ValueContainer
-            heading={'Time'}
+            heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.total) || 0}
+          />
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.total || 0}
           />
         </View>
       </View>
@@ -160,18 +189,18 @@ const styles = StyleSheet.create({
   },
   earnings: {
     paddingHorizontal: 16,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '800',
     color: Colors.THEME_COLOR,
     marginTop: 18,
   },
   valueContainer: {
     backgroundColor: Colors.LIGHT_GRAY,
-    padding: 10,
-    margin: 10,
+    padding: 5,
+    margin: 5,
     borderRadius: 10,
     alignItems: 'center',
-    width: '45%',
+    width: '30%',
     borderWidth: 2,
     borderColor: Colors.GRAY_BG,
   },

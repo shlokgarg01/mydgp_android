@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     },
     contentSection: {
         paddingHorizontal: 10,
+        height:'82%'
     },
     subHeading: {
         fontSize: 18,
@@ -24,6 +25,7 @@ export const styles = StyleSheet.create({
         marginTop: 25,
     },
     inputText: {
+        color:'black',
         backgroundColor: 'white',
         margin: 5,
         paddingHorizontal: 15,

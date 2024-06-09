@@ -256,11 +256,13 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
               label={status == 'ONGOING' ? 'Arrived' : 'End Booking'}
               onClick={() => {
                 requestLocation();
-                if (isArrived()) {
-                  setOtpModalVisible(true);
-                } else {
-                  showToast(error, 'You are away from location');
-                }
+                setTimeout(() => {
+                  if (isArrived()) {
+                    setOtpModalVisible(true);
+                  } else {
+                    showToast(error, 'You are away from location');
+                  }
+                }, 1000);
               }}
             />
             {status == 'ONGOING' && (

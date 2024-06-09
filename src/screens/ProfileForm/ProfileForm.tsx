@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -7,18 +7,22 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {styles} from './ProfileForm.styles';
-import {useSelector, useDispatch} from 'react-redux';
-import {CheckBox} from 'react-native-elements';
+import { styles } from './ProfileForm.styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { CheckBox } from 'react-native-elements';
 // import CategoriesAccordion from '../../components/CategoriesAccordion/CategoriesAccordion';
 import DocUploader from '../../components/DocUploader';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Btn from '../../components/Btn';
-import {getAllServices} from '../../actions/ServiceActions';
-import {AccordianStyles} from '../../components/CategoriesAccordion/CategoriesAccordion.styles';
-import {showToast} from '../../helpers/ShowToast';
-import {clearErrors, updateUserDetails} from '../../actions/UserActions';
+import { getAllServices } from '../../actions/ServiceActions';
+import { AccordianStyles } from '../../components/CategoriesAccordion/CategoriesAccordion.styles';
+import { showToast } from '../../helpers/ShowToast';
+import { clearErrors, updateUserDetails } from '../../actions/UserActions';
 import Loader from '../../components/Loader';
+import ProfilePhotoUpload from '../../components/UploadProfilePhoto';
+import { useNavigation } from '@react-navigation/native';
+import RouteNames from '../../routes/RouteNames';
+import Colors from '../../helpers/Colors';
 
 const ProfileForm = () => {
   //   const navigation: any = useNavigation();
@@ -26,11 +30,12 @@ const ProfileForm = () => {
   const dispatch = useDispatch();
   const [selectedSubServices, setSelectedSubServices] = useState<string[]>([]);
   const [showSubServices, setShowSubServices] = useState<boolean>(false);
-  const {services, loading: servicesLoading} = useSelector(
+  const { services, loading: servicesLoading } = useSelector(
     state => state.services,
   );
-  const {user} = useSelector(state => state.user);
-  const {loading, isUpdated, error} = useSelector(state => state.profile);
+  const { user } = useSelector(state => state.user);
+  const { loading, isUpdated, error } = useSelector(state => state.profile);
+  const navigation: any = useNavigation();
 
   useEffect(() => {
     if (services.length === 0) dispatch(getAllServices());
@@ -39,7 +44,7 @@ const ProfileForm = () => {
 
   useEffect(() => {
     if (isUpdated) {
-      showToast('success', 'Profile Updated!');
+      // showToast('success', 'Profile Updated!');
       dispatch(clearErrors());
     }
     if (error) {
@@ -124,6 +129,7 @@ const ProfileForm = () => {
   };
 
   const handleSubmit = () => {
+    navigation.goBack();
     dispatch(
       updateUserDetails({
         subServices: selectedSubServices,
@@ -137,22 +143,17 @@ const ProfileForm = () => {
   ) : (
     <View>
       <View style={styles.topBar}>
-        {/* <Icon
-                name="chevron-left"
-                size={30}
-                color={'white'}
-                style={{}}
-                onPress={() => { navigation.pop() }}
-            /> */}
+        <Icon
+          name="chevron-left"
+          size={16}
+          color={'white'}
+          style={{}}
+          onPress={() => { navigation.goBack() }}
+        />
         <Text style={styles.heading}>Complete your profile</Text>
       </View>
       <ScrollView style={styles.contentSection}>
-        <View style={styles.profileImageEdit}>
-          <Icon name="user-edit" size={50} color={'white'} style={{}} />
-        </View>
-        <Text style={{alignSelf: 'center', fontWeight: '700'}}>
-          Upload Profile Image
-        </Text>
+        <ProfilePhotoUpload />
         <View style={styles.uploadContainer}>
           <DocUploader setDocument={setIdProofImage} title="Upload ID Proof" />
         </View>
@@ -167,7 +168,7 @@ const ProfileForm = () => {
             <Text style={AccordianStyles.heading}>What do you do?</Text>
             <FlatList
               data={[services.find(service => service._id === user.service)]}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <View key={item._id}>
                   {/* <CheckBox
                         title={item.name}
@@ -183,7 +184,7 @@ const ProfileForm = () => {
                   {showSubServices && (
                     <FlatList
                       data={item?.subServices}
-                      renderItem={({item: subService}) => (
+                      renderItem={({ item: subService }) => (
                         <CheckBox
                           key={subService._id}
                           title={subService.name}
@@ -207,23 +208,31 @@ const ProfileForm = () => {
         </TouchableOpacity> */}
           </View>
         )}
-        {/* <Text style={styles.subHeading}>What do you have?</Text>
-        <TextInput style={styles.inputText} placeholder={'Your camera brand'} />
-        <TextInput style={styles.inputText} placeholder={'Shutter count'} />
-        <TextInput style={styles.inputText} placeholder={'Body'} />
-        <TextInput style={styles.inputText} placeholder={'Lens'} />
-        <TextInput style={styles.inputText} placeholder={'Monopod'} />
-        <TextInput style={styles.inputText} placeholder={'Tripod'} />
-        <TextInput style={styles.inputText} placeholder={'Gimbal'} />
-        <TextInput style={styles.inputText} placeholder={'Slider'} />
-        <TextInput style={styles.inputText} placeholder={'Flash'} />
-        <TextInput style={styles.inputText} placeholder={'Mic'} />
-        <TextInput style={styles.inputText} placeholder={'RGB light'} /> */}
-        {/* <TouchableOpacity onPress={() => {}} style={styles.submitButton}>
-            <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity> */}
-        <Btn label="Submit" onClick={handleSubmit} />
+
+        <Text style={styles.subHeading}>Your Portfolio</Text>
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Portfolio Link'} />
+
+        <Text style={styles.subHeading}>Bank Details</Text>
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Holder Name'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Number'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'IFSC'} />
+
+        <Text style={styles.subHeading}>What do you have?</Text>
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Your camera brand'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Shutter count'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Body'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Lens'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Monopod'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Tripod'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Gimbal'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Slider'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Flash'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Mic'} />
+        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'RGB light'} />
       </ScrollView>
+      <View style={{ marginHorizontal: 20 }}>
+        <Btn label="Submit" onClick={handleSubmit} />
+      </View>
     </View>
   );
 };

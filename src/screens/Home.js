@@ -11,6 +11,8 @@ import CompleteProfileModal from '../components/CompleteProfileModal/CompletePro
 import Logo from '../images/logo_capt.png';
 import getNewFCMToken from '../../getFCMTToken';
 import ImageCarousel from '../components/ImageCarousel';
+import {BackHandler} from 'react-native';
+import RouteNames from '../routes/RouteNames';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -55,6 +57,20 @@ export default function Home() {
       console.warn(err);
     }
   }
+
+  //returns to home from all screen on back press
+  const handleBackPress = () => {
+    navigation.navigate(RouteNames.CURRENT_BOOKINGS);
+    return true;
+  };
+
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress,
+    );
+    return () => backHandler.remove();
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({

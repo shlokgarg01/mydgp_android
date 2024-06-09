@@ -1,4 +1,4 @@
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, Text, FlatList, StyleSheet, BackHandler} from 'react-native';
 import React, {useLayoutEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
@@ -9,6 +9,9 @@ import Colors from '../helpers/Colors';
 import BookingsCard from '../components/Bookings/BookingsCard';
 import {useNavigation} from '@react-navigation/native';
 import {Switch} from 'react-native-switch';
+import CTABtn from '../components/CTABtn';
+import Btn from '../components/Btn';
+import RouteNames from '../routes/RouteNames';
 
 export default function TodayBookings() {
   const dispatch = useDispatch();
@@ -16,6 +19,7 @@ export default function TodayBookings() {
     state => state.currentBookings,
   );
   const {isUpdated} = useSelector(state => state.updateBookingStatus);
+  const navigation = useNavigation();
 
   const updateDutyStatus = () => {
     setOnDuty(!onDuty);
@@ -39,9 +43,17 @@ export default function TodayBookings() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flatlist}
         ListEmptyComponent={() => (
-          <Text style={styles.emptybookingsText}>
-            No more bookings for today
-          </Text>
+          <>
+            <Text style={styles.emptybookingsText}>
+              No more bookings for today
+            </Text>
+            <Btn
+              label={'Go Back to Home'}
+              onClick={() => {
+                navigation.navigate(RouteNames.CURRENT_BOOKINGS);
+              }}
+            />
+          </>
         )}
         data={currentBookings}
         renderItem={({item}) => (

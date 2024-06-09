@@ -43,6 +43,12 @@ const BookingRequests = () => {
   }, []);
 
   useEffect(() => {
+    if (currentBookings.length >= 1) {
+      setBookingModalVisible(true);
+    }
+  }, [currentBookings]);
+
+  useEffect(() => {
     if (isAuthenticated === false) {
       navigation.reset({index: 1, routes: [{name: RouteNames.AUTH.LOGINOTP}]});
     } else if (error) {
