@@ -58,12 +58,15 @@ const BookingRequestModal = ({
             colors={['#cd9a00', '#F7B801', '#A30000', '#A30000']}
             colorsTime={[7, 5, 2, 0]}>
             {({remainingTime}) => (
-              <Text style={{color: '#cd9a00', fontSize: 20}}>
+              <Text style={{color: '#cd9a00', fontSize: 30, fontWeight: '500'}}>
                 {remainingTime}
               </Text>
             )}
           </CountdownCircleTimer>
-          <Text style={styles.cardHeading}>New Booking Request</Text>
+          <Text
+            style={
+              styles.cardHeading
+            }>{`${bookingRequest.service.name} (${bookingRequest.booking.subService.name})`}</Text>
         </View>
         <View style={{padding: 20}}>
           <View style={ComponentStyles.horizontalAlign}>
@@ -84,7 +87,9 @@ const BookingRequestModal = ({
               </Text>
               <Text style={[styles.bookingDetailText, {fontWeight: 'bold'}]}>
                 {bookingRequest.booking?.hours}{' '}
-                {bookingRequest.booking?.hours === 1 ? 'hour' : 'hours'}
+                {bookingRequest.booking?.hours === 1 ? 'hour ' : 'hours '}
+                {bookingRequest.booking?.minutes}
+                {' min.'}
               </Text>
             </View>
             <View style={ComponentStyles.horizontalAlign}>
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
   },
   cardHeading: {
     color: '#cd9a00',
-    fontSize: 25,
+    fontSize: 20,
     alignSelf: 'center',
     marginVertical: 20,
     fontWeight: '500',

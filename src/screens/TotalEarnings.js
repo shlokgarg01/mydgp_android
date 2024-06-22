@@ -63,6 +63,10 @@ const TotalEarnings = () => {
         <Text style={styles.heading}>Today's</Text>
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.today || 0}
+          />
+          <ValueContainer
             heading={'Earnings'}
             value={'₹' + redeem?.earnings?.today || 0}
           />
@@ -70,13 +74,13 @@ const TotalEarnings = () => {
             heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.today) || 0}
           />
-          <ValueContainer
-            heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.today || 0}
-          />
         </View>
         <Text style={styles.heading}>Last 7 Days</Text>
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.lastWeek || 0}
+          />
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + redeem?.earnings?.lastWeek || 0}
@@ -85,13 +89,13 @@ const TotalEarnings = () => {
             heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.lastWeek) || 0}
           />
-          <ValueContainer
-            heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.lastWeek || 0}
-          />
         </View>
         <Text style={styles.heading}>Last 30 Days</Text>
         <View style={{flexDirection: 'row'}}>
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.lastMonth || 0}
+          />
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + redeem?.earnings?.lastMonth || 0}
@@ -100,13 +104,13 @@ const TotalEarnings = () => {
             heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.lastMonth) || 0}
           />
-          <ValueContainer
-            heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.lastMonth || 0}
-          />
         </View>
         <Text style={styles.heading}>Total</Text>
         <View style={{flexDirection: 'row'}}>
+          <ValueContainer
+            heading={'Cash Collected'}
+            value={'₹' + redeem?.cashCollected?.total || 0}
+          />
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + redeem?.earnings?.total || 0}
@@ -114,10 +118,6 @@ const TotalEarnings = () => {
           <ValueContainer
             heading={'Time (HH:MM)'}
             value={timeConvert(redeem?.minutesServiced?.total) || 0}
-          />
-          <ValueContainer
-            heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.total || 0}
           />
         </View>
       </View>

@@ -15,10 +15,10 @@ const AuthStyles = StyleSheet.create({
     marginBottom: 25,
   },
   heading: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 12,
   },
   inputField: {
     backgroundColor: Colors.LIGHT_GRAY,

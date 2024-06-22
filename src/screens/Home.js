@@ -111,7 +111,7 @@ export default function Home() {
 
   return onDuty ? (
     <>
-      {!user.isProfileUpdated && <CompleteProfileModal />}
+      {!user?.isProfileUpdated && <CompleteProfileModal />}
       <ImageCarousel images={images} />
       <BookingRequests />
     </>
@@ -145,7 +145,7 @@ export default function Home() {
           Thanks for joining! Go on-duty and get start earning!
         </Text>
       </>
-      {!user.isProfileUpdated && <CompleteProfileModal />}
+      {!user?.isProfileUpdated && <CompleteProfileModal />}
     </View>
   );
 }

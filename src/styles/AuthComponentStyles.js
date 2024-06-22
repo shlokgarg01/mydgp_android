@@ -4,7 +4,7 @@ import Colors from '../helpers/Colors';
 
 const AuthComponentStyles = StyleSheet.create({
   bgContainer: {
-    height: deviceHeight * 0.45,
+    height: deviceHeight * 0.42,
     backgroundColor: Colors.THEME_COLOR,
     width: deviceWidth,
     borderBottomLeftRadius: 80,
@@ -12,7 +12,7 @@ const AuthComponentStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingTop: 50,
+    paddingTop: 40,
     alignItems: 'center',
   },
   logo: {

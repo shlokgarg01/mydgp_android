@@ -1,10 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, TouchableOpacity, Image, Modal, Text} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import ImageBase64 from 'react-native-image-base64';
 
-const ProfilePhotoUpload = () => {
+const ProfilePhotoUpload = ({setImageCode, user}) => {
   const [photo, setPhoto] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const uploadPic = async () => {
+    const base64Image = await ImageBase64.getBase64String(photo.uri);
+    setImageCode(base64Image);
+  };
+
+  useEffect(() => {
+    uploadPic();
+  }, [photo]);
 
   const handleChoosePhoto = () => {
     ImagePicker.openPicker({
@@ -61,7 +71,14 @@ const ProfilePhotoUpload = () => {
             alignItems: 'center',
           }}>
           {photo === null ? (
-            <Text>Select Profile Photo</Text>
+            user.avatar != null ? (
+              <Image
+                source={{uri: `data:image/png;base64,${user?.avatar}`}}
+                style={{height: 150, width: 150, borderRadius: 75}}
+              />
+            ) : (
+              <Text>Select Profile Photo</Text>
+            )
           ) : (
             <Image
               source={photo}

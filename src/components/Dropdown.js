@@ -23,15 +23,21 @@ export default function DropDown({
         setValue={setValue}
         items={items}
         open={isOpen}
-        listMode='SCROLLVIEW'
+        listMode="SCROLLVIEW"
         scrollViewProps={{
           nestedScrollEnabled: true,
         }}
         setOpen={setIsOpen}
         autoScroll
         placeholder={placeholder}
-        placeholderStyle={{ color: Colors.GRAY }}
-        dropDownContainerStyle={{backgroundColor: Colors.LIGHT_GRAY, borderWidth: 0}}
+        placeholderStyle={{color: Colors.GRAY}}
+        dropDownContainerStyle={{
+          backgroundColor: Colors.WHITE,
+          borderWidth: 1,
+          elevation: 10,
+          zIndex: 10,
+          borderColor: Colors.LIGHT_GRAY,
+        }}
         {...rest}
       />
     </View>

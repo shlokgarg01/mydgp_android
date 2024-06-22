@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import Colors from '../helpers/Colors';
-import { deviceHeight } from '../helpers/Dimensions';
+import {deviceHeight} from '../helpers/Dimensions';
 
 const ComponentStyles = StyleSheet.create({
   inputLabel: {
@@ -12,13 +12,13 @@ const ComponentStyles = StyleSheet.create({
   inputField: {
     backgroundColor: Colors.LIGHT_GRAY,
     borderRadius: 10,
-    height: 37,
+    height: 35,
     paddingLeft: 10,
   },
   dropDownInput: {
     backgroundColor: Colors.LIGHT_GRAY,
     borderRadius: 10,
-    height: 37,
+    height: 45,
     paddingLeft: 10,
     borderWidth: 0,
     minHeight: 20,
@@ -49,7 +49,7 @@ const ComponentStyles = StyleSheet.create({
     marginTop: 20,
     elevation: 2,
     height: 50,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   btnLabel: {
     color: Colors.WHITE,
@@ -73,9 +73,9 @@ const ComponentStyles = StyleSheet.create({
   },
   bookingRequestHeading: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: '700',
     marginTop: 7,
-    marginBottom: 3
+    marginBottom: 3,
   },
   cardContainer: {
     elevation: 7,
@@ -89,27 +89,27 @@ const ComponentStyles = StyleSheet.create({
   horizontalAlign: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: "center",
-    flexWrap: 'wrap'
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   horizontalBetweenAlgin: {
     display: 'flex',
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   horizontalEvenlyAlgin: {
     display: 'flex',
-    flexDirection: "row",
+    flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   // general styles
   link: {
     color: Colors.BLUE,
-    fontWeight: "bold"
-  }
+    fontWeight: 'bold',
+  },
 });
 
 export default ComponentStyles;

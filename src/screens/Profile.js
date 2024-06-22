@@ -29,6 +29,12 @@ export default function Profile() {
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
 
+  const [base64Profile, setBase64Profile] = useState();
+
+  useEffect(() => {
+    setBase64Profile(`data:image/png;base64,${user?.avatar}`);
+  }, [user]);
+
   useEffect(() => {
     if (error) {
       showToast('error', error);
@@ -68,9 +74,13 @@ export default function Profile() {
           <View style={{alignItems: 'center'}}>
             <Image
               // source={{ uri: 'https://picsum.photos/200/300' }}
-              source={{
-                uri: 'https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png',
-              }}
+              source={
+                base64Profile != null
+                  ? {uri: base64Profile}
+                  : {
+                      uri: 'https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png',
+                    }
+              }
               style={{
                 height: 100,
                 width: 100,
@@ -182,8 +192,11 @@ export default function Profile() {
             />
           </View> */}
 
-          <View style={{ marginHorizontal: 10 }}>
-            <Btn label="Update Profile" onClick={() => navigation.navigate(RouteNames.PROFILE_FORM)} />
+          <View style={{marginHorizontal: 10}}>
+            <Btn
+              label="Update Profile"
+              onClick={() => navigation.navigate(RouteNames.PROFILE_FORM)}
+            />
           </View>
 
           <TouchableOpacity

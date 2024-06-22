@@ -83,12 +83,12 @@ export default function Signup({navigation, route}) {
           type="email-address"
           style={AuthStyles.inputField}
         />
-        <InputGroup
+        {/* <InputGroup
           label="Contact Number"
           value={contactNumber}
           editable={false}
           style={AuthStyles.inputField}
-        />
+        /> */}
 
         <DropDown
           label="Who Are You ?"
@@ -114,11 +114,11 @@ export default function Signup({navigation, route}) {
             zIndex={2}
           />
         )}
-        <DocUploader
+        {/* <DocUploader
           document={image}
           setDocument={setImage}
           title="Select Profile Picture"
-        />
+        /> */}
         <Btn onClick={signupHandler} label="SIGNUP" />
       </View>
     </ScrollView>

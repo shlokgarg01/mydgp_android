@@ -17,12 +17,13 @@ import Btn from '../../components/Btn';
 import { getAllServices } from '../../actions/ServiceActions';
 import { AccordianStyles } from '../../components/CategoriesAccordion/CategoriesAccordion.styles';
 import { showToast } from '../../helpers/ShowToast';
-import { clearErrors, updateUserDetails } from '../../actions/UserActions';
+import { clearErrors, loadUser, updateUserDetails } from '../../actions/UserActions';
 import Loader from '../../components/Loader';
 import ProfilePhotoUpload from '../../components/UploadProfilePhoto';
 import { useNavigation } from '@react-navigation/native';
 import RouteNames from '../../routes/RouteNames';
 import Colors from '../../helpers/Colors';
+import store from '../../../store';
 
 const ProfileForm = () => {
   //   const navigation: any = useNavigation();
@@ -36,6 +37,7 @@ const ProfileForm = () => {
   const { user } = useSelector(state => state.user);
   const { loading, isUpdated, error } = useSelector(state => state.profile);
   const navigation: any = useNavigation();
+  const [imageCode, setImageCode] = useState();
 
   useEffect(() => {
     if (services.length === 0) dispatch(getAllServices());
@@ -129,13 +131,16 @@ const ProfileForm = () => {
   };
 
   const handleSubmit = () => {
-    navigation.goBack();
     dispatch(
       updateUserDetails({
         subServices: selectedSubServices,
         isProfileUpdated: true,
+        avatar: imageCode,
       }),
     );
+    setTimeout(() => {
+      store.dispatch(loadUser());
+    }, 500);
   };
 
   return loading || servicesLoading ? (
@@ -153,7 +158,10 @@ const ProfileForm = () => {
         <Text style={styles.heading}>Complete your profile</Text>
       </View>
       <ScrollView style={styles.contentSection}>
-        <ProfilePhotoUpload />
+        <ProfilePhotoUpload
+          setImageCode={setImageCode}
+          user={user}
+        />
         <View style={styles.uploadContainer}>
           <DocUploader setDocument={setIdProofImage} title="Upload ID Proof" />
         </View>
@@ -214,12 +222,12 @@ const ProfileForm = () => {
 
         <Text style={styles.subHeading}>Bank Details</Text>
         <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Holder Name'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Number'} />
+        <TextInput keyboardType='numeric' placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Number'} />
         <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'IFSC'} />
 
         <Text style={styles.subHeading}>What do you have?</Text>
         <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Your camera brand'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Shutter count'} />
+        <TextInput keyboardType='numeric' placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Shutter count'} />
         <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Body'} />
         <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Lens'} />
         <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Monopod'} />

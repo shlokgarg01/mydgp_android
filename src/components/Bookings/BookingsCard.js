@@ -6,7 +6,6 @@ import {getDate} from '../../utils/DateTime';
 import SubHeading from '../BookingRequests/SubHeading';
 import Colors from '../../helpers/Colors';
 import Badge from '../Badge';
-import DropDown from '../../components/Dropdown';
 import Btn from '../Btn';
 import Enums from '../../helpers/Enums';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,14 +17,10 @@ import {
 import {useEffect} from 'react';
 import {showToast} from '../../helpers/ShowToast';
 import {CLEAR_ERRORS} from '../../constants/BookingsConstants';
-import InputGroup from '../InputGroup';
-import GetLocation, {
-  Location,
-  LocationErrorCode,
-  isLocationError,
-} from 'react-native-get-location';
+import GetLocation, {isLocationError} from 'react-native-get-location';
 import OtpModal from '../OtpModal/OtpModal';
 import PendingPayment from '../PendingPayment';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const BookingsCard = ({booking, showUpdateStatus}) => {
   const dispatch = useDispatch();
@@ -39,6 +34,8 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
   const [otp, setOtp] = useState(null);
   const [isOtpModalVisible, setOtpModalVisible] = useState(false);
   const [isPendingAmtVisible, setPendingAmtVisible] = useState(false);
+  const [isLocationLoading, setLocationLoading] = useState(false);
+  const [isInitial, setInitial] = useState(true);
 
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
@@ -74,6 +71,17 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
     dispatch(updateBookingStatus(booking._id, status, parseInt(otp)));
   };
 
+  useEffect(() => {
+    if (!isInitial && !isLocationLoading) {
+      if (isArrived()) {
+        setOtpModalVisible(true);
+      } else {
+        showToast(error, 'You are away from location');
+      }
+    }
+    setInitial(false);
+  }, [isLocationLoading]);
+
   //checks pending amount of closed booking.
   useEffect(() => {
     if (booking.status === 'CLOSED') {
@@ -94,6 +102,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
   };
 
   const requestLocation = () => {
+    setLocationLoading(true);
     setLocation(null);
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
@@ -106,6 +115,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
     })
       .then(newLocation => {
         setLocation(newLocation);
+        setLocationLoading(false);
       })
       .catch(ex => {
         if (isLocationError(ex)) {
@@ -162,9 +172,8 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
   };
 
   useEffect(() => {
-    requestLocation();
     if (error) {
-      // showToast('error', error);
+      showToast('error', error);
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
       dispatch({type: CLEAR_ERRORS});
@@ -197,20 +206,10 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
           />
           <View style={{paddingHorizontal: 10}}>
             <ShowInfo title="Name" info={booking.customer.name} />
-            <ShowInfo
-              title="Contact Number"
-              info={booking.customer.contactNumber}
-            />
           </View>
 
-          {/* <SubHeading styles={{paddingHorizontal: 10}} heading="Address" /> */}
           <View style={{paddingHorizontal: 10}}>
             <ShowInfo title="Address" info={`${booking.address.address}`} />
-            {/* <ShowInfo
-              title="City"
-              info={`${booking.address.city}, ${booking.address.state}`}
-            />
-            <ShowInfo title="Pincode" info={booking.address.pincode} /> */}
           </View>
         </View>
 
@@ -222,47 +221,49 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
               color={'white'}
             />
           ) : null}
-          {/* <Badge title={`₹ ${booking.totalPrice}`} bgColor={Colors.GREEN} /> */}
+          <View
+            style={{flexDirection: 'row', alignSelf: 'center', paddingTop: 90}}>
+            <Icon
+              onPress={() => {
+                Linking.openURL(`tel:${booking.customer.contactNumber}`);
+              }}
+              name="call-outline"
+              size={30}
+              color={Colors.DARK_GREEN}
+              style={{marginRight: 20}}
+            />
+            <Icon
+              onPress={() => {
+                Linking.openURL(
+                  `whatsapp://send?phone=+91${booking.customer.contactNumber}`,
+                );
+              }}
+              color={Colors.DARK_GREEN}
+              name="logo-whatsapp"
+              size={30}
+              style={{marginRight: 20}}
+            />
+          </View>
         </View>
       </View>
       {showUpdateStatus ? (
         <>
-          {/* {booking.status === Enums.BOOKING_STATUS.ACCEPTED && (
-            <View
-              style={{ paddingHorizontal: 10, marginTop: 7, marginBottom: -10 }}>
-              <InputGroup
-                label="OTP"
-                placeholder="Enter the Order OTP"
-                value={otp}
-                onChange={val => setOtp(val)}
-                keyboardType="number-pad"
-              />
-            </View>
-          )} */}
           <View style={{paddingHorizontal: 10, marginTop: 10}}>
-            {/* <DropDown
-              label="Update Status"
-              value={status}
-              setValue={val => setStatus(val)}
-              items={statuses}
-              open={isStatusUpdateOpen}
-              setIsOpen={() => setIsStatusUpdateOpen(!isStatusUpdateOpen)}
-              placeholder="------- Update Status -------"
-              zIndex={2}
-            /> */}
-            {/* <Btn label="get loc" onClick={requestLocation} /> */}
             <Btn
               bgColor={Colors.THEME_COLOR}
-              label={status == 'ONGOING' ? 'Arrived' : 'End Booking'}
+              label={
+                isLocationLoading
+                  ? 'Fetching Location....'
+                  : status == 'ONGOING'
+                  ? 'Arrived'
+                  : 'End Booking'
+              }
               onClick={() => {
-                requestLocation();
-                setTimeout(() => {
-                  if (isArrived()) {
-                    setOtpModalVisible(true);
-                  } else {
-                    showToast(error, 'You are away from location');
-                  }
-                }, 1000);
+                if (status == 'ONGOING') {
+                  requestLocation();
+                } else {
+                  setOtpModalVisible(true);
+                }
               }}
             />
             {status == 'ONGOING' && (
