@@ -15,10 +15,8 @@ import SignupOtpVerify from '../screens/Auth/SignupOtpVerify';
 import Signup from '../screens/Auth/Signup';
 import {useDispatch, useSelector} from 'react-redux';
 import Colors from '../helpers/Colors';
-import Leaves from '../screens/Leaves';
 import Profile from '../screens/Profile';
 import AllBookings from '../screens/AllBookings';
-import Bookings from '../screens/Bookings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CurrentBookings from '../screens/Home';
 import TodayBookings from '../screens/TodayBookings';
@@ -106,7 +104,7 @@ function DrawerRoutes() {
       <Drawer.Screen
         name={RouteNames.TODAY_BOOKINGS}
         component={TodayBookings}
-        options={() => drawerOptions('My Bookings', 'book-edit-outline')}
+        options={() => drawerOptions('Current Bookings', 'book-edit-outline')}
       />
       {/* <Drawer.Screen
         name={RouteNames.BOOKINGS}
@@ -114,12 +112,12 @@ function DrawerRoutes() {
         options={() =>
           drawerOptions('Future Bookings', 'email-multiple-outline')
         }
-      />
+      />*/}
       <Drawer.Screen
         name={RouteNames.ALL_BOOKINGS}
         component={AllBookings}
         options={() => drawerOptions('All Bookings', 'email-open-outline')}
-      /> */}
+      />
       <Drawer.Screen
         name={RouteNames.TOTAL_EARNINGS}
         component={TotalEarnings}

@@ -17,6 +17,7 @@ import {
 import axiosInstance, {BASE_URL} from '../Axios';
 import BookingRequestModal from '../components/BookingRequests/BookingRequestModal';
 import Btn from '../components/Btn';
+import Sound from 'react-native-sound';
 
 const BookingRequests = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,8 @@ const BookingRequests = () => {
   const {currentBookings} = useSelector(state => state.currentBookings);
   const {error, isUpdated} = useSelector(state => state.bookingRequest);
   const [isBookingModalVisible, setBookingModalVisible] = useState(true);
+  const [sound, setSound] = useState(null);
+  const [isSoundPlaying, setSoundPlaying] = useState(false);
 
   useEffect(() => {
     setBookingModalVisible(true);
@@ -59,6 +62,50 @@ const BookingRequests = () => {
       // showToast('success', 'Booking Updated!');
     }
   }, [isAuthenticated, error, isUpdated]);
+
+  //handles notification sound
+  useEffect(() => {
+    if (bookingRequests.length < 1) {
+      stopSound();
+      return;
+    }
+    if (!isSoundPlaying) {
+      playSound();
+    }
+  }, [bookingRequests]);
+
+  //plays notification sound
+  const playSound = () => {
+    setSoundPlaying(true);
+    // Initialize sound file
+    const newSound = new Sound('gio_resotone.mp3', Sound.MAIN_BUNDLE, error => {
+      if (error) {
+        console.log('Failed to load sound', error);
+        return;
+      }
+      // Set the number of loops to -1 for infinite looping
+      newSound.setNumberOfLoops(-1);
+      // Play the sound
+      newSound.play(success => {
+        if (success) {
+          console.log('Sound played successfully');
+        } else {
+          console.log('Sound did not play');
+        }
+      });
+    });
+    setSound(newSound);
+  };
+
+  //stop notification sound
+  const stopSound = () => {
+    if (sound) {
+      sound.stop(() => {
+        console.log('Sound stopped');
+        setSoundPlaying(false);
+      });
+    }
+  };
 
   // get all current bookings
   const getCurrentBookings = () => async dispatch => {

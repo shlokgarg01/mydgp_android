@@ -40,7 +40,9 @@ export default function AllBookings() {
           </Text>
         )}
         data={completedBookings}
-        renderItem={({item}) => <BookingsCard booking={item} />}
+        renderItem={({item}) => (
+          <BookingsCard booking={item} isCurrent={false} />
+        )}
       />
     </View>
   );

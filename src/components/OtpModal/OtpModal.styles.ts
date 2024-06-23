@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     heading: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: '600',
     },
     askOtpText: {

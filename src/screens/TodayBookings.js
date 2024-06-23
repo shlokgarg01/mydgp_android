@@ -57,7 +57,11 @@ export default function TodayBookings() {
         )}
         data={currentBookings}
         renderItem={({item}) => (
-          <BookingsCard booking={item} showUpdateStatus={true} />
+          <BookingsCard
+            booking={item}
+            showUpdateStatus={true}
+            isCurrent={true}
+          />
         )}
       />
     </View>

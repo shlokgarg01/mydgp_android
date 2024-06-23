@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Enums from '../../helpers/Enums';

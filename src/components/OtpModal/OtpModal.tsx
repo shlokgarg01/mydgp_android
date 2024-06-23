@@ -32,7 +32,7 @@ const OtpModal = (props: IOtpModal) => {
                     <Text style={styles.askOtpText}>Please ask OTP from customer</Text>
                 </>
                 }
-                <Text style={styles.heading}>Enter Last Photograph No.</Text>
+                <Text style={styles.heading}>Enter Last 4 Digits (Photo/Video) No.</Text>
                 <OTPTextInput
                     tintColor={Colors.THEME_COLOR}
                     ref={e => (photoNumberInput = e)}

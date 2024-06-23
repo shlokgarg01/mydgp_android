@@ -22,7 +22,7 @@ import OtpModal from '../OtpModal/OtpModal';
 import PendingPayment from '../PendingPayment';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const BookingsCard = ({booking, showUpdateStatus}) => {
+const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
   const dispatch = useDispatch();
   const {error, loading, isUpdated} = useSelector(
     state => state.updateBookingStatus,
@@ -200,17 +200,21 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
             } ${booking.minutes} ${booking?.hours === 1 ? 'min' : 'mins'}`}
           />
 
-          <SubHeading
-            styles={{paddingHorizontal: 10}}
-            heading="Customer Info"
-          />
-          <View style={{paddingHorizontal: 10}}>
-            <ShowInfo title="Name" info={booking.customer.name} />
-          </View>
+          {isCurrent && (
+            <>
+              <SubHeading
+                styles={{paddingHorizontal: 10}}
+                heading="Customer Info"
+              />
+              <View style={{paddingHorizontal: 10}}>
+                <ShowInfo title="Name" info={booking?.customer?.name} />
+              </View>
 
-          <View style={{paddingHorizontal: 10}}>
-            <ShowInfo title="Address" info={`${booking.address.address}`} />
-          </View>
+              <View style={{paddingHorizontal: 10}}>
+                <ShowInfo title="Address" info={`${booking.address.address}`} />
+              </View>
+            </>
+          )}
         </View>
 
         <View>
@@ -221,31 +225,38 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
               color={'white'}
             />
           ) : null}
-          <View
-            style={{flexDirection: 'row', alignSelf: 'center', paddingTop: 90}}>
-            <Icon
-              onPress={() => {
-                Linking.openURL(`tel:${booking.customer.contactNumber}`);
-              }}
-              name="call-outline"
-              size={30}
-              color={Colors.DARK_GREEN}
-              style={{marginRight: 20}}
-            />
-            <Icon
-              onPress={() => {
-                Linking.openURL(
-                  `whatsapp://send?phone=+91${booking.customer.contactNumber}`,
-                );
-              }}
-              color={Colors.DARK_GREEN}
-              name="logo-whatsapp"
-              size={30}
-              style={{marginRight: 20}}
-            />
-          </View>
         </View>
       </View>
+      {isCurrent && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'left',
+            paddingTop: 20,
+            paddingLeft: 20,
+          }}>
+          <Icon
+            onPress={() => {
+              Linking.openURL(`tel:${booking.customer.contactNumber}`);
+            }}
+            name="call-outline"
+            size={30}
+            color={Colors.DARK_GREEN}
+            style={{marginRight: 20}}
+          />
+          <Icon
+            onPress={() => {
+              Linking.openURL(
+                `whatsapp://send?phone=+91${booking.customer.contactNumber}`,
+              );
+            }}
+            color={Colors.DARK_GREEN}
+            name="logo-whatsapp"
+            size={30}
+            style={{marginRight: 20}}
+          />
+        </View>
+      )}
       {showUpdateStatus ? (
         <>
           <View style={{paddingHorizontal: 10, marginTop: 10}}>
@@ -256,7 +267,7 @@ const BookingsCard = ({booking, showUpdateStatus}) => {
                   ? 'Fetching Location....'
                   : status == 'ONGOING'
                   ? 'Arrived'
-                  : 'End Booking'
+                  : 'Complete Booking'
               }
               onClick={() => {
                 if (status == 'ONGOING') {

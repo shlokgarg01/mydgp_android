@@ -101,7 +101,7 @@ export default function Profile() {
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
               }}>
-              <View
+              {/* <View
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -110,7 +110,7 @@ export default function Profile() {
                 }}>
                 <Text style={{fontSize: 22, fontWeight: 'bold'}}>4.5</Text>
                 <Text style={{fontSize: 22}}>Rating</Text>
-              </View>
+              </View> */}
               <View
                 style={{
                   display: 'flex',
