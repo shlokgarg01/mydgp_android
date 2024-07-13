@@ -11,13 +11,18 @@ import Btn from '../components/Btn';
 import {useEffect} from 'react';
 // import {UPDATE_PROFILE_RESET} from '../constants/UserConstants';
 import {showToast} from '../helpers/ShowToast';
-import {logout, updateUserDetails} from '../actions/UserActions';
+import {
+  logout,
+  toggleDutyStatus,
+  updateUserDetails,
+} from '../actions/UserActions';
 import Loader from '../components/Loader';
 import {useNavigation} from '@react-navigation/native';
 import RouteNames from '../routes/RouteNames';
 import {Image} from 'react-native';
 import {deviceWidth} from '../helpers/Dimensions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Enums from '../helpers/Enums';
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -54,6 +59,7 @@ export default function Profile() {
   ]);
 
   const logoutHandler = () => {
+    dispatch(toggleDutyStatus(Enums.SERVICE_PROVIDER_STATUS.INACTIVE));
     dispatch(logout());
     showToast('success', 'Logout successful');
   };

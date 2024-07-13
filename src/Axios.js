@@ -13,6 +13,7 @@ axiosInstance.interceptors.request.use(async function (config) {
 // stag - https://my-dgp-backend.onrender.com
 // local - http://192.168.1.8:4000
 // prod - http://216.107.139.167:4001
+// https://my-dgp.onrender.com/
 
-export const BASE_URL = "https://my-dgp.onrender.com"
+export const BASE_URL = 'https://mydgp.in';
 export default axiosInstance;

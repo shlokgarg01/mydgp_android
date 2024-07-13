@@ -72,14 +72,14 @@ export const getCurrentBookings = () => async dispatch => {
 
 // get all current bookings
 export const updateBookingStatus =
-  (bookingId, status, otp) => async dispatch => {
+  (bookingId, status, otp, photoNumber) => async dispatch => {
     try {
       dispatch({type: UPDATE_BOOKING_STATUS_REQUEST});
 
       const config = {'Content-Type': 'application/json'};
       const {data} = await axiosInstance.put(
         `${BASE_URL}/api/v1/bookings/updateStatus/${bookingId}`,
-        {status, otp},
+        {status, otp, photoNumber},
         config,
       );
 

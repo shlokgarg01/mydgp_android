@@ -32,6 +32,7 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
   const [isStatusUpdateOpen, setIsStatusUpdateOpen] = useState(false);
   const [status, setStatus] = useState('');
   const [otp, setOtp] = useState(null);
+  const [photoNumber, setPhotoNumber] = useState(null);
   const [isOtpModalVisible, setOtpModalVisible] = useState(false);
   const [isPendingAmtVisible, setPendingAmtVisible] = useState(false);
   const [isLocationLoading, setLocationLoading] = useState(false);
@@ -68,7 +69,14 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
       showToast('error', 'OTP is required');
       return;
     }
-    dispatch(updateBookingStatus(booking._id, status, parseInt(otp)));
+    dispatch(
+      updateBookingStatus(
+        booking._id,
+        status,
+        parseInt(otp),
+        parseInt(photoNumber),
+      ),
+    );
   };
 
   useEffect(() => {
@@ -86,7 +94,7 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
   useEffect(() => {
     if (booking.status === 'CLOSED') {
       getPendingAmount();
-      if (charges > 0) {
+      if (totalPendingAmt() > 0) {
         //show pending amount
         setPendingAmtVisible(true);
       } else {
@@ -171,9 +179,20 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
     dispatch(getPendingAmountOfBooking(booking._id));
   };
 
+  //if amount is not paid online then add booking amt to excess amount.
+  const totalPendingAmt = () => {
+    let totalPendingAmt = charges;
+    if (booking?.paymentInfo?.status == 'NOT_PAID') {
+      totalPendingAmt = totalPendingAmt + booking?.totalPrice;
+    }
+    return totalPendingAmt;
+  };
+
   useEffect(() => {
     if (error) {
-      showToast('error', error);
+      if (error != 'Invalid Status!') {
+        showToast('error', error);
+      }
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
       dispatch({type: CLEAR_ERRORS});
@@ -192,6 +211,10 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
         ]}>
         <View>
           <ShowInfo title="Id" info={booking?._id} boldInfo={true} />
+          <ShowInfo
+            title="Category"
+            info={`${booking?.subService?.name} ${booking?.service?.name}`}
+          />
           <ShowInfo title="Date" info={getDate(booking?.date)} />
           <ShowInfo
             title="Duration"
@@ -199,7 +222,15 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
               booking?.hours === 1 ? 'hour' : 'hours'
             } ${booking.minutes} ${booking?.hours === 1 ? 'min' : 'mins'}`}
           />
-
+          {!isCurrent && (
+            <ShowInfo
+              title="Start Photo Number"
+              info={booking?.startPhotoNumber}
+            />
+          )}
+          {!isCurrent && (
+            <ShowInfo title="End Photo Number" info={booking?.endPhotoNumber} />
+          )}
           {isCurrent && (
             <>
               <SubHeading
@@ -247,7 +278,7 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
           <Icon
             onPress={() => {
               Linking.openURL(
-                `whatsapp://send?phone=+91${booking.customer.contactNumber}`,
+                `https://wa.me/+91${booking.customer.contactNumber}`,
               );
             }}
             color={Colors.DARK_GREEN}
@@ -297,11 +328,12 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
         setOtpModalVisible={setOtpModalVisible}
         submitAction={updateStatusHandler}
         setOtp={setOtp}
+        setPhotoNumber={setPhotoNumber}
         isOtpVisible={status == 'ONGOING'}
       />
       {isPendingAmtVisible && (
         <PendingPayment
-          amount={charges}
+          amount={totalPendingAmt()}
           onBtnPress={() => {
             dispatch(updateBookingStatus(booking._id, status));
             setPendingAmtVisible(false);

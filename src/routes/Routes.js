@@ -23,6 +23,7 @@ import TodayBookings from '../screens/TodayBookings';
 import {View} from 'react-native';
 import TotalEarnings from '../screens/TotalEarnings';
 import ProfileForm from '../screens/ProfileForm/ProfileForm';
+import Help from '../screens/Help';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -123,6 +124,11 @@ function DrawerRoutes() {
         component={TotalEarnings}
         options={() => drawerOptions('Earnings', 'account-cash')}
       />
+      <Drawer.Screen
+        name={RouteNames.HELP}
+        component={Help}
+        options={() => drawerOptions('Help', 'contacts')}
+      />
       {/* <Drawer.Screen
         name={RouteNames.LEAVES}
         component={Leaves}
@@ -149,6 +155,7 @@ export default function Routes() {
         />
         <Stack.Screen name={RouteNames.AUTH.SIGNUP} component={Signup} />
         <Stack.Screen name={RouteNames.PROFILE_FORM} component={ProfileForm} />
+        <Stack.Screen name={RouteNames.HELP} component={Help} />
       </Stack.Navigator>
     </NavigationContainer>
   );

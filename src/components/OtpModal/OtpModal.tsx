@@ -9,6 +9,7 @@ import Colors from '../../helpers/Colors'
 interface IOtpModal {
     isOtpModalVisible: boolean;
     setOtp: (arg0: string) => void;
+    setPhotoNumber: (arg0: string) => void;
     setOtpModalVisible: (arg0: boolean) => void
     submitAction: () => void
     isOtpVisible: boolean
@@ -16,7 +17,6 @@ interface IOtpModal {
 const OtpModal = (props: IOtpModal) => {
     let otpInput: any = useRef(null);
     let photoNumberInput: any = useRef(null);
-    const [photoNumber, setPhotoNumber] = useState('');
 
     return (
         <Modal isVisible={props.isOtpModalVisible}>
@@ -36,7 +36,7 @@ const OtpModal = (props: IOtpModal) => {
                 <OTPTextInput
                     tintColor={Colors.THEME_COLOR}
                     ref={e => (photoNumberInput = e)}
-                    handleTextChange={(value) => setPhotoNumber(value)}
+                    handleTextChange={(value) => props?.setPhotoNumber(value)}
                 />
                 <View style={styles.buttonContainer}>
                     <Btn

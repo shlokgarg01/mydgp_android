@@ -17,11 +17,14 @@ import Btn from '../../components/Btn';
 import { getAllServices } from '../../actions/ServiceActions';
 import { AccordianStyles } from '../../components/CategoriesAccordion/CategoriesAccordion.styles';
 import { showToast } from '../../helpers/ShowToast';
-import { clearErrors, loadUser, updateUserDetails } from '../../actions/UserActions';
+import {
+  clearErrors,
+  loadUser,
+  updateUserDetails,
+} from '../../actions/UserActions';
 import Loader from '../../components/Loader';
 import ProfilePhotoUpload from '../../components/UploadProfilePhoto';
 import { useNavigation } from '@react-navigation/native';
-import RouteNames from '../../routes/RouteNames';
 import Colors from '../../helpers/Colors';
 import store from '../../../store';
 
@@ -38,6 +41,10 @@ const ProfileForm = () => {
   const { loading, isUpdated, error } = useSelector(state => state.profile);
   const navigation: any = useNavigation();
   const [imageCode, setImageCode] = useState();
+  const [accountDetails, setAccountDetails] = useState(user?.accountDetails);
+  const [equipmentDetails, setEquipmentDetails] = useState(
+    user?.equipmentDetails,
+  );
 
   useEffect(() => {
     if (services.length === 0) dispatch(getAllServices());
@@ -136,6 +143,8 @@ const ProfileForm = () => {
         subServices: selectedSubServices,
         isProfileUpdated: true,
         avatar: imageCode,
+        accountDetails: accountDetails,
+        equipmentDetails: equipmentDetails
       }),
     );
     setTimeout(() => {
@@ -153,15 +162,14 @@ const ProfileForm = () => {
           size={16}
           color={'white'}
           style={{}}
-          onPress={() => { navigation.goBack() }}
+          onPress={() => {
+            navigation.goBack();
+          }}
         />
         <Text style={styles.heading}>Complete your profile</Text>
       </View>
       <ScrollView style={styles.contentSection}>
-        <ProfilePhotoUpload
-          setImageCode={setImageCode}
-          user={user}
-        />
+        <ProfilePhotoUpload setImageCode={setImageCode} user={user} />
         <View style={styles.uploadContainer}>
           <DocUploader setDocument={setIdProofImage} title="Upload ID Proof" />
         </View>
@@ -218,25 +226,184 @@ const ProfileForm = () => {
         )}
 
         <Text style={styles.subHeading}>Your Portfolio</Text>
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Portfolio Link'} />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Portfolio Link'}
+        />
 
         <Text style={styles.subHeading}>Bank Details</Text>
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Holder Name'} />
-        <TextInput keyboardType='numeric' placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Account Number'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'IFSC'} />
-
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Account Holder Name'}
+          value={accountDetails?.accountHolderName?.toString()}
+          onChangeText={value =>
+            setAccountDetails((prevState: any) => ({
+              ...prevState,
+              accountHolderName: value,
+            }))
+          }
+        />
+        <TextInput
+          keyboardType="numeric"
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Account Number'}
+          value={accountDetails?.accountNo?.toString()}
+          onChangeText={value =>
+            setAccountDetails((prevState: any) => ({
+              ...prevState,
+              accountNo: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'IFSC'}
+          value={accountDetails?.ifscCode?.toString()}
+          onChangeText={value =>
+            setAccountDetails((prevState: any) => ({
+              ...prevState,
+              ifscCode: value,
+            }))
+          }
+        />
         <Text style={styles.subHeading}>What do you have?</Text>
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Your camera brand'} />
-        <TextInput keyboardType='numeric' placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Shutter count'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Body'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Lens'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Monopod'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Tripod'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Gimbal'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Slider'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Flash'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'Mic'} />
-        <TextInput placeholderTextColor={Colors.GRAY} style={styles.inputText} placeholder={'RGB light'} />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Your camera brand'}
+          value={equipmentDetails?.val1}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val1: value,
+            }))
+          }
+        />
+        <TextInput
+          keyboardType="numeric"
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Shutter count'}
+          value={equipmentDetails?.val2}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val2: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Body'}
+          value={equipmentDetails?.val3}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val3: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Lens'}
+          value={equipmentDetails?.val4}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val4: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Monopod'}
+          value={equipmentDetails?.val5}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val5: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Tripod'}
+          value={equipmentDetails?.val6}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val6: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Gimbal'}
+          value={equipmentDetails?.val7}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val7: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Slider'}
+          value={equipmentDetails?.val8}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val8: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Flash'}
+          value={equipmentDetails?.val9}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val9: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Mic'}
+          value={equipmentDetails?.val10}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val10: value,
+            }))
+          }
+        />
+        <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'RGB light'}
+          value={equipmentDetails?.val11}
+          onChangeText={value =>
+            setEquipmentDetails((prevState: any) => ({
+              ...prevState,
+              val11: value,
+            }))
+          }
+        />
       </ScrollView>
       <View style={{ marginHorizontal: 20 }}>
         <Btn label="Submit" onClick={handleSubmit} />
