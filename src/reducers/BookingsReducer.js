@@ -15,6 +15,9 @@ import {
   GET_PENDING_AMOUNT_REQUEST,
   GET_PENDING_AMOUNT_SUCCESS,
   GET_PENDING_AMOUNT_FAIL,
+  CANCEL_BOOKING_REQUEST,
+  CANCEL_BOOKING_SUCCESS,
+  CANCEL_BOOKING_FAIL,
 } from '../constants/BookingsConstants';
 
 // get completed bookings of a user
@@ -174,6 +177,37 @@ export const getBookingPendingAmtReducer = (state = {charges: 0}, action) => {
         ...state,
         loading: false,
         error: action.payload.message,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return {
+        ...state,
+      };
+  }
+};
+
+// cancel booking
+export const cancelBookingReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CANCEL_BOOKING_REQUEST:
+      return {
+        loading: true,
+      };
+    case CANCEL_BOOKING_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        cancelResponse: action.payload,
+      };
+    case CANCEL_BOOKING_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     case CLEAR_ERRORS:
       return {

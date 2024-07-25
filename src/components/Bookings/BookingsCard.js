@@ -11,6 +11,7 @@ import Enums from '../../helpers/Enums';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../Loader';
 import {
+  cancelBookingRequest,
   getPendingAmountOfBooking,
   updateBookingStatus,
 } from '../../actions/BookingsActions';
@@ -318,6 +319,15 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
                     booking.address.coordinates.lng,
                   )
                 }
+              />
+            )}
+            {status == 'ONGOING' && (
+              <Btn
+                bgColor={Colors.RED}
+                label="Cancel"
+                onClick={() => {
+                  dispatch(cancelBookingRequest(booking._id));
+                }}
               />
             )}
           </View>

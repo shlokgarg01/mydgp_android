@@ -45,6 +45,7 @@ const ProfileForm = () => {
   const [equipmentDetails, setEquipmentDetails] = useState(
     user?.equipmentDetails,
   );
+  const [portfolioLink, setPortfolioLink] = useState(user?.PortfolioLink);
 
   useEffect(() => {
     if (services.length === 0) dispatch(getAllServices());
@@ -144,7 +145,8 @@ const ProfileForm = () => {
         isProfileUpdated: true,
         avatar: imageCode,
         accountDetails: accountDetails,
-        equipmentDetails: equipmentDetails
+        equipmentDetails: equipmentDetails,
+        PortfolioLink: portfolioLink
       }),
     );
     setTimeout(() => {
@@ -230,6 +232,8 @@ const ProfileForm = () => {
           placeholderTextColor={Colors.GRAY}
           style={styles.inputText}
           placeholder={'Portfolio Link'}
+          value={portfolioLink}
+          onChangeText={(value) => setPortfolioLink(value)}
         />
 
         <Text style={styles.subHeading}>Bank Details</Text>
@@ -262,7 +266,7 @@ const ProfileForm = () => {
           placeholderTextColor={Colors.GRAY}
           style={styles.inputText}
           placeholder={'IFSC'}
-          value={accountDetails?.ifscCode?.toString()}
+          value={accountDetails?.ifscCode?.toString()?.toUpperCase()}
           onChangeText={value =>
             setAccountDetails((prevState: any) => ({
               ...prevState,

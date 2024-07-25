@@ -8,7 +8,6 @@ import Loader from '../components/Loader';
 import Colors from '../helpers/Colors';
 import BookingsCard from '../components/Bookings/BookingsCard';
 import {useNavigation} from '@react-navigation/native';
-import {Switch} from 'react-native-switch';
 import CTABtn from '../components/CTABtn';
 import Btn from '../components/Btn';
 import RouteNames from '../routes/RouteNames';
@@ -18,6 +17,8 @@ export default function TodayBookings() {
   const {loading, error, currentBookings} = useSelector(
     state => state.currentBookings,
   );
+  const {cancelResponse} = useSelector(state => state.cancelBookingReducer);
+
   const {isUpdated} = useSelector(state => state.updateBookingStatus);
   const navigation = useNavigation();
 
@@ -25,6 +26,10 @@ export default function TodayBookings() {
     setOnDuty(!onDuty);
     // TODO - make the call to the action to update the status on the backend
   };
+
+  useEffect(() => {
+    dispatch(getCurrentBookings());
+  }, [cancelResponse]);
 
   useEffect(() => {
     dispatch(getCurrentBookings());

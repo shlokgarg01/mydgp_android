@@ -64,11 +64,11 @@ const TotalEarnings = () => {
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <ValueContainer
             heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.today || 0}
+            value={'₹' + Math.round(redeem?.cashCollected?.today) || 0}
           />
           <ValueContainer
             heading={'Earnings'}
-            value={'₹' + redeem?.earnings?.today || 0}
+            value={'₹' + Math.round(redeem?.earnings?.today) || 0}
           />
           <ValueContainer
             heading={'Time (HH:MM)'}
@@ -79,11 +79,11 @@ const TotalEarnings = () => {
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <ValueContainer
             heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.lastWeek || 0}
+            value={'₹' + Math.round(redeem?.cashCollected?.lastWeek) || 0}
           />
           <ValueContainer
             heading={'Earnings'}
-            value={'₹' + redeem?.earnings?.lastWeek || 0}
+            value={'₹' + Math.round(redeem?.earnings?.lastWeek) || 0}
           />
           <ValueContainer
             heading={'Time (HH:MM)'}
@@ -94,11 +94,11 @@ const TotalEarnings = () => {
         <View style={{flexDirection: 'row'}}>
           <ValueContainer
             heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.lastMonth || 0}
+            value={'₹' + Math.round(redeem?.cashCollected?.lastMonth) || 0}
           />
           <ValueContainer
             heading={'Earnings'}
-            value={'₹' + redeem?.earnings?.lastMonth || 0}
+            value={'₹' + Math.round(redeem?.earnings?.lastMonth) || 0}
           />
           <ValueContainer
             heading={'Time (HH:MM)'}
@@ -109,11 +109,11 @@ const TotalEarnings = () => {
         <View style={{flexDirection: 'row'}}>
           <ValueContainer
             heading={'Cash Collected'}
-            value={'₹' + redeem?.cashCollected?.total || 0}
+            value={'₹' + Math.round(redeem?.cashCollected?.total) || 0}
           />
           <ValueContainer
             heading={'Earnings'}
-            value={'₹' + redeem?.earnings?.total || 0}
+            value={'₹' + Math.round(redeem?.earnings?.total) || 0}
           />
           <ValueContainer
             heading={'Time (HH:MM)'}

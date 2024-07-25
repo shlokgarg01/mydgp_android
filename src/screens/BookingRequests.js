@@ -28,13 +28,13 @@ const BookingRequests = () => {
   );
   const {currentBookings} = useSelector(state => state.currentBookings);
   const {error, isUpdated} = useSelector(state => state.bookingRequest);
-  const [isBookingModalVisible, setBookingModalVisible] = useState(true);
+  const [isBookingModalVisible, setBookingModalVisible] = useState(false);
   const [sound, setSound] = useState(null);
   const [isSoundPlaying, setSoundPlaying] = useState(false);
 
   useEffect(() => {
-    setBookingModalVisible(true);
-    dispatch(getCurrentBookings());
+    // setBookingModalVisible(true);
+    // dispatch(getCurrentBookings());
 
     const getBookings = () => {
       dispatch(getAllBookingRequests());
@@ -45,11 +45,24 @@ const BookingRequests = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // useEffect(() => {
+  //   if (currentBookings.length >= 1) {
+  //     setBookingModalVisible(true);
+  //   }
+  // }, [currentBookings]);
+
   useEffect(() => {
-    if (currentBookings.length >= 1) {
+    if (
+      bookingRequests.length > 0 &&
+      !isBookingModalVisible &&
+      currentBookings.length < 1
+    ) {
       setBookingModalVisible(true);
+    } else if (bookingRequests.length < 1) {
+      setBookingModalVisible(false);
+      stopSound();
     }
-  }, [currentBookings]);
+  }, [bookingRequests]);
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -65,14 +78,13 @@ const BookingRequests = () => {
 
   //handles notification sound
   useEffect(() => {
-    if (bookingRequests.length < 1) {
-      stopSound();
-      return;
-    }
-    if (!isSoundPlaying) {
+    if (!isSoundPlaying && isBookingModalVisible) {
       playSound();
+      return;
+    } else {
+      stopSound();
     }
-  }, [bookingRequests]);
+  }, [isBookingModalVisible]);
 
   //plays notification sound
   const playSound = () => {
@@ -129,39 +141,25 @@ const BookingRequests = () => {
   // ) : (
   return (
     <View>
-      {currentBookings.length < 1 ? (
-        <FlatList
-          ListEmptyComponent={() => (
-            <Text style={styles.emptylistText}>No new booking requests</Text>
-          )}
-          data={bookingRequests}
-          renderItem={({item, index}) =>
-            index == 0 && (
-              <BookingRequestModal
-                bookingRequest={item}
-                setBookingModalVisible={setBookingModalVisible}
-                isBookingModalVisible={isBookingModalVisible}
-              />
-            )
-          }
-          // renderItem={({ item, index }) => index == 0 && <BookingRequestsCard bookingRequest={item} />}
-          contentContainerStyle={{paddingBottom: 13}}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={{padding: 20}}>
-          <Text style={styles.emptylistText}>
-            Booking Already in queue. Complete that to get new bookings
-          </Text>
-          <Btn
-            label={'Show my booking'}
-            onClick={() => {
-              navigation.navigate(RouteNames.TODAY_BOOKINGS);
-            }}
-            bgColor={Colors.THEME_COLOR}
-          />
-        </View>
-      )}
+      <FlatList
+        ListEmptyComponent={() => (
+          <Text style={styles.emptylistText}>No new booking requests</Text>
+        )}
+        data={bookingRequests}
+        renderItem={({item, index}) =>
+          index == 0 && (
+            <BookingRequestModal
+              bookingRequest={item}
+              setBookingModalVisible={setBookingModalVisible}
+              isBookingModalVisible={isBookingModalVisible}
+              stopSound={stopSound}
+            />
+          )
+        }
+        // renderItem={({ item, index }) => index == 0 && <BookingRequestsCard bookingRequest={item} />}
+        contentContainerStyle={{paddingBottom: 13}}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
   // );

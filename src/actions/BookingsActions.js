@@ -1,5 +1,8 @@
 import axiosInstance, {BASE_URL} from '../Axios';
 import {
+  CANCEL_BOOKING_FAIL,
+  CANCEL_BOOKING_REQUEST,
+  CANCEL_BOOKING_SUCCESS,
   CLEAR_ERRORS,
   GET_COMPLETED_BOOKINGS_FAIL,
   GET_COMPLETED_BOOKINGS_REQUEST,
@@ -110,6 +113,31 @@ export const getPendingAmountOfBooking = bookingId => async dispatch => {
     dispatch({
       type: GET_PENDING_AMOUNT_FAIL,
       payload: error.response.data.message,
+    });
+  }
+};
+
+export const cancelBookingRequest = bookingId => async dispatch => {
+  try {
+    console.log('wrokin1');
+    dispatch({type: CANCEL_BOOKING_REQUEST});
+
+    const config = {headers: {'Content-Type': 'application/json'}};
+    const {data} = await axiosInstance.post(
+      `https://my-dgp.onrender.com/api/v1/bookingrequest/cancel/${bookingId}`,
+      config,
+    );
+
+    dispatch({
+      type: CANCEL_BOOKING_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log('wrokin2', error);
+
+    dispatch({
+      type: CANCEL_BOOKING_FAIL,
+      payload: error,
     });
   }
 };

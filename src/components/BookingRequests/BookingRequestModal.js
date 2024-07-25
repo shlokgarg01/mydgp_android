@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Enums from '../../helpers/Enums';
@@ -16,6 +16,7 @@ const BookingRequestModal = ({
   bookingRequest,
   setBookingModalVisible,
   isBookingModalVisible,
+  stopSound,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -54,6 +55,11 @@ const BookingRequestModal = ({
             duration={60}
             size={80}
             strokeWidth={6}
+            onComplete={() => {
+              stopSound();
+              updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.REJECTED);
+              setBookingModalVisible(false);
+            }}
             trailColor="white"
             colors={['#cd9a00', '#F7B801', '#A30000', '#A30000']}
             colorsTime={[7, 5, 2, 0]}>
@@ -114,6 +120,7 @@ const BookingRequestModal = ({
           <CTABtn
             onClick={() => {
               setBookingModalVisible(false);
+              stopSound();
               updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.ACCEPTED);
               navigation.navigate(RouteNames.TODAY_BOOKINGS);
             }}
@@ -123,9 +130,11 @@ const BookingRequestModal = ({
             width={'80%'}
           />
           <CTABtn
-            onClick={() =>
-              updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.REJECTED)
-            }
+            onClick={() => {
+              stopSound();
+              setBookingModalVisible(false);
+              updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.REJECTED);
+            }}
             label="SKIP"
             bgColor={Colors.GRAY_BG}
             color={Colors.BLACK}

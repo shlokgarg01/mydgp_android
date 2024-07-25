@@ -34,22 +34,91 @@ export default function SignupOtpVerify({navigation, route}) {
   }, [dispatch, error, isAuthenticated]);
 
   const verifyOTPHandler = async () => {
-    try {
-      await confirmation.confirm(otp);
+    // try {
+    //   await confirmation.confirm(otp);
+    //   navigation.replace(RouteNames.AUTH.SIGNUP, {contactNumber});
+    // } catch (error) {
+    //   showToast('error', 'Invalid OTP.');
+    // }
+    if (otp == route.params.otp) {
       navigation.replace(RouteNames.AUTH.SIGNUP, {contactNumber});
-    } catch (error) {
-      showToast('error', 'Invalid OTP.');
+    } else {
+      showToast('error', 'Invalid OTP');
     }
   };
 
-  const resendOTP = async () => {
-    setOtpLoading(true);
-    const confirmation = await auth().signInWithPhoneNumber(
-      `+91${contactNumber}`,
-    );
-    setConfirmation(confirmation);
-    setOtpLoading(false);
-    showToast('success', 'OTP Sent');
+  const resendOTP = () => {
+    // setOtpLoading(true);
+    // const confirmation = await auth().signInWithPhoneNumber(
+    //   `+91${contactNumber}`,
+    // );
+    // setConfirmation(confirmation);
+    // setOtpLoading(false);
+    // showToast('success', 'OTP Sent');
+    callWhatsappOtpApi(contactNumber);
+  };
+
+  //sends whatsapp message for otp.
+  const callWhatsappOtpApi = async contactNumber => {
+    try {
+      const otp = route.params.otp;
+      const apiUrl =
+        'https://graph.facebook.com/v19.0/365577786631719/messages';
+      const accessToken =
+        'EAAaO7W1PA5ABO1sjb0y9IkZBk1nfxhNH2H2sxkF8ps9AHHAWOj96MODmLPYjbFrov0ht8fsJZAjSdNgZC765dwZCKZAgWvNZBICeNVFviO7GEE1ZAvJWDaKajQeGDBjoWFUc5iAdrNQhEeWhQTyO19sefTShOfPitB4rACuzKnmpLVHZBM64uJ7Cv4YFHPI3uzU06wZDZD'; // Your access token
+
+      const requestBody = {
+        messaging_product: 'whatsapp',
+        to: `91${contactNumber}`,
+        type: 'template',
+        template: {
+          name: 'authpin',
+          language: {
+            code: 'en',
+          },
+          components: [
+            {
+              type: 'body',
+              parameters: [
+                {
+                  type: 'text',
+                  text: otp,
+                },
+              ],
+            },
+            {
+              type: 'button',
+              sub_type: 'url',
+              index: 0,
+              parameters: [
+                {
+                  type: 'text',
+                  text: otp,
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const responseData = await response.json();
+      //success
+      console.log('API Response:', responseData);
+      showToast('success', 'Otp Sent');
+      // Handle response data as needed
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors
+    }
   };
 
   return otpLoading ? (
@@ -61,7 +130,8 @@ export default function SignupOtpVerify({navigation, route}) {
         <Text style={AuthStyles.heading}>ENTER OTP</Text>
         <InputGroup
           label="Enter OTP"
-          placeholder="xxxxxx"
+          placeholder="xxxx"
+          maxLength={4}
           style={AuthStyles.inputField}
           value={otp}
           onChange={otpEntered => setOtp(otpEntered)}

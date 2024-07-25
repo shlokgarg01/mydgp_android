@@ -18,7 +18,7 @@ const PendingPayment = (props: IPendingPayment) => {
                     </Text>
                 </View>
                 <Text style={styles.heading}>
-                    Amount to be collected :  {props?.amount > -1 ? <Text style={styles.amount}>₹{props?.amount}</Text> : <ActivityIndicator size={22} style={{ paddingLeft: 10 }} />}
+                    Amount to be collected :  {props?.amount > -1 ? <Text style={styles.amount}>₹{Math.round(props?.amount)}</Text> : <ActivityIndicator size={22} style={{ paddingLeft: 10 }} />}
                 </Text>
                 <View style={styles.btnRow}>
                     <View style={styles.btnContainer}>
@@ -30,7 +30,7 @@ const PendingPayment = (props: IPendingPayment) => {
                             bgColor={undefined}
                         />
                     </View>
-                    <View style={styles.btnContainer}>
+                    {/* <View style={styles.btnContainer}>
                         <Btn
                             label={'Send Payment Link'}
                             color={Colors.THEME_COLOR}
@@ -38,7 +38,7 @@ const PendingPayment = (props: IPendingPayment) => {
                             disabled={undefined}
                             bgColor={undefined}
                         />
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </Modal>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     btnContainer: {
-        width: '45%',
+        width: '95%',
         margin: 10
     },
     headingContainer: {

@@ -8,6 +8,7 @@ import {
 import {serviceReducer} from './src/reducers/ServiceReducer';
 import {applyLeaveReducer, getLeavesReducer} from './src/reducers/LeaveReducer';
 import {
+  cancelBookingReducer,
   completedBookingsReducer,
   currentBookingsReducer,
   futureBookingsReducer,
@@ -34,6 +35,7 @@ const reducer = combineReducers({
   futureBookings: futureBookingsReducer,
   getPendingAmt: getBookingPendingAmtReducer,
   redeem: redeemReducer,
+  cancelBookingReducer: cancelBookingReducer,
 });
 
 const initialState = {};

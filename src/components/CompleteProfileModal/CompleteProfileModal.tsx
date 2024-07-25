@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
-import {styles} from './CompleteProfileModal.styles';
+import { styles } from './CompleteProfileModal.styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import RouteNames from '../../routes/RouteNames';
 
 const CompleteProfileModal = () => {
@@ -22,7 +22,7 @@ const CompleteProfileModal = () => {
           />
           <Text style={styles.alertText}>
             Oops ! Your profile is incomplete. Please complete your profile to
-            get bookings !r
+            get bookings & start earning !
           </Text>
           <TouchableOpacity
             style={styles.button}

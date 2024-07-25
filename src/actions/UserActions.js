@@ -162,7 +162,7 @@ export const updateUserDetails = userData => async dispatch => {
   } catch (error) {
     dispatch({
       type: UPDATE_PROFILE_FAIL,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message,
     });
   }
 };
@@ -183,7 +183,7 @@ export const toggleDutyStatus = status => async dispatch => {
   } catch (error) {
     dispatch({
       type: ON_DUTY_TOGGLE_FAIL,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message,
     });
   }
 };
@@ -203,7 +203,7 @@ export const updateFCM = fcm_token => async dispatch => {
   } catch (error) {
     dispatch({
       type: UPDATE_FCM_FAIL,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message,
     });
   }
 };

@@ -2,6 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">mydgp.in</domain>
+        <domain includeSubdomains="true">89.116.121.247</domain>
         <!-- Add more domains if needed -->
     </domain-config>
 </network-security-config>
