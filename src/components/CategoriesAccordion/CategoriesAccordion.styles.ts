@@ -12,6 +12,8 @@ export const AccordianStyles = StyleSheet.create({
         margin: 5,
         padding: 10,
         borderRadius: 10,
+        flexDirection:'row',
+        justifyContent:'space-between'
     },
     submitButton: {
         backgroundColor: Colors.PRIMARY,

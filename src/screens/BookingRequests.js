@@ -26,7 +26,9 @@ const BookingRequests = () => {
   const {loading, bookingRequests} = useSelector(
     state => state.bookingRequests,
   );
-  const {currentBookings} = useSelector(state => state.currentBookings);
+  const {loading: currentBookingLoading, currentBookings} = useSelector(
+    state => state.currentBookings,
+  );
   const {error, isUpdated} = useSelector(state => state.bookingRequest);
   const [isBookingModalVisible, setBookingModalVisible] = useState(false);
   const [sound, setSound] = useState(null);
@@ -55,12 +57,13 @@ const BookingRequests = () => {
     if (
       bookingRequests.length > 0 &&
       !isBookingModalVisible &&
-      currentBookings.length < 1
+      currentBookings.length < 1 &&
+      !currentBookingLoading
     ) {
       setBookingModalVisible(true);
     } else if (bookingRequests.length < 1) {
-      setBookingModalVisible(false);
       stopSound();
+      setBookingModalVisible(false);
     }
   }, [bookingRequests]);
 
@@ -110,9 +113,9 @@ const BookingRequests = () => {
   };
 
   //stop notification sound
-  const stopSound = () => {
+  const stopSound = async () => {
     if (sound) {
-      sound.stop(() => {
+      await sound.stop(() => {
         console.log('Sound stopped');
         setSoundPlaying(false);
       });

@@ -138,6 +138,17 @@ const ProfileForm = () => {
     setSelectedSubServices(updatedIds);
   };
 
+  //returns list of services/categories
+  const getServicesList = () => {
+    if (user.service == '662de46f95110c7859d53e49') {
+      //in case of 'both', return all services.
+      return services;
+    } else {
+      //returns only registered service.
+      return [services.find(service => service._id === user.service)];
+    }
+  };
+
   const handleSubmit = () => {
     dispatch(
       updateUserDetails({
@@ -146,7 +157,7 @@ const ProfileForm = () => {
         avatar: imageCode,
         accountDetails: accountDetails,
         equipmentDetails: equipmentDetails,
-        PortfolioLink: portfolioLink
+        PortfolioLink: portfolioLink,
       }),
     );
     setTimeout(() => {
@@ -174,6 +185,9 @@ const ProfileForm = () => {
         <ProfilePhotoUpload setImageCode={setImageCode} user={user} />
         <View style={styles.uploadContainer}>
           <DocUploader setDocument={setIdProofImage} title="Upload ID Proof" />
+          <Text style={{ color: Colors.GRAY, fontSize: 14, marginTop: 2 }}>
+            Please upload Aadhar card, Pan Card or driving license scanned copy*
+          </Text>
         </View>
         {/* {services.length > 0 && console.log(services.filter(service => service._id === user.service))} */}
         {services.length > 0 && (
@@ -185,7 +199,7 @@ const ProfileForm = () => {
           <View>
             <Text style={AccordianStyles.heading}>What do you do?</Text>
             <FlatList
-              data={[services.find(service => service._id === user.service)]}
+              data={getServicesList()}
               renderItem={({ item }) => (
                 <View key={item._id}>
                   {/* <CheckBox
@@ -193,11 +207,16 @@ const ProfileForm = () => {
                         checked={selectedServices.includes(item.name)}
                         onPress={() => toggleServiceSelection(item.name)}
                     /> */}
-                  <Text
+                  <View
                     style={AccordianStyles.categoryContainer}
-                    onPress={() => setShowSubServices(!showSubServices)}>
-                    {item?.name}
-                  </Text>
+                    onTouchEnd={() => setShowSubServices(!showSubServices)}>
+                    <Text>{item?.name} </Text>
+                    <Icon
+                      name={showSubServices ? 'chevron-up' : 'chevron-down'}
+                      size={14}
+                      color={'black'}
+                    />
+                  </View>
                   {/* {selectedServices.includes(item.name) && ( */}
                   {showSubServices && (
                     <FlatList
@@ -233,7 +252,7 @@ const ProfileForm = () => {
           style={styles.inputText}
           placeholder={'Portfolio Link'}
           value={portfolioLink}
-          onChangeText={(value) => setPortfolioLink(value)}
+          onChangeText={value => setPortfolioLink(value)}
         />
 
         <Text style={styles.subHeading}>Bank Details</Text>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Linking} from 'react-native';
+import {View, Linking, Text, TouchableOpacity} from 'react-native';
 import ShowInfo from '../ShowInfo';
 import ComponentStyles from '../../styles/ComponentStyles';
 import {getDate} from '../../utils/DateTime';
@@ -22,8 +22,16 @@ import GetLocation, {isLocationError} from 'react-native-get-location';
 import OtpModal from '../OtpModal/OtpModal';
 import PendingPayment from '../PendingPayment';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../Axios';
 
-const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
+const BookingsCard = ({
+  booking,
+  showUpdateStatus,
+  isCurrent,
+  setWorkUrlModalVisible,
+  setSelectedBooking,
+}) => {
   const dispatch = useDispatch();
   const {error, loading, isUpdated} = useSelector(
     state => state.updateBookingStatus,
@@ -38,6 +46,8 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
   const [isPendingAmtVisible, setPendingAmtVisible] = useState(false);
   const [isLocationLoading, setLocationLoading] = useState(false);
   const [isInitial, setInitial] = useState(true);
+  const [isWorkUrlApproved, setWorkUrlApproved] = useState(false);
+  const [isSubmitWorkLoading, setSubmitWorkLoading] = useState(false);
 
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
@@ -189,6 +199,49 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
     return totalPendingAmt;
   };
 
+  // get Delivery Request info of booking id
+  const getDeliveryRequest = async requestId => {
+    setSubmitWorkLoading(true);
+    const url = `${BASE_URL}/api/v1/deliveryRequests/${requestId}`;
+    let token = await AsyncStorage.getItem('token');
+    token = token ? JSON.parse(token) : '';
+    const headers = {
+      Accept: 'application/json, text/plain, */*',
+      Connection: 'keep-alive',
+      'Content-Type': 'application/json',
+      authorization: `${token}`,
+    };
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: headers,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setWorkUrlApproved(false);
+        setSubmitWorkLoading(false);
+      } else {
+        const errorData = await response.json();
+        setWorkUrlApproved(true);
+        setSubmitWorkLoading(false);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // const isWorkUrlApproved = () => {
+  //   getDeliveryRequest(booking?._id);
+  //   if (deliveryRequestData != null) {
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
+  useEffect(() => {
+    getDeliveryRequest(booking?._id);
+  }, [isSubmitWorkLoading]);
+
   useEffect(() => {
     if (error) {
       if (error != 'Invalid Status!') {
@@ -224,14 +277,29 @@ const BookingsCard = ({booking, showUpdateStatus, isCurrent}) => {
             } ${booking.minutes} ${booking?.hours === 1 ? 'min' : 'mins'}`}
           />
           {!isCurrent && (
-            <ShowInfo
-              title="Start Photo Number"
-              info={booking?.startPhotoNumber}
-            />
+            <>
+              <ShowInfo
+                title="Start Photo Number"
+                info={booking?.startPhotoNumber}
+              />
+              <ShowInfo
+                title="End Photo Number"
+                info={booking?.endPhotoNumber}
+              />
+              {isWorkUrlApproved && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedBooking(booking);
+                    setWorkUrlModalVisible(true);
+                  }}>
+                  <Text style={{fontSize: 16, padding: 10, color: Colors.BLUE}}>
+                    Submit Work Url
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </>
           )}
-          {!isCurrent && (
-            <ShowInfo title="End Photo Number" info={booking?.endPhotoNumber} />
-          )}
+
           {isCurrent && (
             <>
               <SubHeading

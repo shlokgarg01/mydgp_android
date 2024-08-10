@@ -55,8 +55,8 @@ const BookingRequestModal = ({
             duration={60}
             size={80}
             strokeWidth={6}
-            onComplete={() => {
-              stopSound();
+            onComplete={async () => {
+              await stopSound();
               updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.REJECTED);
               setBookingModalVisible(false);
             }}
@@ -118,11 +118,11 @@ const BookingRequestModal = ({
 
         <View style={[ComponentStyles.horizontalEvenlyAlgin]}>
           <CTABtn
-            onClick={() => {
-              setBookingModalVisible(false);
-              stopSound();
+            onClick={async () => {
+              await stopSound();
               updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.ACCEPTED);
               navigation.navigate(RouteNames.TODAY_BOOKINGS);
+              setBookingModalVisible(false);
             }}
             label="ACCEPT"
             bgColor={Colors.THEME_COLOR}
@@ -130,8 +130,8 @@ const BookingRequestModal = ({
             width={'80%'}
           />
           <CTABtn
-            onClick={() => {
-              stopSound();
+            onClick={async () => {
+              await stopSound();
               setBookingModalVisible(false);
               updateBookingRequest(Enums.BOOKING_REQUEST_STATUS.REJECTED);
             }}

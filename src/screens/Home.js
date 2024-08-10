@@ -36,8 +36,8 @@ export default function Home() {
   // const [isProfilePending, setProfilePending] = useState(user.isProfileUpdated);
 
   const images = [
-    'https://i.ibb.co/S7N2dgd/captain-benner.png',
-    'https://i.ibb.co/yNsY9dd/Grand-opportunity.jpg',
+    'https://firebasestorage.googleapis.com/v0/b/my-dpg.appspot.com/o/riderBanner1.jpg?alt=media',
+    'https://firebasestorage.googleapis.com/v0/b/my-dpg.appspot.com/o/riderBanner2.jpg?alt=media',
   ];
 
   const updateDutyStatus = () => {
@@ -92,8 +92,8 @@ export default function Home() {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'MYDGP Captain',
-          message: 'MYDGP Captain access to your location ',
+          title: 'MYDGP Team',
+          message: 'MYDGP Team access to your location ',
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {

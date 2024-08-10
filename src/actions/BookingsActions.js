@@ -124,7 +124,7 @@ export const cancelBookingRequest = bookingId => async dispatch => {
 
     const config = {headers: {'Content-Type': 'application/json'}};
     const {data} = await axiosInstance.post(
-      `https://my-dgp.onrender.com/api/v1/bookingrequest/cancel/${bookingId}`,
+      `${BASE_URL}/api/v1/bookingrequest/cancel/${bookingId}`,
       config,
     );
 
