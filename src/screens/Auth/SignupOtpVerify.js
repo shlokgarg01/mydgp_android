@@ -63,7 +63,7 @@ export default function SignupOtpVerify({navigation, route}) {
     try {
       const otp = route.params.otp;
       const apiUrl =
-        'https://graph.facebook.com/v19.0/365577786631719/messages';
+        'https://graph.facebook.com/v19.0/414633705063465/messages';
       const accessToken =
         'EAAaO7W1PA5ABO1sjb0y9IkZBk1nfxhNH2H2sxkF8ps9AHHAWOj96MODmLPYjbFrov0ht8fsJZAjSdNgZC765dwZCKZAgWvNZBICeNVFviO7GEE1ZAvJWDaKajQeGDBjoWFUc5iAdrNQhEeWhQTyO19sefTShOfPitB4rACuzKnmpLVHZBM64uJ7Cv4YFHPI3uzU06wZDZD'; // Your access token
 
@@ -138,7 +138,10 @@ export default function SignupOtpVerify({navigation, route}) {
           type="number-pad"
         />
         <Btn onClick={verifyOTPHandler} label="VERIFY" />
+        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+        <ButtonSubText subTitle="Entered Wrong No?" subTitleOnClick={()=>{navigation.pop()}} />
         <ButtonSubText subTitle="Resend OTP" subTitleOnClick={resendOTP} />
+        </View>
       </View>
     </View>
   );

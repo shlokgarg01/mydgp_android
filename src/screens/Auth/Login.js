@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {showToast} from '../../helpers/ShowToast';
+import { View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { showToast } from '../../helpers/ShowToast';
 import RouteNames from '../../routes/RouteNames';
-import {clearErrors, loginViaOTP} from '../../actions/UserActions';
+import { clearErrors, loginViaOTP, sendOTPLogin } from '../../actions/UserActions';
 import AuthHeader from '../../components/Auth/AuthHeader';
 import AuthStyles from '../../styles/AuthStyles';
 import InputGroup from '../../components/InputGroup';
@@ -12,19 +12,19 @@ import ButtonSubText from '../../components/Auth/ButtonSubText';
 import auth from '@react-native-firebase/auth';
 import Loader from '../../components/Loader';
 
-export default function Login({navigation, route}) {
+export default function Login({ navigation, route }) {
   const [otp, setOtp] = useState();
   const [confirmation, setConfirmation] = useState(route.params.confirmation);
   const [otpLoading, setOtpLoading] = useState(false);
 
   const contactNumber = route.params.contactNumber;
   const dispatch = useDispatch();
-  const {error, isAuthenticated, loading} = useSelector(state => state.user);
+  const { error, isAuthenticated, loading } = useSelector(state => state.user);
 
   useEffect(() => {
     if (isAuthenticated) {
       showToast('success', 'Login Successful');
-      navigation.reset({index: 1, routes: [{name: RouteNames.DRAWERS.HOME}]});
+      navigation.reset({ index: 1, routes: [{ name: RouteNames.DRAWERS.HOME }] });
     }
 
     if (error) {
@@ -63,7 +63,7 @@ export default function Login({navigation, route}) {
     try {
       const otp = route.params.otp;
       const apiUrl =
-        'https://graph.facebook.com/v19.0/365577786631719/messages';
+        'https://graph.facebook.com/v19.0/414633705063465/messages';
       const accessToken =
         'EAAaO7W1PA5ABO1sjb0y9IkZBk1nfxhNH2H2sxkF8ps9AHHAWOj96MODmLPYjbFrov0ht8fsJZAjSdNgZC765dwZCKZAgWvNZBICeNVFviO7GEE1ZAvJWDaKajQeGDBjoWFUc5iAdrNQhEeWhQTyO19sefTShOfPitB4rACuzKnmpLVHZBM64uJ7Cv4YFHPI3uzU06wZDZD'; // Your access token
 
@@ -138,7 +138,12 @@ export default function Login({navigation, route}) {
           type="number-pad"
         />
         <Btn onClick={loginHandler} label="LOGIN" />
-        <ButtonSubText subTitle="Resend OTP" subTitleOnClick={resendOTP} />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <ButtonSubText subTitle="Entered Wrong No?" subTitleOnClick={() => {
+            navigation.pop();
+          }} />
+          <ButtonSubText subTitle="Resend OTP" subTitleOnClick={resendOTP} />
+        </View>
       </View>
     </View>
   );

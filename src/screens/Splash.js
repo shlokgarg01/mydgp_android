@@ -1,12 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import store from '../../store';
 import {useSelector} from 'react-redux';
-import {Image, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import RouteNames from '../routes/RouteNames';
 import {loadUser} from '../actions/UserActions';
 
 const Splash = ({navigation}) => {
   const {isAuthenticated} = useSelector(state => state.user);
+  const [dots, setDots] = useState('');
 
   useEffect(() => {
     store.dispatch(loadUser());
@@ -21,6 +22,21 @@ const Splash = ({navigation}) => {
     setTimeout(() => {
       navigation.replace(routeName);
     }, 2000);
+  }, []);
+
+  useEffect(() => {
+    // Dot animation logic
+    const dotInterval = setInterval(() => {
+      setDots(prevDots => {
+        if (prevDots.length < 3) {
+          return prevDots + '.';
+        }
+        return '';
+      });
+    }, 500);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(dotInterval);
   }, []);
 
   return (
@@ -41,6 +57,7 @@ const Splash = ({navigation}) => {
           // height: '100%',
         }}
       />
+      <Text style={{ fontSize: 16, position: 'absolute', bottom: 100, width: 150 }} >Fetching location{dots}</Text>
     </View>
   );
 };
