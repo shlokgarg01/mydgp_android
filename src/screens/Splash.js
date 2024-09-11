@@ -57,7 +57,7 @@ const Splash = ({navigation}) => {
           // height: '100%',
         }}
       />
-      <Text style={{ fontSize: 16, position: 'absolute', bottom: 100, width: 150 }} >Fetching location{dots}</Text>
+      <Text style={{ fontSize: 16, width: 150 ,marginTop:50}} >Fetching location{dots}</Text>
     </View>
   );
 };
