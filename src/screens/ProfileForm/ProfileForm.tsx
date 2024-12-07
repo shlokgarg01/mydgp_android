@@ -46,6 +46,7 @@ const ProfileForm = () => {
     user?.equipmentDetails,
   );
   const [portfolioLink, setPortfolioLink] = useState(user?.PortfolioLink);
+  const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(null);
 
   useEffect(() => {
     if (services.length === 0) dispatch(getAllServices());
@@ -63,64 +64,7 @@ const ProfileForm = () => {
     }
   }, [isUpdated, error]);
 
-  const data: any = [
-    {
-      id: 1,
-      name: 'Photography',
-      subServices: [
-        'Nature, Landscape',
-        'Night Scape, Star',
-        'Pet',
-        'Wildlife,Animal & Birds',
-        'Selfie',
-        'Portrait',
-        'Models(at photo shooting event)',
-        'Street Photography',
-        'Travel',
-        'Music Recitals/school plays',
-        'Sports',
-        'Wedding',
-        'Event - Parties,religious, conferences,awards,groups and team photos',
-        'Fashion/Beauty',
-        'Food',
-        'Macro shooting',
-        'Still Life',
-        'Transportation',
-        'Aerial',
-        'Architecture',
-        'Underwater',
-        'Others',
-      ],
-    },
-    {
-      id: 2,
-      name: 'Videography',
-      subServices: [
-        'Nature, Landscape',
-        'Night Scape, Star',
-        'Pet',
-        'Wildlife,Animal & Birds',
-        'Selfie',
-        'Portrait',
-        'Models(at photo shooting event)',
-        'Street Photography',
-        'Travel',
-        'Music Recitals/school plays',
-        'Sports',
-        'Wedding',
-        'Event - Parties,religious, conferences,awards,groups and team photos',
-        'Fashion/Beauty',
-        'Food',
-        'Macro shooting',
-        'Still Life',
-        'Transportation',
-        'Aerial',
-        'Architecture',
-        'Underwater',
-        'Others',
-      ],
-    },
-  ];
+
 
   //   const handleServicesSelect = (
   //     selectedServices: string[],
@@ -191,15 +135,15 @@ const ProfileForm = () => {
         </View>
         {/* {services.length > 0 && console.log(services.filter(service => service._id === user.service))} */}
         {services.length > 0 && (
-          //   <CategoriesAccordion
-          //     services={services.filter(service => service._id === user.service)}
-          //     onServicesSelect={handleServicesSelect}
-          //   />
+            // <CategoriesAccordion
+            //   services={services.filter(service => service._id === user.service)}
+            //   onServicesSelect={handleServicesSelect}
+            // />
 
           <View>
             <Text style={AccordianStyles.heading}>What do you do?</Text>
             <FlatList
-              data={getServicesList()}
+              data={getServicesList()?.[0]?.subServices}
               renderItem={({ item }) => (
                 <View key={item._id}>
                   {/* <CheckBox
@@ -209,8 +153,12 @@ const ProfileForm = () => {
                     /> */}
                   <View
                     style={AccordianStyles.categoryContainer}
-                    onTouchEnd={() => setShowSubServices(!showSubServices)}>
-                    <Text>{item?.name} </Text>
+                    onTouchEnd={() => {
+                      // Toggle: if clicking on already expanded category, close it
+                      // otherwise expand the clicked category
+                      setExpandedCategoryId(expandedCategoryId === item._id ? null : item._id)
+                    }}>
+                   <Text>{item?.name} </Text>
                     <Icon
                       name={showSubServices ? 'chevron-up' : 'chevron-down'}
                       size={14}
@@ -218,16 +166,15 @@ const ProfileForm = () => {
                     />
                   </View>
                   {/* {selectedServices.includes(item.name) && ( */}
-                  {showSubServices && (
+                  {expandedCategoryId === item._id && (
                     <FlatList
-                      data={item?.subServices}
-                      renderItem={({ item: subService }) => (
+                      data={item?.packages}
+                      renderItem={({ item: packages }) => (
                         <CheckBox
-                          key={subService._id}
-                          title={subService.name}
-                          checked={selectedSubServices.includes(subService._id)}
-                          onPress={() => updateSubServices(subService._id)}
-                          containerStyle={styles.subCategoryCheckboxContainer}
+                          key={packages._id}
+                          title={packages.name}
+                          checked={selectedSubServices.includes(packages._id)}
+                          onPress={() => updateSubServices(packages._id)}
                         />
                       )}
                       keyExtractor={subService => subService}

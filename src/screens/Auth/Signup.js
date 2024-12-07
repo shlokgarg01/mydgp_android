@@ -90,30 +90,18 @@ export default function Signup({navigation, route}) {
           style={AuthStyles.inputField}
         /> */}
 
-        <DropDown
-          label="Who Are You ?"
-          value={profession}
-          setValue={val => setProfession(val)}
-          items={professions}
-          open={isProfessionOpen}
-          setIsOpen={() => setProfessionOpen(!isProfessionOpen)}
-          placeholder="Who Are you ?"
-          zIndex={2}
-        />
-
-        {profession && (
           <DropDown
-            label="Your Services ?"
+          label="Who Are You ?"
             value={service}
             setValue={val => setService(val)}
             items={services}
             open={isServiceOpen}
             // onChangeValue={upadteCitiesGroup}
             setIsOpen={() => setServiceOpen(!isServiceOpen)}
-            placeholder="Select Your Service"
+            placeholder="Who Are you ?"
             zIndex={2}
           />
-        )}
+        
         {/* <DocUploader
           document={image}
           setDocument={setImage}
