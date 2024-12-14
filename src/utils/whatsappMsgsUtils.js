@@ -2,7 +2,6 @@ import { showToast } from "../helpers/ShowToast";
 
 export const sendWhatsAppBookingOTP = async (phoneNumber,otp) => {
     const url = 'https://graph.facebook.com/v19.0/365577786631719/messages';
-        
     const requestBody = {
       messaging_product: "whatsapp",
       to: phoneNumber,

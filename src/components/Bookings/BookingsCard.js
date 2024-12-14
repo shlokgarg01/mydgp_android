@@ -24,7 +24,7 @@ import PendingPayment from '../PendingPayment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../Axios';
-import { sendWhatsAppBookingOTP } from '../../utils/whatsappMsgs';
+import { sendWhatsAppBookingOTP } from '../../utils/whatsappMsgsUtils';
 
 const BookingsCard = ({
   booking,
