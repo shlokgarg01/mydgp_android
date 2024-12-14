@@ -96,7 +96,6 @@ const BookingsCard = ({
       if (isArrived()) {
         setOtpModalVisible(true);
       } else {
-        setOtpModalVisible(true);
         showToast(error, 'You are away from location');
       }
     }
