@@ -63,7 +63,7 @@ export default function Login({ navigation, route }) {
     try {
       const otp = route.params.otp;
       const apiUrl =
-        'https://graph.facebook.com/v19.0/414633705063465/messages';
+        'https://graph.facebook.com/v19.0/365577786631719/messages';
       const accessToken =
         'EAAaO7W1PA5ABO1sjb0y9IkZBk1nfxhNH2H2sxkF8ps9AHHAWOj96MODmLPYjbFrov0ht8fsJZAjSdNgZC765dwZCKZAgWvNZBICeNVFviO7GEE1ZAvJWDaKajQeGDBjoWFUc5iAdrNQhEeWhQTyO19sefTShOfPitB4rACuzKnmpLVHZBM64uJ7Cv4YFHPI3uzU06wZDZD'; // Your access token
 
@@ -129,8 +129,8 @@ export default function Login({ navigation, route }) {
       <View style={AuthStyles.formContainer}>
         <Text style={AuthStyles.heading}>ENTER OTP</Text>
         <InputGroup
-          label="Enter OTP"
-          placeholder="xxxx"
+          label={`OTP sent on ${contactNumber}`}
+          placeholder="Enter OTP"
           value={otp}
           maxLength={4}
           style={AuthStyles.inputField}

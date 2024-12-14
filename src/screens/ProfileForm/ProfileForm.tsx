@@ -203,18 +203,7 @@ const ProfileForm = () => {
         />
 
         <Text style={styles.subHeading}>Bank Details</Text>
-        <TextInput
-          placeholderTextColor={Colors.GRAY}
-          style={styles.inputText}
-          placeholder={'Account Holder Name'}
-          value={accountDetails?.accountHolderName?.toString()}
-          onChangeText={value =>
-            setAccountDetails((prevState: any) => ({
-              ...prevState,
-              accountHolderName: value,
-            }))
-          }
-        />
+       
         <TextInput
           keyboardType="numeric"
           placeholderTextColor={Colors.GRAY}
@@ -228,6 +217,18 @@ const ProfileForm = () => {
             }))
           }
         />
+         <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'Account Holder Name'}
+          value={accountDetails?.accountHolderName?.toString()}
+          onChangeText={value =>
+            setAccountDetails((prevState: any) => ({
+              ...prevState,
+              accountHolderName: value,
+            }))
+          }
+        />
         <TextInput
           placeholderTextColor={Colors.GRAY}
           style={styles.inputText}
@@ -237,6 +238,30 @@ const ProfileForm = () => {
             setAccountDetails((prevState: any) => ({
               ...prevState,
               ifscCode: value,
+            }))
+          }
+        />
+         <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'UPI ID'}
+          value={accountDetails?.upiID?.toString()?.toUpperCase()}
+          onChangeText={value =>
+            setAccountDetails((prevState: any) => ({
+              ...prevState,
+              upiID: value,
+            }))
+          }
+        />
+         <TextInput
+          placeholderTextColor={Colors.GRAY}
+          style={styles.inputText}
+          placeholder={'UPI Holder Name'}
+          value={accountDetails?.upiName?.toString()?.toUpperCase()}
+          onChangeText={value =>
+            setAccountDetails((prevState: any) => ({
+              ...prevState,
+              upiName: value,
             }))
           }
         />

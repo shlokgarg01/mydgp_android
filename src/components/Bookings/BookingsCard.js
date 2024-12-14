@@ -24,6 +24,7 @@ import PendingPayment from '../PendingPayment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../Axios';
+import { sendWhatsAppBookingOTP } from '../../utils/whatsappMsgs';
 
 const BookingsCard = ({
   booking,
@@ -48,7 +49,7 @@ const BookingsCard = ({
   const [isInitial, setInitial] = useState(true);
   const [isWorkUrlApproved, setWorkUrlApproved] = useState(false);
   const [isSubmitWorkLoading, setSubmitWorkLoading] = useState(false);
-
+  const [otpTimer,setOtpTimer] = useState(0);
   const statuses =
     booking.status === Enums.BOOKING_STATUS.ACCEPTED
       ? [
@@ -76,8 +77,8 @@ const BookingsCard = ({
   }, [booking.status]);
 
   const updateStatusHandler = () => {
-    if (booking.status === Enums.BOOKING_STATUS.ACCEPTED && !otp) {
-      showToast('error', 'OTP is required');
+    if (booking.status === Enums.BOOKING_STATUS.ACCEPTED && (!otp || !photoNumber)) {
+      showToast('error', 'Both OTP and Photo Number are required');
       return;
     }
     dispatch(
@@ -95,6 +96,7 @@ const BookingsCard = ({
       if (isArrived()) {
         setOtpModalVisible(true);
       } else {
+        setOtpModalVisible(true);
         showToast(error, 'You are away from location');
       }
     }
@@ -238,9 +240,10 @@ const BookingsCard = ({
   //   return true;
   // };
 
-  useEffect(() => {
-    getDeliveryRequest(booking?._id);
-  }, [isSubmitWorkLoading]);
+  //TODO: NOT REQUIRED RIGHT NOW. AUTOMATING IT.
+  // useEffect(() => {
+  //   getDeliveryRequest(booking?._id);
+  // }, [isSubmitWorkLoading]);
 
   useEffect(() => {
     if (error) {
@@ -254,6 +257,25 @@ const BookingsCard = ({
     }
   }, [error, isUpdated]);
 
+  useEffect(() => {
+    let interval;
+    if (otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [otpTimer]);
+
+  const handleSendOtp = ()=>{
+    if(booking?.paymentInfo?.paymentReceived < 1){
+      showToast('error','Advance payment not received')
+    }else{
+      sendWhatsAppBookingOTP(booking?.customer?.contactNumber,booking?.otp)
+      setOtpTimer(60);
+    }
+  }
+
   return loading ? (
     <Loader />
   ) : (
@@ -264,7 +286,7 @@ const BookingsCard = ({
           {alignItems: 'flex-start', paddingRight: 10},
         ]}>
         <View>
-          <ShowInfo title="Id" info={booking?._id} boldInfo={true} />
+          <ShowInfo title="Booking Id" info={booking?._id} boldInfo={true} />
           <ShowInfo
             title="Category"
             info={`${booking?.subService?.name} ${booking?.service?.name}`}
@@ -389,15 +411,27 @@ const BookingsCard = ({
                 }
               />
             )}
+            <View style={{flexDirection:'row'}}>
+            {status == 'ONGOING' && (
+              <Btn
+                bgColor={Colors.PRIMARY}
+                style={{flex:1,marginRight:10}}
+                label={otpTimer > 0 ? `Resend OTP in ${otpTimer}s` : "Send OTP"}
+                onClick={handleSendOtp}
+                disabled={otpTimer > 0}
+              />
+            )}
             {status == 'ONGOING' && (
               <Btn
                 bgColor={Colors.RED}
                 label="Cancel"
+                style={{flex:1}}
                 onClick={() => {
                   dispatch(cancelBookingRequest(booking._id));
                 }}
               />
             )}
+            </View>
           </View>
         </>
       ) : null}

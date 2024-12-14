@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '100%',
         borderRadius: 20,
-        padding: 50,
+        padding: 30,
         alignItems: 'center'
     },
     heading: {
@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
         width: '100%',
         fontWeight: '300',
         textAlign: 'right',
-        marginTop: -40,
-        marginEnd: -40,
+        marginTop: -20,
+        marginEnd: -20,
         marginBottom: 20
     }
 })

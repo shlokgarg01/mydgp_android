@@ -8,10 +8,14 @@ export default function Btn({label, onClick, disabled, bgColor, color, style}) {
     <TouchableOpacity
       disabled={disabled}
       onPress={onClick}
-      style={[
+      style={!disabled ?[
         style,
         ComponentStyles.btnContainer,
         {color: Colors.WHITE, backgroundColor: bgColor || Colors.PRIMARY},
+      ]:[
+        style,
+        ComponentStyles.btnContainer,
+        {color: Colors.WHITE, backgroundColor: Colors.GRAY},
       ]}>
       <Text style={ComponentStyles.btnLabel}>{label}</Text>
     </TouchableOpacity>

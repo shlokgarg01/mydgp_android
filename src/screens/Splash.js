@@ -10,20 +10,25 @@ const Splash = ({navigation}) => {
   const [dots, setDots] = useState('');
 
   useEffect(() => {
-    store.dispatch(loadUser());
-    let routeName = RouteNames.AUTH.LOGINOTP;
-
-    if (isAuthenticated) {
-      routeName = RouteNames.DRAWERS.HOME;
-    } else {
-      routeName = RouteNames.AUTH.LOGINOTP;
-    }
-
-    setTimeout(() => {
+    const initializeApp = async () => {      
+      // Wait for loadUser to complete
+      await store.dispatch(loadUser());
+      
+      // Get the latest auth state from Redux store
+      const currentState = store.getState();
+      const isUserAuthenticated = currentState.user.isAuthenticated;
+      
+      // Navigate based on the current auth state
+      const routeName = isUserAuthenticated 
+        ? RouteNames.DRAWERS.HOME 
+        : RouteNames.AUTH.LOGINOTP;
+        
       navigation.replace(routeName);
-    }, 2000);
-  }, []);
+    };
+    initializeApp();
 
+  }, [navigation]);
+  
   useEffect(() => {
     // Dot animation logic
     const dotInterval = setInterval(() => {
@@ -35,7 +40,6 @@ const Splash = ({navigation}) => {
       });
     }, 500);
 
-    // Cleanup interval on unmount
     return () => clearInterval(dotInterval);
   }, []);
 
@@ -52,12 +56,11 @@ const Splash = ({navigation}) => {
           height: 130,
           width: 130,
           borderRadius: 1000,
-          // flex: 1,
-          // width: '100%',
-          // height: '100%',
         }}
       />
-      <Text style={{ fontSize: 16, width: 150 ,marginTop:50}} >Fetching location{dots}</Text>
+      <Text style={{ fontSize: 16, width: 150 ,marginTop:50}} >
+        Fetching location{dots}
+      </Text>
     </View>
   );
 };

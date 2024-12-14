@@ -61,11 +61,11 @@ const TotalEarnings = () => {
     ) : (
       <View>
         <Text style={styles.heading}>Today's</Text>
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <ValueContainer
+        <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          {/* <ValueContainer
             heading={'Cash Collected'}
             value={'₹' + Math.round(redeem?.cashCollected?.today) || 0}
-          />
+          /> */}
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + Math.round(redeem?.earnings?.today) || 0}
@@ -76,11 +76,11 @@ const TotalEarnings = () => {
           />
         </View>
         <Text style={styles.heading}>Last 7 Days</Text>
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <ValueContainer
+        <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          {/* <ValueContainer
             heading={'Cash Collected'}
             value={'₹' + Math.round(redeem?.cashCollected?.lastWeek) || 0}
-          />
+          /> */}
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + Math.round(redeem?.earnings?.lastWeek) || 0}
@@ -92,10 +92,10 @@ const TotalEarnings = () => {
         </View>
         <Text style={styles.heading}>Last 30 Days</Text>
         <View style={{flexDirection: 'row'}}>
-          <ValueContainer
+          {/* <ValueContainer
             heading={'Cash Collected'}
             value={'₹' + Math.round(redeem?.cashCollected?.lastMonth) || 0}
-          />
+          /> */}
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + Math.round(redeem?.earnings?.lastMonth) || 0}
@@ -107,10 +107,10 @@ const TotalEarnings = () => {
         </View>
         <Text style={styles.heading}>Total</Text>
         <View style={{flexDirection: 'row'}}>
-          <ValueContainer
+          {/* <ValueContainer
             heading={'Cash Collected'}
             value={'₹' + Math.round(redeem?.cashCollected?.total) || 0}
-          />
+          /> */}
           <ValueContainer
             heading={'Earnings'}
             value={'₹' + Math.round(redeem?.earnings?.total) || 0}
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
     alignItems: 'center',
-    width: '30%',
+    width: '48%',
     borderWidth: 2,
     borderColor: Colors.GRAY_BG,
   },

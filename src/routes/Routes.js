@@ -20,10 +20,11 @@ import AllBookings from '../screens/AllBookings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CurrentBookings from '../screens/Home';
 import TodayBookings from '../screens/TodayBookings';
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import TotalEarnings from '../screens/TotalEarnings';
 import ProfileForm from '../screens/ProfileForm/ProfileForm';
 import Help from '../screens/Help';
+import DeviceInfo from 'react-native-device-info';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -45,20 +46,21 @@ function AppDrawerContent(props) {
   };
 
   return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      {/* <DrawerItem label="FAQ"/>
-      <DrawerItem label="Help"/> */}
-      {/* <View
-        style={{
-          borderTopWidth: 1,
-          borderTopColor: Colors.GRAY,
-          width: '90%',
-          marginTop: 10,
-          alignSelf: 'center',
-        }}
-      /> */}
-    </DrawerContentScrollView>
+    <View style={{flex: 1, justifyContent: 'space-between'}}>
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />       
+      </DrawerContentScrollView>
+      <View
+          style={{
+            marginTop: 'auto',
+            marginBottom: 25,
+            alignItems: 'center',
+          }}>
+          <Text style={{color: Colors.GRAY, fontSize: 12}}>
+            Version {DeviceInfo.getVersion()}
+          </Text>
+        </View>
+    </View>
   );
 }
 

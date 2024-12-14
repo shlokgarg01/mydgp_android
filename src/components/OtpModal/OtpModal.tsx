@@ -23,7 +23,7 @@ const OtpModal = (props: IOtpModal) => {
             <View style={styles.modalContainer}>
                 <Text style={styles.close} onPress={() => props.setOtpModalVisible(false)} >x</Text>
                 {props?.isOtpVisible && <>
-                    <Text style={styles.heading}>Enter OTP</Text>
+                    <Text style={styles.heading}>Enter OTP <Text style={{ color: 'red' }}>*</Text></Text>
                     <OTPTextInput
                         tintColor={Colors.THEME_COLOR}
                         ref={e => (otpInput = e)}
@@ -32,7 +32,7 @@ const OtpModal = (props: IOtpModal) => {
                     <Text style={styles.askOtpText}>Please ask OTP from customer</Text>
                 </>
                 }
-                <Text style={styles.heading}>Enter Last 4 Digits (Photo/Video) No.</Text>
+                <Text style={styles.heading}>Enter Last 4 Digits (Photo/Video) No.<Text style={{ color: 'red' }}>*</Text></Text>
                 <OTPTextInput
                     tintColor={Colors.THEME_COLOR}
                     ref={e => (photoNumberInput = e)}
