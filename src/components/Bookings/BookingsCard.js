@@ -24,7 +24,7 @@ import PendingPayment from '../PendingPayment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../Axios';
-import { sendWhatsAppBookingOTP } from '../../utils/whatsappMsgsUtils';
+import { sendWhatsappBookingCompleteBalanceMsg, sendWhatsAppBookingOTP } from '../../utils/whatsappMsgsUtils';
 
 const BookingsCard = ({
   booking,
@@ -112,6 +112,11 @@ const BookingsCard = ({
       } else {
         //mark booking completed
         dispatch(updateBookingStatus(booking._id, status));
+        sendWhatsappBookingCompleteBalanceMsg({
+          phoneNumber:booking?.customer?.contactNumber,
+          balAmount:booking?.paymentInfo?.balancePayment,
+          bookingId: booking?._id
+        })
       }
     }
   }, [booking.status]);
