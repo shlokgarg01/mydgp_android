@@ -171,7 +171,7 @@ const BookingsCard = ({
     return distance;
   };
 
-  //checks if rider is within 500 meters to booking location.
+  //checks if rider is within 900 meters to booking location.
   const isArrived = () => {
     if (
       getDistanceFromLatLonInKm(
@@ -179,7 +179,7 @@ const BookingsCard = ({
         booking.address.coordinates.lng,
         location?.latitude,
         location?.longitude,
-      ) > 0.05
+      ) > 0.09
     ) {
       return false;
     } else {
