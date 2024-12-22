@@ -24,7 +24,7 @@ import PendingPayment from '../PendingPayment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../Axios';
-import { sendWhatsappBookingCompleteBalanceMsg, sendWhatsAppBookingOTP } from '../../utils/whatsappMsgsUtils';
+import { sendWhatsappBookingCompleteBalanceMsg, sendWhatsAppBookingOTP, sendWhatsappUploadWorkUrl } from '../../utils/whatsappMsgsUtils';
 
 const BookingsCard = ({
   booking,
@@ -121,6 +121,16 @@ const BookingsCard = ({
     }
   }, [booking.status]);
 
+  const sendUploadUrl = async ()=>{
+    sendWhatsappUploadWorkUrl({
+      phoneNumber: booking?.serviceProvider?.contactNumber,
+      serviceProviderName: booking?.serviceProvider?.name,
+      bookingId: booking?._id,
+      startPhotoNumber: booking?.startPhotoNumber??" ",
+      workUrl: await getDeliveryUrl(booking?._id)
+    })
+  }
+
   const openMap = (lat, long) => {
     var mapUrl = `https://www.google.com/maps?q=${lat},${long}`;
     Linking.openURL(mapUrl);
@@ -184,7 +194,7 @@ const BookingsCard = ({
         booking.address.coordinates.lng,
         location?.latitude,
         location?.longitude,
-      ) > 0.5
+      ) > 0.6
     ) {
       return false;
     } else {
@@ -236,6 +246,35 @@ const BookingsCard = ({
     }
   };
 
+  const getDeliveryUrl = async requestId => {
+    setSubmitWorkLoading(true);
+    const url = `${BASE_URL}/api/v1/deliveryRequests/${requestId}`;
+    let token = await AsyncStorage.getItem('token');
+    token = token ? JSON.parse(token) : '';
+    const headers = {
+      Accept: 'application/json, text/plain, */*',
+      Connection: 'keep-alive',
+      'Content-Type': 'application/json',
+      authorization: `${token}`,
+    };
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: headers,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data?.deliveryUrl
+      } else {
+        const errorData = await response.json();
+      return ""
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      return ""
+    }
+  };
+
   // const isWorkUrlApproved = () => {
   //   getDeliveryRequest(booking?._id);
   //   if (deliveryRequestData != null) {
@@ -257,6 +296,9 @@ const BookingsCard = ({
       dispatch({type: CLEAR_ERRORS});
     } else if (isUpdated) {
       dispatch({type: CLEAR_ERRORS});
+      if(booking?.status === Enums.BOOKING_STATUS.ONGOING){
+        sendUploadUrl()
+      }
       // showToast('success', 'Booking Status Updated');
     }
   }, [error, isUpdated]);
