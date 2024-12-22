@@ -20,6 +20,8 @@ import {
   UPDATE_BOOKING_STATUS_REQUEST,
   UPDATE_BOOKING_STATUS_SUCCESS,
 } from '../constants/BookingsConstants';
+import {  getDDMMYYDate } from '../utils/DateTime';
+import { sendWhatsappBookingCancelToCustomer } from '../utils/whatsappMsgsUtils';
 
 // get all completed bookings
 export const getCompletedBookings = () => async dispatch => {
@@ -117,7 +119,7 @@ export const getPendingAmountOfBooking = bookingId => async dispatch => {
   }
 };
 
-export const cancelBookingRequest = bookingId => async dispatch => {
+export const cancelBookingRequest = (bookingId,contactNumber,serviceName) => async dispatch => {
   try {
     console.log('wrokin1');
     dispatch({type: CANCEL_BOOKING_REQUEST});
@@ -132,6 +134,12 @@ export const cancelBookingRequest = bookingId => async dispatch => {
       type: CANCEL_BOOKING_SUCCESS,
       payload: data,
     });
+    sendWhatsappBookingCancelToCustomer({
+      phoneNumber:contactNumber,
+      bookingId: data?.booking?._id,
+      serviceName : serviceName,
+      bookingDate: getDDMMYYDate(data?.booking?.date)
+    }); //send whatsapp msg to customer
   } catch (error) {
     console.log('wrokin2', error);
 

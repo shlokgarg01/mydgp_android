@@ -426,7 +426,7 @@ const BookingsCard = ({
                 label="Cancel"
                 style={{flex:1}}
                 onClick={() => {
-                  dispatch(cancelBookingRequest(booking._id));
+                  dispatch(cancelBookingRequest(booking._id,booking?.customer?.contactNumber,`${booking?.subService?.name} ${booking?.service?.name}`));
                 }}
               />
             )}
