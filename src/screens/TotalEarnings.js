@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Modal} from 'react-native';
 import Colors from '../helpers/Colors';
 import {deviceWidth} from '../helpers/Dimensions';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,6 +8,7 @@ import Btn from '../components/Btn';
 import {showToast} from '../helpers/ShowToast';
 import {CLEAR_ERRORS} from '../constants/RedeemConstants';
 import Loader from '../components/Loader';
+import RedeemRequestModal from '../components/RedeemRequestModal';
 
 const TotalEarnings = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -15,13 +16,25 @@ const TotalEarnings = () => {
   const {redeem, error, isSuccess, loading} = useSelector(
     state => state.redeem,
   );
+  const [modalVisible, setModalVisible] = useState(false);
+  const [amountToRedeem, setAmountToRedeem] = useState(0);
 
   const redeemCoins = () => {
-    if (redeem.amountToBeRedeemed <= 0) {
+    if (redeem?.redeem?.amountToBeRedeemed <= 0) {
       showToast('info', 'No amount to redeem');
       return;
     }
-    dispatch(requestRedeemCoins(redeem.amountToBeRedeemed));
+    setAmountToRedeem(redeem?.redeem?.amountToBeRedeemed);
+    setModalVisible(true);
+  };
+
+  const confirmRedeem = () => {
+    dispatch(requestRedeemCoins(amountToRedeem));
+    setModalVisible(false);
+  };
+
+  const cancelRedeem = () => {
+    setModalVisible(false);
   };
 
   function timeConvert(n) {
@@ -42,7 +55,7 @@ const TotalEarnings = () => {
     }
 
     if (isSuccess) {
-      showToast('success', 'Request Sent!');
+      showToast('success', 'Redeem Request Sent! You will Receive the payments in 3 working days!');
     }
   }, [dispatch, error, isSuccess]);
 
@@ -52,8 +65,6 @@ const TotalEarnings = () => {
       <Text style={[styles.earnings]}>{props?.value}</Text>
     </View>
   );
-
-  console.log(redeem);
 
   const TotalEarningsTab = () =>
     loading ? (
@@ -121,12 +132,12 @@ const TotalEarnings = () => {
           />
         </View>
       </View>
-    );
+    );    
 
   const RedeemTab = () => (
     <View>
       <Text style={[styles.earnings, {color: Colors.RED}]}>
-        Amount - ₹ {redeem?.amountToBeRedeemed || 0}
+        Amount - ₹ {redeem?.redeem?.amountToBeRedeemed || 0}
       </Text>
       <View style={{marginHorizontal: 25}}>
         <Btn
@@ -172,6 +183,8 @@ const TotalEarnings = () => {
       </View>
 
       {activeIndex === 0 ? <TotalEarningsTab /> : <RedeemTab />}
+
+     <RedeemRequestModal redeemAction={confirmRedeem} visible={modalVisible} setVisible={setModalVisible} amount={amountToRedeem} />
     </View>
   );
 };

@@ -81,6 +81,10 @@ const BookingsCard = ({
       showToast('error', 'Both OTP and Photo Number are required');
       return;
     }
+    if (booking.status === Enums.BOOKING_STATUS.ONGOING && (!photoNumber)) {
+      showToast('error', 'Photo Number is required');
+      return;
+    }
     dispatch(
       updateBookingStatus(
         booking._id,
@@ -112,11 +116,6 @@ const BookingsCard = ({
       } else {
         //mark booking completed
         dispatch(updateBookingStatus(booking._id, status));
-        sendWhatsappBookingCompleteBalanceMsg({
-          phoneNumber:booking?.customer?.contactNumber,
-          balAmount:booking?.paymentInfo?.balancePayment,
-          bookingId: booking?._id
-        })
       }
     }
   }, [booking.status]);
@@ -434,7 +433,7 @@ const BookingsCard = ({
                 isLocationLoading
                   ? 'Fetching Location....'
                   : status == 'ONGOING'
-                  ? 'Arrived'
+                  ? 'Start Booking'
                   : 'Complete Booking'
               }
               onClick={() => {

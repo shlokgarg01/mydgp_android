@@ -22,6 +22,7 @@ import {
 } from '../constants/BookingsConstants';
 import axiosInstance, {BASE_URL} from '../Axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ForceUpdate from '../components/ForceUpdate';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -175,7 +176,8 @@ export default function Home() {
     }, 100);
   }, []);
 
-  return onDuty ? (
+  return <View>
+  {onDuty ? (
     <>
       {!user?.isProfileUpdated && <CompleteProfileModal />}
       <ImageCarousel images={images} />
@@ -225,5 +227,7 @@ export default function Home() {
       </>
       {!user?.isProfileUpdated && <CompleteProfileModal />}
     </View>
-  );
+  )}
+  <ForceUpdate/>
+  </View>
 }
