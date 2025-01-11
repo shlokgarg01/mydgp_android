@@ -32,6 +32,7 @@ const BookingsCard = ({
   isCurrent,
   setWorkUrlModalVisible,
   setSelectedBooking,
+  onRefresh,
 }) => {
   const dispatch = useDispatch();
   const {error, loading, isUpdated} = useSelector(
@@ -110,13 +111,14 @@ const BookingsCard = ({
   useEffect(() => {
     if (booking.status === 'CLOSED') {
       getPendingAmount();
-      if (totalPendingAmt() > 0) {
-        //show pending amount
-        setPendingAmtVisible(true);
-      } else {
-        //mark booking completed
-        dispatch(updateBookingStatus(booking._id, status));
-      }
+      onRefresh();
+      // if (totalPendingAmt() > 0) {
+      //   //show pending amount
+      //   setPendingAmtVisible(true);
+      // } else {
+      //   //mark booking completed
+      //   dispatch(updateBookingStatus(booking._id, status));
+      // }
     }
   }, [booking.status]);
 

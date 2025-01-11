@@ -84,12 +84,12 @@ const ProfileForm = () => {
 
   //returns list of services/categories
   const getServicesList = () => {
-    if (user.service == '662de46f95110c7859d53e49') {
+    if (user?.service == '662de46f95110c7859d53e49') {
       //in case of 'both', return all services.
       return services;
     } else {
       //returns only registered service.
-      return [services.find(service => service._id === user.service)];
+      return [services.find(service => service._id === user?.service)];
     }
   };
 

@@ -40,6 +40,14 @@ export default function TodayBookings() {
     }
   }, [error, isUpdated]);
 
+  const onRefresh = ()=>{
+    dispatch(getCurrentBookings());
+    if (error) {
+      showToast('error', error);
+      dispatch(clearErrors());
+    }
+  }
+
   return loading ? (
     <Loader />
   ) : (
@@ -47,6 +55,8 @@ export default function TodayBookings() {
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flatlist}
+        onRefresh={onRefresh}
+        refreshing={loading}
         ListEmptyComponent={() => (
           <>
             <Text style={styles.emptybookingsText}>
@@ -66,6 +76,7 @@ export default function TodayBookings() {
             booking={item}
             showUpdateStatus={true}
             isCurrent={true}
+            onRefresh={onRefresh}
           />
         )}
       />
