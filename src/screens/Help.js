@@ -18,13 +18,13 @@ const Help = () => {
   // Function to handle calling functionality
   const handleCall = () => {
     // Replace '1234567890' with your actual phone number
-    Linking.openURL('tel:+918595703734');
+    Linking.openURL('tel:+918076255278');
   };
 
   // Function to handle opening WhatsApp
   const handleWhatsApp = () => {
     // Replace '1234567890' with your actual phone number
-    Linking.openURL('https://wa.me/+918595703734');
+    Linking.openURL('https://wa.me/+918076255278');
   };
 
   return (

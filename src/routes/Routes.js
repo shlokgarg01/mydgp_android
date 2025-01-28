@@ -25,6 +25,7 @@ import TotalEarnings from '../screens/TotalEarnings';
 import ProfileForm from '../screens/ProfileForm/ProfileForm';
 import Help from '../screens/Help';
 import DeviceInfo from 'react-native-device-info';
+import Bookings from '../screens/Bookings';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -108,6 +109,11 @@ function DrawerRoutes() {
         name={RouteNames.TODAY_BOOKINGS}
         component={TodayBookings}
         options={() => drawerOptions('Current Bookings', 'book-edit-outline')}
+      />
+       <Drawer.Screen
+        name={RouteNames.FUTURE_BOOKINGS}
+        component={Bookings}
+        options={() => drawerOptions('Future Bookings', 'book-edit-outline')}
       />
       {/* <Drawer.Screen
         name={RouteNames.BOOKINGS}

@@ -347,14 +347,14 @@ const BookingsCard = ({
           />
           {!isCurrent && (
             <>
-              <ShowInfo
+             {booking?.startPhotoNumber && <ShowInfo
                 title="Start Photo Number"
                 info={booking?.startPhotoNumber}
-              />
-              <ShowInfo
+              />}
+              {booking?.endPhotoNumber &&<ShowInfo
                 title="End Photo Number"
                 info={booking?.endPhotoNumber}
-              />
+              />}
               {isWorkUrlApproved && (
                 <TouchableOpacity
                   onPress={() => {

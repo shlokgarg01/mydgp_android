@@ -7,6 +7,7 @@ export default {
   ALL_BOOKINGS: 'all_bookings',
   CURRENT_BOOKINGS: 'current_bookings',
   TODAY_BOOKINGS: 'today_bookings',
+  FUTURE_BOOKINGS: 'future_bookings',
   PROFILE_FORM: 'profile_form',
   DRAWERS: {
     HOME: 'drawer_home',

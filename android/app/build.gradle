@@ -80,8 +80,8 @@ android {
         applicationId "com.my__dgp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 28
-        versionName "1.28"
+        versionCode 29
+        versionName "1.29"
     }
     signingConfigs {
         debug {

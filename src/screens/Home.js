@@ -23,6 +23,7 @@ import {
 import axiosInstance, {BASE_URL} from '../Axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ForceUpdate from '../components/ForceUpdate';
+import {  startBackgroundTask, stopBackgroundTask } from '../utils/backgroundLocation';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -52,8 +53,9 @@ export default function Home() {
     );
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     dispatch(getCurrentBookings());
+    await AsyncStorage.setItem('contactNumber', user?.contactNumber);
   }, []);
 
   // switch off duty when there are accepted bookings to prevent notifications
@@ -88,6 +90,23 @@ export default function Home() {
     getLastDutyStatus();
   }, [currentBookings]);
 
+  useEffect(() => {
+    const handleLocationPermission = async () => {
+      if (onDuty) {
+        const reqLoc = async () => {
+              await requestLocationPermission();
+            };
+            setTimeout(() => {
+              reqLoc();
+            }, 100);
+      } else {
+        await stopBackgroundTask();
+      }
+    };
+    handleLocationPermission();
+  }, [onDuty]);
+  
+
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -99,6 +118,7 @@ export default function Home() {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the location');
+        await startBackgroundTask()
       } else {
         console.log('location permission denied');
       }
@@ -167,14 +187,14 @@ export default function Home() {
     update_fcm();
   }, []);
 
-  useEffect(() => {
-    const reqLoc = async () => {
-      await requestLocationPermission();
-    };
-    setTimeout(() => {
-      reqLoc();
-    }, 100);
-  }, []);
+  // useEffect(() => {
+  //   const reqLoc = async () => {
+  //     await requestLocationPermission();
+  //   };
+  //   setTimeout(() => {
+  //     reqLoc();
+  //   }, 100);
+  // }, []);
 
   return <View>
   {onDuty ? (
